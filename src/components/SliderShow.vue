@@ -87,9 +87,10 @@
   letter-spacing: 0rem;
 }
 
-#genre{
+
+/* #genre{
   border-color: chartreuse;
-}
+} */
 
 
 </style>
