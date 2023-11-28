@@ -1,12 +1,13 @@
 
 
 <template>
-  
+
   <v-app>
     <v-content>
       <router-view>
         <Navbar></Navbar>
         <Slidershow></Slidershow>
+        <FilmSection></FilmSection>
         <Footer></Footer>
       </router-view>
     </v-content>
@@ -31,5 +32,6 @@
 import Navbar from '@/components/Navbar'
 import Slidershow from '@/components/Slidershow'
 import Footer from '@/components/Footer'
+import FilmSection from '@/components/FilmsSection.vue'
 </script>
 
