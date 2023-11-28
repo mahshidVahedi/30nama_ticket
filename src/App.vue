@@ -26,6 +26,16 @@
     font-family: 'Cairo Play', sans-serif;
 
 }
+
+::-webkit-scrollbar {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D65E15;
+  border-radius: 1em;
+}
+
 </style>
 
 <script setup>
