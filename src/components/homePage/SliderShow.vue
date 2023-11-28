@@ -1,5 +1,5 @@
 <template>
-  <v-carousel class="" cycle hide-delimiters show-arrows="hover">
+  <v-carousel class="slides" cycle hide-delimiters show-arrows="hover">
     <v-carousel-item class="m-5" v-for="(film, i) in films" :key="i">
       <v-img :src="film.backgraoundPhoto" class="align-center ma-0 pa-0 rounded-2"
         gradient="to bottom, rgba(0,0,0,.6), rgba(0,0,0,.7)" cover>
@@ -25,7 +25,6 @@
                       </div>
                     </div>
                     <div id="genre" class="mt-3 me-3 ms-5">
-
                       {{ film.genre }}
                     </div>
                   </div>
@@ -53,7 +52,6 @@
   font-family: 'Iranian Sans', sans-serif;
   letter-spacing: 0rem;
 }
-
 
 /* #genre{
   border-color: chartreuse;
