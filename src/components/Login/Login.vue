@@ -9,18 +9,19 @@
         <v-col>
         
                 <v-card  class="mx-auto mt-5" rounded="lg" max-width="700" min-height="300" >
-                <div class="d-flex flex-wrap-reverse justify-space-between mt-5 mb-5">
+                <div dir="rtl" class="d-flex flex-wrap justify-space-between mt-10 mb-5 mr-4 ml-2">
+                    
+                    <p class="mt-5" >اگر در سینماتیکت حساب کاربری ندارید ثبت نام کنید.</p>
                     <v-btn variant="elevated" color="red" class="ml-4 mt-5" rounded="lg" >ایجاد حساب کاربری </v-btn>
-                    <p dir="rtl" class="font-weight-bold mr-4 mt-5 display-2">اگر در سینماتیکت حساب کاربری ندارید ثبت نام کنید.</p>
                     
                 </div>
-                <br><br>
-                <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-2 mr-4">
+                
+                <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
                     <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
                     <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
-                        <v-text-field class="mr-5" id="phoneInput" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
+                        <v-text-field min-width="100px" class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
 
-                        <v-btn variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
+                        <v-btn min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
                     </v-form>
                 </div>
           

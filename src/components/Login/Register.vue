@@ -10,14 +10,14 @@
         <v-col xs="12">
         
             <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="300">
-                <h2 style="margin-top: 2rem;font-weight:bolder;" class="mb-5 mr-4 display-2">ایجاد حساب کاربری</h2>
+                <h2 style="margin-top: 2rem;font-weight:bolder;" class="mb-5 mr-5 display-2">ایجاد حساب کاربری</h2>
                 
-                <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-4">
+                <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
                     <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
                     <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
-                        <v-text-field class="mr-5" id="phoneInput" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
+                        <v-text-field class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
 
-                        <v-btn style="margin-left: 10%;" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 p-3" text="ادامه"></v-btn>
+                        <v-btn variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8" text="ادامه"></v-btn>
                     </v-form>
                 </div>
           
