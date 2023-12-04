@@ -3,8 +3,8 @@
   <Slidershow></Slidershow>
   <FilmSection></FilmSection>
   <Footer></Footer>
-  <Login></Login>
-  <Register></Register>
+  <!-- <Login></Login>
+  <Register></Register> -->
 </template>
 
 <script setup>
