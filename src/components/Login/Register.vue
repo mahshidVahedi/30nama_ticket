@@ -7,29 +7,24 @@
         </div>
        
 
-
-        <div class="d-flex flex-row justify-space-between">
-            <v-btn style="margin-left: 610px;" color="white">بازگشت</v-btn>
-        </div>
-            <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" width="700" height="300" >
-                <h2 style="margin-top: 3rem;letter-spacing: 0;" class="mb-5 mr-4 font-weight-black">ایجاد حساب کاربری</h2>
+        <v-col xs="12">
+        
+            <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="300">
+                <h2 style="margin-top: 2rem;font-weight:bolder;" class="mb-5 mr-4 display-2">ایجاد حساب کاربری</h2>
                 
-                <div style="margin-top: 3rem;" dir="rtl" class="d-flex flex-column mr-4">
-                    <p class="mr-4">.شماره موبایل خود را وارد کنید</p>
+                <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-4">
+                    <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
                     <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
                         <v-text-field class="mr-5" id="phoneInput" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
 
-                        <v-btn variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 p-3 ml-5" text="ادامه"></v-btn>
+                        <v-btn style="margin-left: 10%;" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 p-3" text="ادامه"></v-btn>
                     </v-form>
                 </div>
           
-  </v-card>
-       
-
+            </v-card>
+        </v-col>
         
-        
-
-    </div>
+        </div>
 </template>
 
 <style>
@@ -41,5 +36,7 @@
     grid-template-areas:none;
     grid-template-columns:none;
     grid-template-rows:none;
+
+
 }
 </style>
