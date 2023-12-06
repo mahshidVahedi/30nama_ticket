@@ -5,6 +5,7 @@
   <Footer></Footer>
   <!-- <Login></Login>
   <Register></Register> -->
+  <!-- <Verify></Verify> -->
 </template>
 
 <script setup>
@@ -14,4 +15,5 @@ import FilmSection from './FilmsSection.vue'
 import Navbar from '../common/Navbar.vue';
 import Login from '../Login/Login.vue'
 import Register from '../Login/Register.vue'
+import Verify from '../Login/Verify.vue'
 </script>
