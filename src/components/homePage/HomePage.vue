@@ -6,7 +6,7 @@
   <!-- <Login></Login>
   <Register></Register> -->
   <!-- <Verify></Verify> -->
-  <Cinema></Cinema>
+  <!-- <Cinema></Cinema> -->
 </template>
 
 <script setup>
