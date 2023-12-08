@@ -6,6 +6,7 @@
   <!-- <Login></Login>
   <Register></Register> -->
   <!-- <Verify></Verify> -->
+  <Cinema></Cinema>
 </template>
 
 <script setup>
@@ -16,4 +17,5 @@ import Navbar from '../common/Navbar.vue';
 import Login from '../Login/Login.vue'
 import Register from '../Login/Register.vue'
 import Verify from '../Login/Verify.vue'
+import Cinema from '../cinemas/Cinema.vue';
 </script>
