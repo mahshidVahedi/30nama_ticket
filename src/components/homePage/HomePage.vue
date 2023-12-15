@@ -2,7 +2,7 @@
   <Navbar></Navbar>
   <Slidershow></Slidershow>
   <FilmSection></FilmSection>
-  <Cinema></Cinema>
+  <!-- <Cinema></Cinema> -->
   <Footer></Footer>
   <!-- <Login></Login>
   <Register></Register> -->
