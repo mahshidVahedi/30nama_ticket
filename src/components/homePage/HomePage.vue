@@ -2,11 +2,12 @@
   <Navbar></Navbar>
   <Slidershow></Slidershow>
   <FilmSection></FilmSection>
+  <Cinema></Cinema>
   <Footer></Footer>
   <!-- <Login></Login>
   <Register></Register> -->
   <!-- <Verify></Verify> -->
-  <!-- <Cinema></Cinema> -->
+  
 </template>
 
 <script setup>

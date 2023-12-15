@@ -11,7 +11,7 @@
               
               <v-card  variant="text" height="100%" width="100%" class="d-flex flex-row justify-content-start align-center text-white g-0 ms-0" cover>
                 
-                <v-img :src="cinema.mainPhoto" style="max-height: 200px;max-width: 400px;border-radius: 10%;box-shadow: 0 2px 2px 0 rgba(251, 250, 250, 0.2), 0 6px 2px 0 rgba(0, 0, 0, 0.19);" rounded="5" class="mt-5 mb-5"></v-img>
+                <v-img :src="cinema.mainPhoto" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5" class="mt-5 mb-5"></v-img>
                 <div class="mr-0">
                   <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ cinema.name }}</v-card-title>
                 <v-card-text dir="rtl">
@@ -59,14 +59,15 @@
           <!-- </v-col>
         </v-row> -->
 
-        <div dir="rtl" style="background-color: rgb(227, 229, 230);">
+        <div class="mt-0" dir="rtl" style="background-color: rgb(235, 235, 235);">
           <div class="ml-8 mr-8 mb-10" rounded="5" style="background-color: white;">
-            <h2 class="mb-10 mr-3 text-black font-weight-bold">برنامه اکران  {{ cinema.name }}</h2>
+            <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران  {{ cinema.name }}</h2>
             <v-card>
     <v-tabs dir="rtl"
       v-model="tab"
       color="deep-grey-accent-4"
       align-tabs="start"
+      class="mr-10 mt-5 mb-5"
     >
       <v-tab :value="1">چهارشنبه 12 آذر</v-tab>
       <v-tab :value="2">پنج شنبه 13 آذر</v-tab>
@@ -78,13 +79,12 @@
         :key="n"
         :value="n"
       >
-      <div class="mt-8" v-for="(film, i) in films" :key="i">
-                <v-row dir="rtl">
-          <v-col  cols="9">
-            <div class="d-flex flex-row justify-center align-center mr-10">
-              <v-img class="rounded-4" style="max-height: 300px;max-width: 200px;" :src="film.photo"></v-img>
-              <v-card dir="rtl" variant="text" height="100%" width="40%" class="mx-auto align-center text-black">
-                <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ film.title }}</v-card-title>
+      <div class="mt-10" v-for="(film, i) in films" :key="i">
+              
+              <v-card dir="rtl" variant="text" class="d-flex flex-row justify-content-center align-center text-black mr-10">
+                <v-img class="rounded-4" style="max-height: 300px;max-width: 200px;" :src="film.photo"></v-img>
+                <div class="d-flex flex-column mr-6">
+                  <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ film.title }}</v-card-title>
                 <v-card-text dir="rtl">
                   <div class="mt-3 mb-3">
                     کارگردان : {{ film.director }}
@@ -103,11 +103,10 @@
                    
                   </div>
                 </v-card-text>
+                </div>
+                
                 
               </v-card>
-            </div>
-          </v-col>
-        </v-row>
             </div>
       </v-window-item>
     </v-window>
@@ -118,13 +117,16 @@
 
         </div>        
 
-        <h2 dir="rtl" class="mt-10 mb-3 mr-3 text-grey font-weight-bold">درباره {{ cinema.name }}</h2>
-        <p dir="rtl" class="mr-10 ml-10 mt-10">{{ cinema.description }}</p>
+        <h2 dir="rtl" class="mt-20 mb-3 mr-10 text-grey font-weight-bold">درباره {{ cinema.name }}</h2>
+        <p dir="rtl" class="mr-10 ml-10 mt-7">{{ cinema.description }}</p>
+        <v-btn class="mr-10 mt-5 mb-10" prepend-icon="mdi-phone"><template>
+          <v-icon style="color: rgb(26, 133, 26);"></v-icon>
+        </template>02144971930</v-btn>
 
-        <div dir="rtl" class="ml-8 mr-8 mb-10" rounded="5" style="background-color: white; margin-bottom: 300px;">
+        <div dir="rtl" class="ml-8 mr-8 mb-10" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
         
-          <h2 dir="rtl" class="mt-10 mb-3 mr-3 text-grey font-weight-bold">دیدگاه کاربران درباره  {{ cinema.name }}</h2>
-      <div class="mt-8" v-for="(Comment, i) in cinema.Comments" :key="i">
+          <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره  {{ cinema.name }}</h2>
+      <div class="mt-8 mb-5" v-for="(Comment, i) in cinema.Comments" :key="i">
             <v-card
   >
     <v-card-subtitle>
@@ -166,6 +168,7 @@ export default{
     setup() {
         const films = [
                 {
+                    id:1,
                     title: 'فسیل',
                     director: 'کریم امینی',
                     photo: photoM1,
@@ -175,6 +178,7 @@ export default{
                     description: "فیلم فسیل به کارگردانی کریم امینی و تهیه‌کنندگی ابراهیم عامریان است. بهرام افشاری، هادی کاظمی، الناز حبیبی، الهه حصاری، ایمان صفا، بابک کریمی، سیدجواد هاشمی و ... در این فیلم کمدی ایفای نقش کرده‌اند."
                 },
                 {
+                  id:2,
                     title: 'جنگل پرتقال',
                     director: ' آرمان خوانساریان',
                     photo: photoM2,
@@ -184,6 +188,7 @@ export default{
                     description: "فیلم جنگل پرتقال نویسندگی و کارگردانی آرمان خوانساریان و محصول سال 1401 است. سارا بهرامی، میرسعید مولویان، رضا بهبودی، رضا عموزاد، فراز سرابی، داوود فتحعلی بیگی، فرشته مرعشی، ارشیا نیک‌بین، حمیدرضا عباسی، زینب شعبانی و حسام نورانی بازیگران این فیلم هستند."
                 },
                 {
+                    id:3,
                     title: 'گیجگاه',
                     director: ' عادل تبریزی',
                     photo: photoM3,
@@ -195,10 +200,12 @@ export default{
             ]
 
         const cinema = {
+            id:1,
             mainPhoto : cinemaPhoto,
             name: 'پردیس سینمایی کورش',
             location: 'اتوبان حکیم غرب، ستاری شمال، جنب پیامبر مرکزی، مترو آریا-شهر',
             score: '3.6/5',
+            contact:'02144971930',
             features: [
                 {
                     value:'کافی شاپ',
@@ -228,7 +235,63 @@ export default{
             ]
         }
 
-        return{cinema,films}
+        const saloons = [
+            {
+              id:1,
+              name:'خورشیدنو',
+              cinema_id:1,
+
+            },
+            {
+              id:2,
+              name:'گراند سینما',
+              cinema_id:1,
+
+            }
+          ]
+
+          const scenes = [
+            {
+              id:1,
+              saloon_id:1,
+              movie_id:1,
+              start_time:'10'
+
+            },
+            {
+              id:2,
+              saloon_id:2,
+              movie_id:2
+
+            },
+            {
+              id:3,
+              saloon_id:1,
+              movie_id:3
+
+            }
+
+          ]
+
+        return{cinema,films,saloons,scenes}
     }
 }
+
+
+//add the date to the comment
+//tabs based on the current date
+//each tab should have its own films
+// scene:
+// id ineteger pr
+// saloon_id integer fk cinema
+// movie_id integer fk movie
+// start_time timestamp
+
+
+//search in scenes : if the movie_id === scene.movie_id ---> scene_id
+//saloons(saloon,i) ---> if saloon_id === scene.saloon.id ---> saloon.cinema_id
+//saloon.cinema_id === cinema_id --> show the scene info : time + price + saloon.name 
+
 </script>
+
+
