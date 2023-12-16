@@ -5,8 +5,6 @@
         gradient="to bottom, rgba(0,0,0,.7), rgba(2,8,0,1)" cover
         max-height="300px"
         > 
-        <!-- <v-row  dir="rtl" class="mr-0 ml-0">
-          <v-col cols="12"> -->
             <div  dir="rtl"  class="d-flex flex-row justify-center align-center mr-0 ml-0 opacity-background">
               
               <v-card  variant="text" height="100%" width="100%" class="d-flex flex-row justify-content-start align-center text-white g-0 ms-0" cover>
@@ -60,18 +58,18 @@
         </v-row> -->
 
         <div class="mt-0" dir="rtl" style="background-color: rgb(235, 235, 235);">
-          <div class="ml-8 mr-8 mb-10" rounded="5" style="background-color: white;">
+          <div class="ml-8 mr-8 mb-10 ml-0" rounded="5" style="background-color: white;">
             <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران  {{ cinema.name }}</h2>
             <v-card>
-    <v-tabs dir="rtl"
+    <v-tabs
       v-model="tab"
       color="deep-grey-accent-4"
-      align-tabs="start"
+      align-tabs="center"
       class="mr-10 mt-5 mb-5"
     >
-      <v-tab :value="1">چهارشنبه 12 آذر</v-tab>
-      <v-tab :value="2">پنج شنبه 13 آذر</v-tab>
-      <v-tab :value="3">جمعه 14 آذر</v-tab>
+      <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
+      <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
+      <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
     </v-tabs>
     <v-window v-model="tab">
       <v-window-item
@@ -79,11 +77,11 @@
         :key="n"
         :value="n"
       >
-      <div class="mt-10" v-for="(film, i) in films" :key="i">
+      <div class="mt-10 ml-0" v-for="(film, i) in films" :key="i">
               
               <v-card dir="rtl" variant="text" class="d-flex flex-row justify-content-center align-center text-black mr-10">
                 <v-img class="rounded-4" style="max-height: 300px;max-width: 200px;" :src="film.photo"></v-img>
-                <div class="d-flex flex-column mr-6">
+                <div style="max-width: 100%;" class="d-flex flex-column mr-6">
                   <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ film.title }}</v-card-title>
                 <v-card-text dir="rtl">
                   <div class="mt-3 mb-3">
@@ -105,8 +103,30 @@
                 </v-card-text>
                 </div>
                 
+                <v-btn @click="handleClick" class="mr-10">سانس ها</v-btn>
                 
               </v-card>
+
+
+                  <div  class="d-flex flex-row"  v-for="(scene,j) in scenes" :key="j">
+                    <v-card v-if="condition" class="d-flex flex-row justify-content-between mt-5 mr-10 elevation-8 pl-5 pr-5"  variant="text">
+                      <div>
+                        <v-card-item>
+      <h4 class="mt-3 mb-3 mr-0">
+        <v-icon icon="mdi-clock"></v-icon>
+        سانس {{ calculateMinute((film.duration*j)%60)+15 }} :  {{ (currentHour+1)+(calculateHour(film.duration*j))}}
+      </h4>
+      <v-card-subtitle>
+        60000 تومان
+      </v-card-subtitle>
+    </v-card-item>
+                      </div>
+                      <v-btn @click="handleScne(film.id,scene,cinema.id)" class="mt-5 mr-5" prepend-icon="mdi-ticket" variant="flat" color="red">
+                    خرید بلیت
+                  </v-btn>
+              </v-card>
+                  </div>
+              
             </div>
       </v-window-item>
     </v-window>
@@ -143,21 +163,20 @@
         </div>
         
       </div>
-       
-    <!-- <Footer></Footer> -->
 </template>
 
 
 
 <script lang="js">
 import Navbar from '../common/Navbar.vue';
-import Footer from '../common/Footer.vue';
 import cinemaPhoto from '@/assets/cinema1/1.jpg'
 import photoM1 from '@/assets/fosilM.jfif'
 import photoM2 from '@/assets/jangal.jfif'
-import photoM3 from '@/assets/gijgah.jfif'
-import SvgIcon from '@jamescoyle/vue-icon';
+import photoM3 from '@/assets/gijgah.jfif';
 import { mdiWifi } from '@mdi/js';
+import moment from 'jalali-moment';
+import { ref, onMounted } from 'vue';
+
 export default{
   data: () => ({
       tab: null,
@@ -166,6 +185,24 @@ export default{
     }),
     
     setup() {
+      
+    const jalaliDay = ref('');
+    const jalaliMonth = ref('');
+
+    const jalaliTomorrowDay = ref('');
+    const jalaliTomorrowMonth = ref('');
+
+    const jalaliDayAfterTomorrowDay = ref('');
+    const jalaliDayAfterTomorrowMonth = ref('')
+
+
+      const calculateMinute = (time)=>{
+        return Math.round(time*60/100)
+      }
+
+      const calculateHour = (time)=>{
+        return Math.round(time/60)
+      }
         const films = [
                 {
                     id:1,
@@ -247,6 +284,12 @@ export default{
               name:'گراند سینما',
               cinema_id:1,
 
+            },
+            {
+              id:2,
+              name:'سالن 1',
+              cinema_id:2,
+
             }
           ]
 
@@ -255,7 +298,7 @@ export default{
               id:1,
               saloon_id:1,
               movie_id:1,
-              start_time:'10'
+              
 
             },
             {
@@ -273,7 +316,71 @@ export default{
 
           ]
 
-        return{cinema,films,saloons,scenes}
+      const condition = ref(true);
+      const handleClick = ()=>{
+        console.log(condition.value)
+            condition.value = !condition.value;
+            console.log('Condition toggled:', condition.value);
+          }
+          
+          
+      const currentHour = ref('');
+
+    const updateHour = () => {
+      const now = new Date();
+      const hour = now.getHours();
+
+      currentHour.value = formatDigit(hour);
+    };
+
+    const formatDigit = (value) => {
+      return value < 10 ? '0' + value : value;
+    };
+
+    onMounted(() => {
+    setInterval(updateHour, 1000);
+      updateHour();
+    });
+
+    onMounted(() => {
+      const currentDate = moment().locale('fa').format('D MMMM');
+      const [day, month] = currentDate.split(' ');
+
+      const tomorrowDate = moment().add(1, 'days').locale('fa');
+      const dayAfterTomorrowDate = moment().add(2, 'days').locale('fa');
+
+      jalaliTomorrowDay.value = tomorrowDate.format('D');
+      jalaliTomorrowMonth.value = tomorrowDate.format('MMMM');
+
+      jalaliDayAfterTomorrowDay.value = dayAfterTomorrowDate.format('D');
+      jalaliDayAfterTomorrowMonth.value = dayAfterTomorrowDate.format('MMMM');
+    
+
+      jalaliDay.value = day;
+      jalaliMonth.value = month;
+      console.log(jalaliDay,jalaliMonth)
+    });
+
+    const cinemaScenes = ref([])
+    const cinemaSaloons = ref([])
+
+    const handleScne =(movie_id,scene,cinema_id )=>{
+          if(movie_id===scene.movie_id){
+            saloons.forEach((saloon)=>{
+              if(saloon.id===scene.saloon_id){
+                if(saloon.cinema_id === cinema_id){
+                  cinemaScenes.value.push(scene)
+                  cinemaSaloons.value.push(saloon)
+                  console.log(cinemaScenes.value,cinemaSaloons.value)
+                }
+              }
+            })
+          }
+    }
+
+    
+        return{cinema,films,saloons,scenes,handleClick,condition,currentHour,updateHour,calculateMinute,calculateHour,jalaliDay,
+        jalaliMonth,jalaliDayAfterTomorrowDay,jalaliDayAfterTomorrowMonth,jalaliTomorrowDay,jalaliTomorrowMonth,handleScne,cinemaScenes,cinemaSaloons}
     }
 }
 

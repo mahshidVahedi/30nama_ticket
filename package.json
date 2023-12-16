@@ -9,13 +9,15 @@
     "lint": "eslint . --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@chenfengyuan/vue-countdown": "^2.1.2",
     "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/font": "7.0.96",
     "@mdi/js": "^7.3.67",
     "core-js": "^3.29.0",
+    "jalali-moment": "^3.3.11",
     "pinia": "^2.0.0",
     "roboto-fontface": "*",
-    "vue": "^3.2.0",
+    "vue": "^3.3.12",
     "vue-router": "^4.2.5",
     "vuetify": "^3.0.0"
   },
