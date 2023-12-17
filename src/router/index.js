@@ -1,31 +1,36 @@
-// Composables
-import { createRouter, createWebHistory } from 'vue-router'
-// import CinemaList from '@/components/CinemaList.vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import DefaultLayout from '@/layouts/default/Default.vue';
+import Home from '@/views/Home.vue';
+import Cinemas from '@/views/Cinemas.vue'
+// import NotFound from '@/views/NotFound.vue';
+
 const routes = [
   {
     path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     children: [
       {
         path: '',
         name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (Home-[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import('@/views/Home.vue'),
+        component: Home,
       },
       {
-        path: '/cinemaList',
-        name: 'CinemaList',
-        component: ()=> import('@/components/cinemas/CinemaList.vue'),
+        path: '/cinemas',
+        name: 'Cinemas',
+        component: Cinemas,
       },
+      // {
+      //   path: '/:catchAll(.*)', // 404 error route
+      //   name: 'NotFound',
+      //   component: NotFound,
+      // },
     ],
   },
-]
+];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
-})
+});
 
-export default router
+export default router;

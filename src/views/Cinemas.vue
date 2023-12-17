@@ -2,7 +2,10 @@
   <v-app>
     <v-content>
       <router-view>
-        <HomePage></HomePage>
+        <Navbar></Navbar>
+        <CinemaList></CinemaList>
+        <div style="height: 300px;"></div>
+        <Footer></Footer>
       </router-view>
     </v-content>
   </v-app>
@@ -33,6 +36,8 @@
 </style>
 
 <script setup>
-import HomePage from '@/components/homePage/HomePage.vue'
+import CinemaList from '@/components/cinemas/CinemaList.vue';
+import Navbar from '@/components/common/Navbar.vue';
+import Footer from '@/components/common/Footer.vue';
 
 </script>
