@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <Navbar></Navbar>
     <v-card>
       <v-card-title>
         <h2>Cinema List</h2>
@@ -21,6 +22,7 @@
 
 <script>
 import { ref } from 'vue';
+import Navbar from '../common/Navbar.vue';
 
 export default {
   setup() {

@@ -21,7 +21,7 @@
       <v-btn append-icon="mdi-magnify" class="ma-2">
         <input dir="rtl" placeholder="جستجو فیلم، بازیگر و ..." id="" cols="20" rows="5">
       </v-btn>
-      <v-btn color="black" append-icon="mdi-movie" variant="text" class="ma-2 pa-2" @click="goToCinemaList()" >
+      <v-btn @click="goToCinemaList" color="black" append-icon="mdi-movie" variant="text" class="ma-2 pa-2"  >
         <template v-slot:append>
           <v-icon color="#616161"></v-icon>
         </template>
@@ -65,6 +65,7 @@ export default {
     const router = useRouter();
 
     const goToCinemaList = () => {
+      console.log('goToCinemaList method called');
       router.push({ name: 'CinemaList' });
     };
 
