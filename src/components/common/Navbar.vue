@@ -26,7 +26,7 @@
           <v-icon color="#616161"></v-icon>
         </template>
         سینما</v-btn>
-      <v-btn color="black" append-icon="mdi-film" variant="text" class="ma-2 pa-2 font-weight-bold">
+      <v-btn @click="goToHome" color="black" append-icon="mdi-film" variant="text" class="ma-2 pa-2 font-weight-bold">
         <template v-slot:append>
           <v-icon color="red"></v-icon>
         </template>
@@ -43,7 +43,10 @@
   letter-spacing: 0rem;
 } */
 
-
+#nav{
+  height: auto;
+  margin-top: 0px;
+}
 #cinematicket {
   font-family: 'Cairo Play', sans-serif;
 }
@@ -64,13 +67,17 @@ export default {
   setup() {
     const router = useRouter();
 
+    const goToHome= () => {
+      router.push({ name: 'Home' });
+    };
+
     const goToCinemaList = () => {
-      console.log('goToCinemaList method called');
-      router.push({ name: 'CinemaList' });
+      router.push({ name: 'Cinemas' });
     };
 
     return {
-      goToCinemaList
+      goToCinemaList,
+      goToHome
     };
   },
 };
