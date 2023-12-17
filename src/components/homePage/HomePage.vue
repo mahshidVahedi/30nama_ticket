@@ -1,12 +1,12 @@
 <template>
-  <Navbar></Navbar>
+  <!-- <Navbar></Navbar>
   <Slidershow></Slidershow>
-  <FilmSection></FilmSection>
-  <!-- <Cinema></Cinema> -->
-  <Footer></Footer>
-  <!-- <Login></Login>
-  <Register></Register> -->
-  <!-- <Verify></Verify> -->
+  <FilmSection></FilmSection>-->
+<Cinema></Cinema>
+  <Footer></Footer> 
+  <Login></Login>
+  <Register></Register> 
+  <Verify></Verify>
   
 </template>
 

@@ -1,19 +1,23 @@
 <template>
-  <v-carousel class="slides" cycle hide-delimiters show-arrows="hover">
+  <v-carousel  class="slides" cycle hide-delimiters show-arrows="hover">
     <v-carousel-item class="m-5" v-for="(film, i) in films" :key="i">
-      <v-img :src="film.backgraoundPhoto" class="align-center ma-0 pa-0 rounded-2"
+      <v-img :src="film.backgraoundPhoto" class="align-center ma-0 pa-0"
         gradient="to bottom, rgba(0,0,0,.6), rgba(0,0,0,.7)" cover>
-        <v-row dir="rtl">
-          <v-col cols="9">
-            <div class="d-flex flex-row justify-center align-center">
-              <v-img class="rounded-4" style="max-height: 300px" :src="film.photo"></v-img>
-              <v-card dir="rtl" variant="text" height="100%" width="40%" class="mx-auto align-center text-white g-0 ms-0">
+            <v-row dir="rtl" class="d-flex flex-lg-row flex-xs-column">
+              <v-col cols="3">
+                <v-responsive :aspect-ratio="16/9">
+                <v-img class="mt-10" style="max-height: 300px" :src="film.photo"></v-img>
+              </v-responsive>
+
+              </v-col>
+              <v-col cols="8">
+                <v-card dir="rtl" variant="text" class="mx-auto align-center text-white g-0 mr-0">
                 <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ film.title }}</v-card-title>
                 <v-card-text dir="rtl">
                   <div class="mt-3 mb-3">
                     کارگردان : {{ film.director }}
                   </div>
-                  <div class="d-flex flex-row mt-3 ">
+                  <div class="d-flex flex-md-row flex-xs-column mt-3 ">
                     <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
                       <v-icon class="me-1 " icon="mdi-clock"></v-icon>
                       {{ film.duration }}
@@ -38,9 +42,10 @@
                   </v-btn>
                 </v-card-actions>
               </v-card>
-            </div>
-          </v-col>
-        </v-row>
+
+              </v-col>
+              
+            </v-row>
       </v-img>
     </v-carousel-item>
   </v-carousel>

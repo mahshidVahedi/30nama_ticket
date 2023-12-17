@@ -1,168 +1,199 @@
 <template>
-    <!-- <Navbar></Navbar> -->
-    
-<v-img :src="cinema.mainPhoto" dir="rtl" class="align-center ma-0 pa-0"
-        gradient="to bottom, rgba(0,0,0,.7), rgba(2,8,0,1)" cover
-        max-height="300px"
-        > 
-            <div  dir="rtl"  class="d-flex flex-row justify-center align-center mr-0 ml-0 opacity-background">
-              
-              <v-card  variant="text" height="100%" width="100%" class="d-flex flex-row justify-content-start align-center text-white g-0 ms-0" cover>
-                
-                <v-img :src="cinema.mainPhoto" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5" class="mt-5 mb-5"></v-img>
-                <div class="mr-0">
-                  <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ cinema.name }}</v-card-title>
-                <v-card-text dir="rtl">
-                  <div class="mt-3 mb-3">
-                   {{ cinema.location}}
-                  </div>
-                  <div class="d-flex flex-column mt-3 ">
-                    
-                    <div color="red" class="d-flex flex-row border-white mt-3 me-3">
-                      <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-                      <div class="text-red ms-1">
-                        {{ cinema.score }}
-                      </div>
-                    </div >
-                    <div class="d-flex flex-row mt-5">
+  <!-- <Navbar></Navbar> -->
 
-                      <div v-for="(feature, i) in cinema.features" :key="i" class="mr-5 ml-5">
-                    
-                    <v-tooltip
-        v-model="show"
-        location="bottom"
-      >
-        <template v-slot:activator="{on, props }">
-         
-            <v-icon v-bind="props" v-on="on" color="grey-lighten-1">
-              {{feature.icon}}
-            </v-icon>
-        </template>
-        <span>{{ feature.value }}</span>
-      </v-tooltip>
-                  
-                  </div>
-                      
-                    </div>
-                    
-                    
-                  </div>
-                </v-card-text>
-                </div>
-                
-              </v-card>
+  <v-img :src="cinema.mainPhoto" dir="rtl" class="align-center mb-0 pa-0"
+    gradient="to bottom, rgba(0,0,0,.7), rgba(2,8,0,1)" cover max-height="300px">
+    <div dir="rtl" class="d-flex flex-row justify-center align-center mr-0 ml-0 opacity-background">
+
+      <v-card variant="text" height="100%" width="100%"
+        class="d-flex flex-row justify-content-start align-center text-white g-0 ms-0" cover>
+
+        <v-img :src="cinema.mainPhoto" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
+          class="mt-5 mb-5"></v-img>
+        <div class="mr-0">
+          <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ cinema.name }}</v-card-title>
+          <v-card-text dir="rtl">
+            <div class="mt-3 mb-3">
+              {{ cinema.location }}
             </div>
-                    
-      </v-img>
-          <!-- </v-col>
+            <div class="d-flex flex-column mt-3 ">
+
+              <div color="red" class="d-flex flex-row border-white mt-3 me-3">
+                <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+                <div class="text-red ms-1 font-weight-bold">
+                  {{ cinema.score }}
+                </div>
+
+                <v-chip @click="console.log('clicked')" class="ms-3" color="white" prepend-icon="mdi-star">
+                  امتیاز شما
+                </v-chip>
+              </div>
+              <div class="d-flex flex-row mt-5">
+
+                <div v-for="(feature, i) in cinema.features" :key="i" class="mr-5 ml-5">
+
+                  <v-tooltip location="bottom">
+                    <template v-slot:activator="{ on, props }">
+
+                      <v-icon v-bind="props" v-on="on" color="grey-lighten-1">
+                        {{ feature.icon }}
+                      </v-icon>
+                    </template>
+                    <span>{{ feature.value }}</span>
+                  </v-tooltip>
+
+                </div>
+
+              </div>
+
+
+            </div>
+          </v-card-text>
+        </div>
+
+      </v-card>
+    </div>
+
+  </v-img>
+  <!-- </v-col>
         </v-row> -->
 
-        <div class="mt-0" dir="rtl" style="background-color: rgb(235, 235, 235);">
-          <div class="ml-8 mr-8 mb-10 ml-0" rounded="5" style="background-color: white;">
-            <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران  {{ cinema.name }}</h2>
-            <v-card>
-    <v-tabs
-      v-model="tab"
-      color="deep-grey-accent-4"
-      align-tabs="center"
-      class="mr-10 mt-5 mb-5"
-    >
-      <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
-      <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
-      <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
-    </v-tabs>
-    <v-window v-model="tab">
-      <v-window-item
-        v-for="n in 3"
-        :key="n"
-        :value="n"
-      >
-      <div class="mt-10 ml-0" v-for="(film, i) in films" :key="i">
-              
-              <v-card dir="rtl" variant="text" class="d-flex flex-row justify-content-center align-center text-black mr-10">
-                <v-img class="rounded-4" style="max-height: 300px;max-width: 200px;" :src="film.photo"></v-img>
-                <div style="max-width: 100%;" class="d-flex flex-column mr-6">
-                  <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ film.title }}</v-card-title>
-                <v-card-text dir="rtl">
-                  <div class="mt-3 mb-3">
-                    کارگردان : {{ film.director }}
-                  </div>
-                  <div class="d-flex flex-row mt-3 ">
-                    <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
-                      <v-icon class="me-1 " icon="mdi-clock"></v-icon>
-                      {{ film.duration }}
-                    </div>
-                    <div color="red" class="d-flex flex-row border-white mt-3 me-3">
-                      <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-                      <div class="text-red ms-1">
-                        {{ film.score }}
-                      </div>
-                    </div>
-                   
-                  </div>
-                </v-card-text>
-                </div>
-                
-                <v-btn @click="handleClick" class="mr-10">سانس ها</v-btn>
-                
+  <div dir="rtl" style="background-color: rgb(235, 235, 235);">
+    <div class="mt10 ml-8 mr-8 mb-10 ml-0" rounded="5" style="background-color: white;">
+      <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{ cinema.name }}</h2>
+      <v-card>
+        <v-tabs v-model="tab" color="deep-grey-accent-4" align-tabs="start" class="mr-10 mt-5 mb-5" >
+          <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
+          <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
+          <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
+        </v-tabs>
+        <v-window v-model="tab">
+          <v-window-item v-for="n in 3" :key="n" :value="n">
+
+            <div class="mt-10 ml-0" v-for="(film, i) in films" :key="i">
+
+              <v-card dir="rtl" variant="text" class="mr-10 ml-10 pt-0">
+
+                <v-row class="flex-lg-row flex-s-column justify-content-between">
+                  <v-col col="9">
+                    <v-row class="flex-lg-row flex-s-column justify-content-start">
+                      <v-col>
+                        <v-responsive :aspect-ratio="16 / 9">
+                          <v-img rounded="4"
+                            style="max-height: 300px;max-width: 200px; min-height: 100px; min-width: 100px;"
+                            :src="film.photo"></v-img>
+                        </v-responsive>
+                      </v-col>
+                      <v-col>
+                        <div style="max-width: 100%;" class="d-flex flex-column mr-0 mt-5">
+                          <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ film.title }}</v-card-title>
+                          <v-card-text dir="rtl">
+                            <div class="mt-3 mb-3">
+                              کارگردان : {{ film.director }}
+                            </div>
+                            <v-chip>{{ film.genre }}</v-chip>
+                            <div class="d-flex flex-row mt-3 ">
+                              <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
+                                <v-icon class="me-1 " icon="mdi-clock"></v-icon>
+                                {{ film.duration }}
+                              </div>
+                              <div color="red" class="d-flex flex-row border-white mt-3 me-3">
+                                <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+                                <div class="text-red ms-1">
+                                  {{ film.score }}
+                                </div>
+                              </div>
+
+                            </div>
+                            <!-- <div class="d-flex flex-row" v-for="(cast,k) in film.casts" :key="k">
+                        <p> {{ cast }}</p>
+
+                    </div> -->
+                          </v-card-text>
+                        </div>
+                      </v-col>
+                    </v-row>
+
+
+                  </v-col>
+                  <v-col>
+                    <v-btn @click="handleClick(i)" class="mr-10">سانس ها</v-btn>
+                  </v-col>
+                </v-row>
+
+
+
               </v-card>
 
+              <v-row class="d-flex flex-row flex-wrap mt-5 mb-10">
 
-                  <div  class="d-flex flex-row"  v-for="(scene,j) in scenes" :key="j">
-                    <v-card v-if="condition" class="d-flex flex-row justify-content-between mt-5 mr-10 elevation-8 pl-5 pr-5"  variant="text">
-                      <div>
+
+                <div v-for="(scene, j) in scenes" :key="j">
+                  <v-card
+                    v-if="activeFilmIndex === i && condition && currentHour + calculateHour(film.duration * j + currentMinute + 30) <= 23"
+                    class=" ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text" style="min-width: 100px ;">
+                    <div class="d-flex flex-column">
+                      <div class="ml-3 mr-3">
                         <v-card-item>
-      <h4 class="mt-3 mb-3 mr-0">
-        <v-icon icon="mdi-clock"></v-icon>
-        سانس {{ calculateMinute((film.duration*j)%60)+15 }} :  {{ (currentHour+1)+(calculateHour(film.duration*j))}}
-      </h4>
-      <v-card-subtitle>
-        60000 تومان
-      </v-card-subtitle>
-    </v-card-item>
+                          <p class="mt-3 mb-3 mr-0">
+                            <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
+                            سانس {{ calculateMinute(film.duration * j + currentMinute + 30) }} : {{ currentHour +
+                              calculateHour(film.duration * j + currentMinute + 30) }}
+                          </p>
+                          <v-card-subtitle>
+                            60000 تومان
+                          </v-card-subtitle>
+                        </v-card-item>
                       </div>
-                      <v-btn @click="handleScne(film.id,scene,cinema.id)" class="mt-5 mr-5" prepend-icon="mdi-ticket" variant="flat" color="red">
-                    خرید بلیت
-                  </v-btn>
-              </v-card>
-                  </div>
-              
+
+                      <v-btn @click="handleScne(film.id, scene, cinema.id)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket"
+                        variant="flat" color="red">
+                        خرید بلیت
+                      </v-btn>
+
+
+                    </div>
+                  </v-card>
+                </div>
+
+              </v-row>
+
+
             </div>
-      </v-window-item>
-    </v-window>
+          </v-window-item>
+        </v-window>
 
-    
-  </v-card>
-           
 
-        </div>        
+      </v-card>
 
-        <h2 dir="rtl" class="mt-20 mb-3 mr-10 text-grey font-weight-bold">درباره {{ cinema.name }}</h2>
-        <p dir="rtl" class="mr-10 ml-10 mt-7">{{ cinema.description }}</p>
-        <v-btn class="mr-10 mt-5 mb-10" prepend-icon="mdi-phone"><template>
-          <v-icon style="color: rgb(26, 133, 26);"></v-icon>
-        </template>02144971930</v-btn>
 
-        <div dir="rtl" class="ml-8 mr-8 mb-10" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-        
-          <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره  {{ cinema.name }}</h2>
+    </div>
+
+    <h2 dir="rtl" class="mt-20 mb-3 mr-10 text-grey font-weight-bold">درباره {{ cinema.name }}</h2>
+    <p dir="rtl" class="mr-10 ml-10 mt-7">{{ cinema.description }}</p>
+    <v-btn class="mr-10 mt-5 mb-10" prepend-icon="mdi-phone"><template>
+        <v-icon style="color: rgb(26, 133, 26);"></v-icon>
+      </template>{{ cinema.contact }}</v-btn>
+
+    <div dir="rtl" class="ml-8 mr-8 mb-10" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
+
+      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema.name }}</h2>
       <div class="mt-8 mb-5" v-for="(Comment, i) in cinema.Comments" :key="i">
-            <v-card
-  >
-    <v-card-subtitle>
-      {{Comment.name}}
-    </v-card-subtitle>
+        <v-card>
+          <v-card-subtitle>
+            {{ Comment.name }}
+          </v-card-subtitle>
 
-    <v-card-text>
-      {{Comment.comment }}
-    </v-card-text>
-  </v-card>
+          <v-card-text>
+            {{ Comment.comment }}
+          </v-card-text>
+        </v-card>
       </div>
 
 
-        </div>
-        
-      </div>
+    </div>
+
+  </div>
 </template>
 
 
@@ -177,15 +208,14 @@ import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
 import { ref, onMounted } from 'vue';
 
-export default{
+export default {
   data: () => ({
-      tab: null,
-      path: mdiWifi,
-      show: false,
-    }),
-    
-    setup() {
-      
+    tab: null,
+    path: mdiWifi,
+  }),
+
+  setup() {
+
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
 
@@ -193,144 +223,168 @@ export default{
     const jalaliTomorrowMonth = ref('');
 
     const jalaliDayAfterTomorrowDay = ref('');
-    const jalaliDayAfterTomorrowMonth = ref('')
+    const jalaliDayAfterTomorrowMonth = ref('');
 
 
-      const calculateMinute = (time)=>{
-        return Math.round(time*60/100)
+
+    const calculateMinute = (time) => {
+      const number = time % 60
+      const remainder = number % 5
+
+      return remainder === 0 ? number : number + (5 - remainder);
+    }
+
+    const calculateHour = (time) => {
+      return Math.floor(time / 60)
+    }
+    const films = [
+      {
+        id: 1,
+        title: 'فسیل',
+        director: 'کریم امینی',
+        photo: photoM1,
+        score: '4.5/5',
+        duration: '85',
+        genre: 'کمدی',
+        description: "فیلم فسیل به کارگردانی کریم امینی و تهیه‌کنندگی ابراهیم عامریان است. بهرام افشاری، هادی کاظمی، الناز حبیبی، الهه حصاری، ایمان صفا، بابک کریمی، سیدجواد هاشمی و ... در این فیلم کمدی ایفای نقش کرده‌اند.",
+        casts: [
+          ' بهرام افشاری',
+          'هادی کاظمی',
+
+        ]
+      },
+      {
+        id: 2,
+        title: 'جنگل پرتقال',
+        director: ' آرمان خوانساریان',
+        photo: photoM2,
+        score: '4/5',
+        duration: '90',
+        genre: 'درام',
+        description: "فیلم جنگل پرتقال نویسندگی و کارگردانی آرمان خوانساریان و محصول سال 1401 است. سارا بهرامی، میرسعید مولویان، رضا بهبودی، رضا عموزاد، فراز سرابی، داوود فتحعلی بیگی، فرشته مرعشی، ارشیا نیک‌بین، حمیدرضا عباسی، زینب شعبانی و حسام نورانی بازیگران این فیلم هستند.",
+        casts: [
+          'سارا بهرامی ',
+          'میرسعید مولویان',
+
+        ]
+      },
+      {
+        id: 3,
+        title: 'گیجگاه',
+        director: ' عادل تبریزی',
+        photo: photoM3,
+        score: '2.9/5',
+        duration: '105',
+        genre: 'عاشقانه',
+        description: "فیلم گیج‌گاه نخستین فیلم عادل تبریزی محصول سال 1399 است که در آن بازیگرانی همچون جمشید هاشم‌پور، حامد بهداد، باران کوثری، سروش صحت، فرهاد آییش ایفای نقش می‌کنند. این فیلم در سی‌و‌نهمین جنشواره‌ی فیلم فجر نیز حضور داشت و در دو بخش بهترین تدوین و بهترین کارگردان فیلم اولی، نامزد دریافت سیمرغ شد. ",
+        casts: [
+          'حامد بهداد ',
+          'باران کوثری',
+
+        ]
       }
+    ]
 
-      const calculateHour = (time)=>{
-        return Math.round(time/60)
-      }
-        const films = [
-                {
-                    id:1,
-                    title: 'فسیل',
-                    director: 'کریم امینی',
-                    photo: photoM1,
-                    score: '4.5/5',
-                    duration: '85',
-                    genre: 'کمدی',
-                    description: "فیلم فسیل به کارگردانی کریم امینی و تهیه‌کنندگی ابراهیم عامریان است. بهرام افشاری، هادی کاظمی، الناز حبیبی، الهه حصاری، ایمان صفا، بابک کریمی، سیدجواد هاشمی و ... در این فیلم کمدی ایفای نقش کرده‌اند."
-                },
-                {
-                  id:2,
-                    title: 'جنگل پرتقال',
-                    director: ' آرمان خوانساریان',
-                    photo: photoM2,
-                    score: '4/5',
-                    duration: '90',
-                    genre: 'درام',
-                    description: "فیلم جنگل پرتقال نویسندگی و کارگردانی آرمان خوانساریان و محصول سال 1401 است. سارا بهرامی، میرسعید مولویان، رضا بهبودی، رضا عموزاد، فراز سرابی، داوود فتحعلی بیگی، فرشته مرعشی، ارشیا نیک‌بین، حمیدرضا عباسی، زینب شعبانی و حسام نورانی بازیگران این فیلم هستند."
-                },
-                {
-                    id:3,
-                    title: 'گیجگاه',
-                    director: ' عادل تبریزی',
-                    photo: photoM3,
-                    score: '2.9/5',
-                    duration: '105',
-                    genre: 'عاشقانه',
-                    description: "فیلم گیج‌گاه نخستین فیلم عادل تبریزی محصول سال 1399 است که در آن بازیگرانی همچون جمشید هاشم‌پور، حامد بهداد، باران کوثری، سروش صحت، فرهاد آییش ایفای نقش می‌کنند. این فیلم در سی‌و‌نهمین جنشواره‌ی فیلم فجر نیز حضور داشت و در دو بخش بهترین تدوین و بهترین کارگردان فیلم اولی، نامزد دریافت سیمرغ شد. "
-                }
-            ]
-
-        const cinema = {
-            id:1,
-            mainPhoto : cinemaPhoto,
-            name: 'پردیس سینمایی کورش',
-            location: 'اتوبان حکیم غرب، ستاری شمال، جنب پیامبر مرکزی، مترو آریا-شهر',
-            score: '3.6/5',
-            contact:'02144971930',
-            features: [
-                {
-                    value:'کافی شاپ',
-                    icon:'mdi-coffee',
-                },
-                {
-                    value:'فود کورت',
-                    icon:'mdi-food',
-                },
-                {
-                    value:'پارکینگ',
-                    icon:'mdi-parking',
-                }
-                
-            ],
-            
-            description: 'پردیس سینمایی کوروش، بزرگترین پردیس سینمایی کشور در طبقات4و6 مجتمع تجاری، فرهنگی و تفریحی کورش با سرمایه گذاری گروه صنعتی گلرنگ طی چهارسال ساخته شده است. 16000متر مربع از مجتمع تجاری، فرهنگی و تفریحی پردیس کورش به 12 سالن سینما اختصاص داده شده که 2800 صندلی به ظرفیت سینماهای کشور اضافه کرده است. پردیس سینمایی کورش کار خود را در ۲۷ مرداد ۱۳۹۳ با اکران فیلم سینمایی شهر موش ها 2 آغاز کرد. نام سالن های سینما کوروش به یاد سینماهای خیابان لاله زار تهران گذاشته شده اند. همچنین این سینما دارای رستورانهای گوناگون و پارکینگ نیز میباشد.',
-            Comments: [
-                {
-                  comment : 'بهترین پردیس سینمایی ،عالیییی',
-                    name: 'ناشناس'
-                },
-                {
-                  comment : 'امیدوارم مثل چندسال پیش مجدد فیلم خارجی اکران کنین..واقعا فیلمهایی مثل اپنهایمر-فارست گامپ -پیانیست- ارباب حلقه ها و خیلی های دیگه که ارزش چندبار دیدن رو دارن بهتره اکران کنین',
-                    name: 'مهتاب نجفی'
-                }
-            ]
+    const cinema = {
+      id: 1,
+      mainPhoto: cinemaPhoto,
+      name: 'پردیس سینمایی کورش',
+      location: 'اتوبان حکیم غرب، ستاری شمال، جنب پیامبر مرکزی، مترو آریا-شهر',
+      score: '3.6/5',
+      contact: '02144971930',
+      features: [
+        {
+          value: 'کافی شاپ',
+          icon: 'mdi-coffee',
+        },
+        {
+          value: 'فود کورت',
+          icon: 'mdi-food',
+        },
+        {
+          value: 'پارکینگ',
+          icon: 'mdi-parking',
         }
 
-        const saloons = [
-            {
-              id:1,
-              name:'خورشیدنو',
-              cinema_id:1,
+      ],
 
-            },
-            {
-              id:2,
-              name:'گراند سینما',
-              cinema_id:1,
+      description: 'پردیس سینمایی کوروش، بزرگترین پردیس سینمایی کشور در طبقات4و6 مجتمع تجاری، فرهنگی و تفریحی کورش با سرمایه گذاری گروه صنعتی گلرنگ طی چهارسال ساخته شده است. 16000متر مربع از مجتمع تجاری، فرهنگی و تفریحی پردیس کورش به 12 سالن سینما اختصاص داده شده که 2800 صندلی به ظرفیت سینماهای کشور اضافه کرده است. پردیس سینمایی کورش کار خود را در ۲۷ مرداد ۱۳۹۳ با اکران فیلم سینمایی شهر موش ها 2 آغاز کرد. نام سالن های سینما کوروش به یاد سینماهای خیابان لاله زار تهران گذاشته شده اند. همچنین این سینما دارای رستورانهای گوناگون و پارکینگ نیز میباشد.',
+      Comments: [
+        {
+          comment: 'بهترین پردیس سینمایی ،عالیییی',
+          name: 'ناشناس'
+        },
+        {
+          comment: 'امیدوارم مثل چندسال پیش مجدد فیلم خارجی اکران کنین..واقعا فیلمهایی مثل اپنهایمر-فارست گامپ -پیانیست- ارباب حلقه ها و خیلی های دیگه که ارزش چندبار دیدن رو دارن بهتره اکران کنین',
+          name: 'مهتاب نجفی'
+        }
+      ]
+    }
 
-            },
-            {
-              id:2,
-              name:'سالن 1',
-              cinema_id:2,
+    const saloons = [
+      {
+        id: 1,
+        name: 'خورشیدنو',
+        cinema_id: 1,
 
-            }
-          ]
+      },
+      {
+        id: 2,
+        name: 'گراند سینما',
+        cinema_id: 1,
 
-          const scenes = [
-            {
-              id:1,
-              saloon_id:1,
-              movie_id:1,
-              
+      },
+      {
+        id: 2,
+        name: 'سالن 1',
+        cinema_id: 2,
 
-            },
-            {
-              id:2,
-              saloon_id:2,
-              movie_id:2
+      }
+    ]
 
-            },
-            {
-              id:3,
-              saloon_id:1,
-              movie_id:3
+    const scenes = [
+      {
+        id: 1,
+        saloon_id: 1,
+        movie_id: 1,
 
-            }
 
-          ]
+      },
+      {
+        id: 2,
+        saloon_id: 2,
+        movie_id: 2
 
-      const condition = ref(true);
-      const handleClick = ()=>{
-        console.log(condition.value)
-            condition.value = !condition.value;
-            console.log('Condition toggled:', condition.value);
-          }
-          
-          
-      const currentHour = ref('');
+      },
+      {
+        id: 3,
+        saloon_id: 1,
+        movie_id: 3
+
+      }
+
+    ]
+
+
+    const activeFilmIndex = ref(null)
+    const condition = ref(true);
+    const handleClick = (index) => {
+      console.log(condition.value)
+      condition.value = !condition.value;
+      activeFilmIndex.value = index
+    }
+
+
+    const currentHour = ref('');
+    const currentMinute = ref('')
 
     const updateHour = () => {
       const now = new Date();
       const hour = now.getHours();
+      const minute = now.getHours();
 
-      currentHour.value = formatDigit(hour);
+      currentHour.value = hour;
+      currentMinute.value = minute
     };
 
     const formatDigit = (value) => {
@@ -338,7 +392,7 @@ export default{
     };
 
     onMounted(() => {
-    setInterval(updateHour, 1000);
+      setInterval(updateHour, 1000);
       updateHour();
     });
 
@@ -354,50 +408,50 @@ export default{
 
       jalaliDayAfterTomorrowDay.value = dayAfterTomorrowDate.format('D');
       jalaliDayAfterTomorrowMonth.value = dayAfterTomorrowDate.format('MMMM');
-    
+
 
       jalaliDay.value = day;
       jalaliMonth.value = month;
-      console.log(jalaliDay,jalaliMonth)
+      console.log(jalaliDay, jalaliMonth)
     });
 
     const cinemaScenes = ref([])
     const cinemaSaloons = ref([])
 
-    const handleScne =(movie_id,scene,cinema_id )=>{
-          if(movie_id===scene.movie_id){
-            saloons.forEach((saloon)=>{
-              if(saloon.id===scene.saloon_id){
-                if(saloon.cinema_id === cinema_id){
-                  cinemaScenes.value.push(scene)
-                  cinemaSaloons.value.push(saloon)
-                  console.log(cinemaScenes.value,cinemaSaloons.value)
-                }
-              }
-            })
+    const handleScne = (movie_id, scene, cinema_id) => {
+      if (movie_id === scene.movie_id) {
+        saloons.forEach((saloon) => {
+          if (saloon.id === scene.saloon_id) {
+            if (saloon.cinema_id === cinema_id) {
+              cinemaScenes.value.push(scene)
+              cinemaSaloons.value.push(saloon)
+              Object.values(cinemaScenes).forEach((scene) => {
+                console.log('The scene is : ' + scene.value)
+              })
+              Object.values(cinemaSaloons).forEach((saloon) => {
+                console.log('The saloon is : ' + saloon.value)
+              })
+            }
           }
+        })
+      }
     }
 
-    
-        return{cinema,films,saloons,scenes,handleClick,condition,currentHour,updateHour,calculateMinute,calculateHour,jalaliDay,
-        jalaliMonth,jalaliDayAfterTomorrowDay,jalaliDayAfterTomorrowMonth,jalaliTomorrowDay,jalaliTomorrowMonth,handleScne,cinemaScenes,cinemaSaloons}
+
+    return {
+      cinema, films, saloons, scenes, handleClick, condition, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay,
+      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons, activeFilmIndex
     }
+  }
 }
 
 
-//add the date to the comment
-//tabs based on the current date
-//each tab should have its own films
-// scene:
-// id ineteger pr
-// saloon_id integer fk cinema
-// movie_id integer fk movie
-// start_time timestamp
+//problems :
+//Responsive
+//scenes are shown
+//correct scenes
+//timer for verify
 
-
-//search in scenes : if the movie_id === scene.movie_id ---> scene_id
-//saloons(saloon,i) ---> if saloon_id === scene.saloon.id ---> saloon.cinema_id
-//saloon.cinema_id === cinema_id --> show the scene info : time + price + saloon.name 
 
 </script>
 

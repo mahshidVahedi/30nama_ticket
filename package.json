@@ -19,6 +19,7 @@
     "roboto-fontface": "*",
     "vue": "^3.3.12",
     "vue-router": "^4.2.5",
+    "vue3-flip-countdown": "^0.1.6",
     "vuetify": "^3.0.0"
   },
   "devDependencies": {
