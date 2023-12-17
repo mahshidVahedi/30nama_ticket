@@ -105,10 +105,7 @@
                               </div>
 
                             </div>
-                            <!-- <div class="d-flex flex-row" v-for="(cast,k) in film.casts" :key="k">
-                        <p> {{ cast }}</p>
-
-                    </div> -->
+                         
                           </v-card-text>
                         </div>
                       </v-col>
