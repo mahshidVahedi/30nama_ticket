@@ -19,7 +19,7 @@
                     <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
                         <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
                             
-                            <input id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
+                        <input id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
                         <p class="box-p" v-if="seconds>0">{{ seconds }}</p>
                         <button class="box" v-if="seconds <=0" @click="restartTimer">ارسال مجدد</button>
                         
