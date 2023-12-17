@@ -3,11 +3,12 @@
   <Slidershow></Slidershow>
   <FilmSection></FilmSection>
   <!-- <Cinema></Cinema> -->
+  <div style="height: 300px;"></div>
   <Footer></Footer>
   <!-- <Login></Login>
   <Register></Register> -->
   <!-- <Verify></Verify> -->
-  
+
 </template>
 
 <script setup>

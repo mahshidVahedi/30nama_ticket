@@ -3,7 +3,7 @@
     <h3>
       فیلم ایرانی
     </h3>
-    <section class="ma-auto mb-16" style="width: 80%;">
+    <section class="ma-auto mb-16 " style="width: 80%; height: 900px;">
       <v-list>
         <a href="">
           <v-list-item v-for="(item, index) in items" :key="index" style="display: inline-block;" class="item">
@@ -79,4 +79,10 @@ export default {
 };
 </script>
 <style>
+.item{
+  transition: transform .2s;
+}
+.item:hover{
+  transform: scale(1.1);
+}
 </style>
