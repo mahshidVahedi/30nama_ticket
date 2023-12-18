@@ -5,7 +5,7 @@ import Cinemas from '@/views/Cinemas.vue'
 import Login from '@/components/Login/Login'
 import Register from '@/components/Login/Register'
 import Verify from '@/components/Login/Verify'
-import Cinema from '@/components/cinemas/Cinema'
+import Cinema from '@/views/Cinema.vue'
 // import NotFound from '@/views/NotFound.vue';
 
 const routes = [
@@ -45,7 +45,7 @@ const routes = [
         component: Cinema,
 
       }
-      
+
       // {
       //   path: '/:catchAll(.*)', // 404 error route
       //   name: 'NotFound',
