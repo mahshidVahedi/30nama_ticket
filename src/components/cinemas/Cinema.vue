@@ -60,12 +60,8 @@
     <div class="mt10 ml-8 mr-8 mb-10 ml-0" rounded="5" style="background-color: white;">
       <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{ cinema.name }}</h2>
       <v-card>
-<<<<<<< HEAD
-        <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start" class="mr-10 mt-5 mb-5"  >
-=======
         <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start"
           class="mr-10 mt-5 mb-5" show-arrows>
->>>>>>> 8a68d8b2ccc5e8e80d2a642b62eedb7a316f3237
           <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
           <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
           <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
