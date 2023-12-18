@@ -2,8 +2,6 @@
   <Navbar></Navbar>
   <Slidershow></Slidershow>
   <FilmSection></FilmSection>
-
-
   <Footer></Footer>
 
 

@@ -24,10 +24,6 @@
                         <button class="box" v-if="seconds <=0" @click="restartTimer">ارسال مجدد</button>
                         
                         </div>
-
-                        
-
-                        
                         
                         <v-btn @click="goToHome" min-width="100px" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
                     </v-form>

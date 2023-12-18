@@ -20,7 +20,7 @@
                     <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
                     <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
                         <v-text-field min-width="100px" class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
-
+                        
                         <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
                     </v-form>
                 </div>

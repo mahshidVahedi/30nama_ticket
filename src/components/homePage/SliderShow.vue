@@ -6,7 +6,7 @@
             <v-row dir="rtl" class="d-flex flex-lg-row flex-xs-column">
               <v-col cols="3">
                 <v-responsive :aspect-ratio="16/9">
-                <v-img class="mt-10" style="max-height: 300px" :src="film.photo"></v-img>
+                <v-img class="mt-10 d-none d-sm-flex" style="max-height: 300px" :src="film.photo"></v-img>
               </v-responsive>
 
               </v-col>

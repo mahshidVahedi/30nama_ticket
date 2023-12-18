@@ -1,5 +1,6 @@
 <template>
-  <div id="nav" dark color="white darken-1" class="ma-1 dense fixed d-flex flex-row justify-space-between">
+
+  <div  id="nav" dark color="white darken-1" class="ma-1 dense fixed d-none d-md-flex flex-row justify-space-between">
     <div class="d-flex flex-row ma-2 pa-2">
       <v-btn @click="goToLogin" color="black" variant="text" append-icon="mdi-account" class="pa-2 ma-2 no-border">
         <template v-slot:append>
@@ -34,17 +35,88 @@
     </div>
   </div>
 
+      <v-toolbar
+        flat
+        app
+        color="white"
+        prominent
+        dir="rtl"
+        class="d-flex d-md-none"
+      >
+      <v-btn color="black" append-icon="mdi-ticket" variant="text" class="d-none d-sm-flex">
+        <template v-slot:append>
+          <v-icon color="#616161"></v-icon>
+        </template>
+        بلیط های من</v-btn>
+
+        <v-btn @click="dialog = true" variant="text" color="black" append-icon="mdi-crosshairs-gps" class="d-none d-sm-flex">
+        <template v-slot:append>
+          <v-icon color="#616161"></v-icon>
+        </template>
+        مکان</v-btn>
+      
+        <v-spacer></v-spacer>
+
+        <v-toolbar-title><v-btn @click="goToHome" color="black" append-icon="mdi-film" variant="text" class="font-weight-bold">
+        <template v-slot:append>
+          <v-icon color="red"></v-icon>
+        </template>
+        سینما تیکت</v-btn></v-toolbar-title>
+
+        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+
+
+      </v-toolbar>
+
+      <v-navigation-drawer
+        v-model="drawer"
+        location="top"
+
+      >
+      <v-list>
+        <v-list-item>
+          بلیط های من 
+        </v-list-item>
+        <v-list-item @click="dialog = true">
+          مکان
+        </v-list-item>
+        <v-list-item  @click="goToCinemaList">
+          سینما
+        </v-list-item>
+        <v-list-item @click="goToLogin">
+          ورود یا ثبت نام
+        </v-list-item>
+      </v-list>
+      </v-navigation-drawer>
+
   <v-dialog
       v-model="dialog"
-      width="auto"
+      max-width="600px"
     >
       <v-card dir="rtl">
-        <v-card-title>موقعیت مکانی</v-card-title>
-        <v-list lines="one">
-  <v-list-item @click="dialog = false" v-for="(city,i) in cities" :key="i" :title="city"></v-list-item> 
-</v-list>
+        <div class="d-flex flex-row mr-5  mb-5 mt-5">
+          <v-icon color="#616161" icon="mdi-crosshairs-gps mt-4"></v-icon>
+          <v-card-title class="text-black font-wight-bold">موقعیت مکانی</v-card-title>
+        </div>
+        
+        
+        <hr>
+        <v-row class="mb-4 mt-4">
+      <v-col
+        v-for="(city, index) in cities"
+        :key="index"
+        cols="12"
+        sm="6"
+        md="4"
+        lg="4"
+      >
+        <v-card variant="text" class="mr-5" @click="dialog = false">
+          <v-card-title >{{ city }}</v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
         <v-card-actions>
-          <v-btn color="red" block @click="dialog = false">بستن</v-btn>
+          <v-btn color="red" block @click="dialog = false" class="mt-5  font-weight-bold">بستن</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -53,10 +125,6 @@
 <style>
 @import url('https://fonts.cdnfonts.com/css/iranian-sans');
 @import url('https://fonts.googleapis.com/css2?family=Cairo+Play:wght@500&family=Lexend:wght@400;600&family=Outfit&display=swap');
-/* *{
-  font-family: 'Iranian Sans', sans-serif;
-  letter-spacing: 0rem;
-} */
 
 #nav{
   height: auto;
@@ -82,6 +150,7 @@ export default {
   data () {
       return {
         dialog: false,
+        drawer: false,
       }
     },
   setup() {
@@ -105,7 +174,20 @@ export default {
       'مشهد',
       'تبریز',
       'قم',
-      'اراک'
+      'اراک',
+      'شیراز',
+      'یزد',
+      'کرمان',
+      'اسفهان',
+      'کرج',
+      'اهواز',
+      'کرمانشاه',
+      'ارومیه',
+      'رشت',
+      'همدان',
+      'اردبیل',
+      'ساری',
+      'سنندج'
     ]
 
     return {
