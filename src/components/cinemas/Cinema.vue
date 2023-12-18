@@ -1,4 +1,5 @@
 <template>
+  <router-view>
   <Navbar></Navbar>
 
   <v-img :src="cinema.mainPhoto" dir="rtl" class="align-center mb-0 pa-0"
@@ -105,7 +106,7 @@
                               </div>
 
                             </div>
-                         
+
                           </v-card-text>
                         </div>
                       </v-col>
@@ -127,7 +128,7 @@
 
                 <div v-for="(scene, j) in scenes" :key="j">
                   <v-card
-                    v-if="film.condition || currentHour + calculateHour(film.duration * j + currentMinute + 30) <= 23" 
+                    v-if="film.condition || currentHour + calculateHour(film.duration * j + currentMinute + 30) <= 23"
                     class=" ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text" style="min-width: 100px ;">
                     <div class="d-flex flex-column">
                       <div class="ml-3 mr-3">
@@ -192,6 +193,7 @@
 
   </div>
   <Footer></Footer>
+  </router-view>
 </template>
 
 <style>
@@ -201,7 +203,7 @@
     flex-direction: column;
   }
   }
- 
+
 </style>
 
 <script lang="js">
@@ -374,7 +376,7 @@ export default {
         id: 3,
         saloon_id: 1,
         movie_id: 3,
-        
+
       }
 
     ]
@@ -386,7 +388,7 @@ export default {
       console.log('The condition for '+index+' before is : '+films[index].condition)
       films[index].condition= !films[index].condition;
       console.log(console.log('The condition for '+index+' after is : '+films[index].condition))
-      
+
     }
 
 
