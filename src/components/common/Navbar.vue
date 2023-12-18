@@ -1,7 +1,7 @@
 <template>
   <div id="nav" dark color="white darken-1" class="ma-1 dense fixed d-flex flex-row justify-space-between">
     <div class="d-flex flex-row ma-2 pa-2">
-      <v-btn color="black" variant="text" append-icon="mdi-account" class="pa-2 ma-2 no-border">
+      <v-btn @click="goToLogin" color="black" variant="text" append-icon="mdi-account" class="pa-2 ma-2 no-border">
         <template v-slot:append>
           <v-icon color="#616161"></v-icon>
         </template>
@@ -11,7 +11,7 @@
           <v-icon color="#616161"></v-icon>
         </template>
         بلیط های من</v-btn>
-      <v-btn variant="text" color="black" append-icon="mdi-crosshairs-gps" class="pa-2 ma-2">
+      <v-btn @click="dialog = true" variant="text" color="black" append-icon="mdi-crosshairs-gps" class="pa-2 ma-2">
         <template v-slot:append>
           <v-icon color="#616161"></v-icon>
         </template>
@@ -33,6 +33,21 @@
         سینما تیکت</v-btn>
     </div>
   </div>
+
+  <v-dialog
+      v-model="dialog"
+      width="auto"
+    >
+      <v-card dir="rtl">
+        <v-card-title>موقعیت مکانی</v-card-title>
+        <v-list lines="one">
+  <v-list-item @click="dialog = false" v-for="(city,i) in cities" :key="i" :title="city"></v-list-item> 
+</v-list>
+        <v-card-actions>
+          <v-btn color="red" block @click="dialog = false">بستن</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 </template>
 
 <style>
@@ -64,6 +79,11 @@ input {
 import { useRouter } from 'vue-router';
 
 export default {
+  data () {
+      return {
+        dialog: false,
+      }
+    },
   setup() {
     const router = useRouter();
 
@@ -75,9 +95,24 @@ export default {
       router.push({ name: 'Cinemas' });
     };
 
+
+    const goToLogin= () => {
+      router.push({ name: 'Login' });
+    };
+
+    const cities = [
+      'تهران',
+      'مشهد',
+      'تبریز',
+      'قم',
+      'اراک'
+    ]
+
     return {
       goToCinemaList,
-      goToHome
+      goToHome,
+      goToLogin,
+      cities
     };
   },
 };

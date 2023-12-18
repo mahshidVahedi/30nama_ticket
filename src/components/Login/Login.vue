@@ -12,7 +12,7 @@
                 <div dir="rtl" class="d-flex flex-wrap justify-space-between mt-10 mb-5 mr-4 ml-2">
                     
                     <p class="mt-5" >اگر در سینماتیکت حساب کاربری ندارید ثبت نام کنید.</p>
-                    <v-btn variant="elevated" color="red" class="ml-4 mt-5" rounded="lg" >ایجاد حساب کاربری </v-btn>
+                    <v-btn @click="goToRegister" variant="elevated" color="red" class="ml-4 mt-5" rounded="lg" >ایجاد حساب کاربری </v-btn>
                     
                 </div>
                 
@@ -21,7 +21,7 @@
                     <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
                         <v-text-field min-width="100px" class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
 
-                        <v-btn min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
+                        <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
                     </v-form>
                 </div>
           
@@ -47,3 +47,23 @@
     grid-template-rows:none; */
 /* } */
 </style>
+
+<script lan="js">
+import { useRouter } from 'vue-router';
+export default {
+    setup(){
+        const router = useRouter();
+
+    const goToRegister= () => {
+      router.push({ name: 'Register' });
+    };
+
+    const goToVerify= () => {
+  router.push({ name: 'Verify' });
+};
+
+    return{goToRegister,goToVerify}
+    }
+}
+
+</script>

@@ -17,7 +17,7 @@
                     <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
                         <v-text-field class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
 
-                        <v-btn variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8" text="ادامه"></v-btn>
+                        <v-btn @click="goToVerify" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8" text="ادامه"></v-btn>
                     </v-form>
                 </div>
           
@@ -40,3 +40,21 @@
 
 }
 </style>
+
+<script lang="js">
+import { useRouter } from 'vue-router';
+export default{
+    setup(){
+        const router = useRouter();
+
+const goToVerify= () => {
+  router.push({ name: 'Verify' });
+};
+return {goToVerify}
+    
+
+}
+
+}
+
+</script>

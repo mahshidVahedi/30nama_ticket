@@ -2,14 +2,9 @@
   <Navbar></Navbar>
   <Slidershow></Slidershow>
   <FilmSection></FilmSection>
-  <div style="height: 300px;"></div>
+
+
   <Footer></Footer>
-  <!-- <Login></Login>
-  <Register></Register>
-  <Verify></Verify>  -->
-  <Cinema></Cinema>
-
-
 
 
 </template>

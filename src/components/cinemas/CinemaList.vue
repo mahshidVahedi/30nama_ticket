@@ -6,8 +6,8 @@
       </v-card-title>
       <div class="list">
       <v-row >
-        <v-col v-for="(cinema, index) in cinemas" :key="index" cols="12" sm="6" md="4" lg="3">
-          <v-card class="cinema-card item">
+        <v-col v-for="(cinema, index) in cinemas" :key="index"  cols="12" sm="6" md="4" lg="3">
+          <v-card @click="goToCinemaDetails"  class="cinema-card item">
             <v-img :src="cinema.image" :alt="cinema.name" class="cinema-image"></v-img>
             <v-card-title class="text-right mb-1">{{ cinema.name }}</v-card-title>
             <v-card-text class="text-right mb-1">
@@ -32,6 +32,8 @@ import image6 from '@/assets/cinema1/6.jpg'
 import image7 from '@/assets/cinema1/7.jpg'
 import image8 from '@/assets/cinema1/8.jpg'
 import '@mdi/font/css/materialdesignicons.css'
+import { useRouter } from 'vue-router';
+
 
 export default {
   setup() {
@@ -86,8 +88,15 @@ export default {
       },
     ]);
 
+    const router = useRouter();
+
+    const goToCinemaDetails= () => {
+      router.push({ name: 'Details' });
+    };
+
+
     return {
-      cinemas,
+      cinemas,goToCinemaDetails
     };
   },
 };

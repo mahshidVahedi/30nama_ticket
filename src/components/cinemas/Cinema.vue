@@ -1,5 +1,5 @@
 <template>
-  <!-- <Navbar></Navbar> -->
+  <Navbar></Navbar>
 
   <v-img :src="cinema.mainPhoto" dir="rtl" class="align-center mb-0 pa-0"
     gradient="to bottom, rgba(0,0,0,.7), rgba(2,8,0,1)" cover max-height="300px">
@@ -62,7 +62,7 @@
     <div class="mt10 ml-8 mr-8 mb-10 ml-0" rounded="5" style="background-color: white;">
       <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{ cinema.name }}</h2>
       <v-card>
-        <v-tabs v-model="tab" color="deep-grey-accent-4" align-tabs="start" class="mr-10 mt-5 mb-5" >
+        <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start" class="mr-10 mt-5 mb-5" show-arrows >
           <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
           <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
           <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
@@ -127,15 +127,15 @@
 
                 <div v-for="(scene, j) in scenes" :key="j">
                   <v-card
-                    v-if="activeFilmIndex === i && condition && currentHour + calculateHour(film.duration * j + currentMinute + 30) <= 23"
+                    v-if="film.condition || currentHour + calculateHour(film.duration * j + currentMinute + 30) <= 23" 
                     class=" ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text" style="min-width: 100px ;">
                     <div class="d-flex flex-column">
                       <div class="ml-3 mr-3">
                         <v-card-item>
                           <p class="mt-3 mb-3 mr-0">
                             <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-                            سانس {{ calculateMinute(film.duration * j + currentMinute + 30) }} : {{ currentHour +
-                              calculateHour(film.duration * j + currentMinute + 30) }}
+                            سانس {{calculateMinute(film.duration * j + currentMinute + 30)}} : {{ currentHour +
+                              calculateHour(film.duration * j + currentMinute + 30)}}
                           </p>
                           <v-card-subtitle>
                             60000 تومان
@@ -143,7 +143,7 @@
                         </v-card-item>
                       </div>
 
-                      <v-btn @click="handleScne(film.id, scene, cinema.id)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket"
+                      <v-btn class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket"
                         variant="flat" color="red">
                         خرید بلیت
                       </v-btn>
@@ -191,12 +191,22 @@
     </div>
 
   </div>
+  <Footer></Footer>
 </template>
 
-
+<style>
+  @media(max-width:425){
+    #tabs{
+    display: flex;
+    flex-direction: column;
+  }
+  }
+ 
+</style>
 
 <script lang="js">
 import Navbar from '../common/Navbar.vue';
+import Footer from '../common/Footer.vue';
 import cinemaPhoto from '@/assets/cinema1/1.jpg'
 import photoM1 from '@/assets/fosilM.jfif'
 import photoM2 from '@/assets/jangal.jfif'
@@ -234,7 +244,7 @@ export default {
     const calculateHour = (time) => {
       return Math.floor(time / 60)
     }
-    const films = [
+    const films =[
       {
         id: 1,
         title: 'فسیل',
@@ -248,7 +258,8 @@ export default {
           ' بهرام افشاری',
           'هادی کاظمی',
 
-        ]
+        ],
+        condition:false,
       },
       {
         id: 2,
@@ -263,7 +274,8 @@ export default {
           'سارا بهرامی ',
           'میرسعید مولویان',
 
-        ]
+        ],
+        condition:false,
       },
       {
         id: 3,
@@ -278,7 +290,8 @@ export default {
           'حامد بهداد ',
           'باران کوثری',
 
-        ]
+        ],
+        condition:false,
       }
     ]
 
@@ -345,30 +358,35 @@ export default {
         saloon_id: 1,
         movie_id: 1,
 
-
+      },
+      {
+        id: 4,
+        saloon_id: 2,
+        movie_id: 2,
       },
       {
         id: 2,
         saloon_id: 2,
-        movie_id: 2
+        movie_id: 2,
 
       },
       {
         id: 3,
         saloon_id: 1,
-        movie_id: 3
-
+        movie_id: 3,
+        
       }
 
     ]
 
 
-    const activeFilmIndex = ref(null)
-    const condition = ref(true);
+    // const activeFilmIndex = ref(null)
+    // const condition = ref(true);
     const handleClick = (index) => {
-      console.log(condition.value)
-      condition.value = !condition.value;
-      activeFilmIndex.value = index
+      console.log('The condition for '+index+' before is : '+films[index].condition)
+      films[index].condition= !films[index].condition;
+      console.log(console.log('The condition for '+index+' after is : '+films[index].condition))
+      
     }
 
 
@@ -416,28 +434,28 @@ export default {
     const cinemaSaloons = ref([])
 
     const handleScne = (movie_id, scene, cinema_id) => {
-      if (movie_id === scene.movie_id) {
-        saloons.forEach((saloon) => {
-          if (saloon.id === scene.saloon_id) {
-            if (saloon.cinema_id === cinema_id) {
-              cinemaScenes.value.push(scene)
-              cinemaSaloons.value.push(saloon)
-              Object.values(cinemaScenes).forEach((scene) => {
-                console.log('The scene is : ' + scene.value)
-              })
-              Object.values(cinemaSaloons).forEach((saloon) => {
-                console.log('The saloon is : ' + saloon.value)
-              })
-            }
-          }
-        })
-      }
+      // if (movie_id === scene.movie_id) {
+      //   saloons.forEach((saloon) => {
+      //     if (saloon.id === scene.saloon_id) {
+      //       if (saloon.cinema_id === cinema_id) {
+      //         cinemaScenes.value.push(scene)
+      //         cinemaSaloons.value.push(saloon)
+      //         Object.values(cinemaScenes).forEach((scene) => {
+      //           console.log('The scene is : ' + scene.value)
+      //         })
+      //         Object.values(cinemaSaloons).forEach((saloon) => {
+      //           console.log('The saloon is : ' + saloon.value)
+      //         })
+      //       }
+      //     }
+      //   })
+      // }
     }
 
 
     return {
-      cinema, films, saloons, scenes, handleClick, condition, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay,
-      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons, activeFilmIndex
+      cinema, films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay,formatDigit,
+      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons
     }
   }
 }
