@@ -76,6 +76,7 @@
       <v-navigation-drawer
         v-model="drawer"
         location="top"
+        class="d-flex d-md-none"
 
       >
       <v-list>

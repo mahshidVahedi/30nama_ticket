@@ -382,9 +382,11 @@ export default {
 
     function handleClick(itemId) {
       films[itemId].condition=!films[itemId].condition;
-      if (!isItemOpen(itemId)) {
+      if (!isItemOpen(itemId) && films[itemId].condition) {
         openItems.value.push(itemId);
-      } 
+      } else if(!films[itemId].condition){
+        openItems.value.pop(itemId)
+      }
     }
 
     function isItemOpen(itemId) {

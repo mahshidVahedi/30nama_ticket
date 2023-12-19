@@ -24,7 +24,7 @@
                         <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
                     </v-form>
                 </div>
-                <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p>
+                <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
                 </v-card>            
         </v-col>
         
@@ -65,9 +65,10 @@ export default {
 
     const goToVerify= () => {
         if (data.value) {
-        router.push({ name: 'Verify',params:{data: data.value} });
+        router.push({ name: 'Verify',params:{data: data.va} });
       } else {
         errorMessage.value = 'شماره تلفن خود را وارد کنید.';
+        window.alert(errorMessage.value);
       }
   
 };

@@ -20,7 +20,7 @@
               <v-btn @click="goToHome" min-width="100px" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
             </v-form>
           </div>
-          <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p>
+          <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
         </v-card>
       </v-col>
     </div>
@@ -98,7 +98,8 @@ export default {
       if (data.value) {
         router.push({ name: 'Home' });
       } else {
-        errorMessage.value = 'کد تاییدارسال شده را وارد کنید.';
+        errorMessage.value = 'کد تایید ارسال شده را وارد کنید.'
+        window.alert(errorMessage.value);
       }
 
     };
