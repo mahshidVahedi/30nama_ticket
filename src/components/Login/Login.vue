@@ -21,7 +21,6 @@
                     <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
                         <v-text-field v-model="data" min-width="100px" class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
                         
-                        <!-- <router-link :to="getTargetRoute(data)">Go to target</router-link> -->
                         <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
                     </v-form>
                 </div>
@@ -59,15 +58,6 @@ export default {
         const route = useRoute();
         const errorMessage = ref('');
 
-    function getTargetRoute(data) {
-      return {
-        name: 'Verify',
-        params: {
-          data: data.value, // Access the value of the ref
-        },
-      };
-    }
-
 
     const goToRegister= () => {
       router.push({ name: 'Register' });
@@ -82,8 +72,7 @@ export default {
   
 };
 
-    return{goToRegister,goToVerify,data,
-      getTargetRoute,errorMessage}
+    return{goToRegister,goToVerify,data,errorMessage}
     }
 }
 
