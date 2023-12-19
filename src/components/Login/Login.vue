@@ -65,7 +65,7 @@ export default {
 
     const goToVerify= () => {
         if (data.value) {
-        router.push({ name: 'Verify',params:{data: data.va} });
+        router.push({ name: 'Verify',params:{data: data.value} });
       } else {
         errorMessage.value = 'شماره تلفن خود را وارد کنید.';
         window.alert(errorMessage.value);

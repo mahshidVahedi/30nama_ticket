@@ -15,7 +15,7 @@
                 <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
                     <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
                     <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
-                        <v-text-field v-model="data" class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
+                        <v-text-field v-model="number" class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
 
                         <v-btn @click="goToVerify" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8" text="ادامه"></v-btn>
                     </v-form>
@@ -43,26 +43,25 @@
 
 <script lang="js">
 import { useRouter } from 'vue-router';
-import {ref} from 'vue';
+import {ref} from 'vue'
 export default{
     setup(){
         const router = useRouter();
-        const data = ref('');
-        const errorMessage = ref('');
+        const number = ref('')
 
-    const goToVerify= () => {
-        if (data.value) {
-            router.push({ name: 'Verify' });
-      } else {
-            errorMessage.value = 'شماره تلفن خود را وارد کنید.';
-            window.alert(errorMessage.value);
-      }
-return {goToVerify,data,errorMessage}
+const goToVerify= () => {
+    if(number.value){
+        router.push({ name: 'Verify',params:{data: number.value} });
+    }else{
+        window.alert('شماره خود را وارد کنید.')
+    }
+  
+};
+return {goToVerify,number}
     
 
 }
 
-}
 }
 
 </script>
