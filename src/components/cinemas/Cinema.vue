@@ -124,15 +124,15 @@
               <v-row class="d-flex flex-row flex-wrap mt-5 mb-10">
                 <div v-for="(scene, j) in scenes" :key="j">
                   <v-card
-                    v-if="film.condition && currentHour + calculateHour(film.duration * j + currentMinute + 30) <= 23"
+                    v-if="isItemOpen(i) && currentHour + calculateHour(film.duration * j + currentMinute + 30) <= 23"
                     class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text" style="min-width: 100px ;">
                     <div class="d-flex flex-column">
                       <div class="ml-3 mr-3">
                         <v-card-item>
                           <p class="mt-3 mb-3 mr-0">
                             <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-                            سانس {{ calculateMinute(film.duration * j + currentMinute + 30) }} : {{ currentHour +
-                              calculateHour(film.duration * j + currentMinute + 30) }}
+                            سانس {{ calculateMinute(film.duration * j + currentMinute + 25) }} : {{ currentHour +
+                              calculateHour(film.duration * j + currentMinute + 25) }}
                           </p>
                           <v-card-subtitle>
                             60000 تومان
@@ -145,8 +145,9 @@
                       </v-btn>
                     </div>
                   </v-card>
+                  
                 </div>
-
+                  
               </v-row>
 
 
@@ -372,11 +373,29 @@ export default {
 
     // const activeFilmIndex = ref(null)
     // const condition = ref(true);
-    const handleClick = (index) => {
-      console.log('The condition for ' + index + ' before is: ' + films[index].condition);
-      films[index].condition = !films[index].condition;
-      console.log('The condition for ' + index + ' after is: ' + films[index].condition);
-    };
+    const openItems = ref([]);
+    // const handleClick = (index) => {
+    //   console.log('The condition for ' + index + ' before is: ' + films[index].condition);
+    //   films[index].condition = !films[index].condition;
+    //   console.log('The condition for ' + index + ' after is: ' + films[index].condition);
+    // };
+
+    function handleClick(itemId) {
+      films[itemId].condition=!films[itemId].condition;
+      if (!isItemOpen(itemId)) {
+        openItems.value.push(itemId);
+      } 
+    }
+
+    function isItemOpen(itemId) {
+      if(openItems.value.includes(itemId)){
+        return true;
+      }
+      else{
+        return false
+      }
+    }
+
 
 
     const currentHour = ref('');
@@ -444,7 +463,8 @@ export default {
 
     return {
       cinema, films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
-      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons
+      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
+      isItemOpen,
     }
   }
 }

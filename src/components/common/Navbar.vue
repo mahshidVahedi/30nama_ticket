@@ -43,7 +43,8 @@
         dir="rtl"
         class="d-flex d-md-none"
       >
-      <v-btn color="black" append-icon="mdi-ticket" variant="text" class="d-none d-sm-flex">
+      <div class="d-flex flex-row">
+        <v-btn color="black" append-icon="mdi-ticket" variant="text" class="d-none d-sm-flex">
         <template v-slot:append>
           <v-icon color="#616161"></v-icon>
         </template>
@@ -55,15 +56,19 @@
         </template>
         مکان</v-btn>
       
+      </div>
+     
         <v-spacer></v-spacer>
-
-        <v-toolbar-title><v-btn @click="goToHome" color="black" append-icon="mdi-film" variant="text" class="font-weight-bold">
+        <div class="d-flex flex-row">
+          <v-toolbar-title><v-btn @click="goToHome" color="black" append-icon="mdi-film" variant="text" class="font-weight-bold">
         <template v-slot:append>
           <v-icon color="red"></v-icon>
         </template>
         سینما تیکت</v-btn></v-toolbar-title>
 
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        </div>
+        
 
 
       </v-toolbar>
@@ -74,7 +79,7 @@
 
       >
       <v-list>
-        <v-list-item>
+        <v-list-item class="d-sm-flex d-md-none">
           بلیط های من 
         </v-list-item>
         <v-list-item @click="dialog = true">

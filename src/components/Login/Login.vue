@@ -19,12 +19,13 @@
                 <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
                     <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
                     <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
-                        <v-text-field min-width="100px" class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
+                        <v-text-field v-model="data" min-width="100px" class="ml-0 mb-3" dir="rtl" rounded="lg" label="شماره موبایل" ></v-text-field>
                         
+                        <!-- <router-link :to="getTargetRoute(data)">Go to target</router-link> -->
                         <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
                     </v-form>
                 </div>
-          
+                <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p>
                 </v-card>            
         </v-col>
         
@@ -49,20 +50,40 @@
 </style>
 
 <script lan="js">
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 export default {
     setup(){
         const router = useRouter();
+        const data = ref('');
+        const route = useRoute();
+        const errorMessage = ref('');
+
+    function getTargetRoute(data) {
+      return {
+        name: 'Verify',
+        params: {
+          data: data.value, // Access the value of the ref
+        },
+      };
+    }
+
 
     const goToRegister= () => {
       router.push({ name: 'Register' });
     };
 
     const goToVerify= () => {
-  router.push({ name: 'Verify' });
+        if (data.value) {
+        router.push({ name: 'Verify',params:{data: data.value} });
+      } else {
+        errorMessage.value = 'شماره تلفن خود را وارد کنید.';
+      }
+  
 };
 
-    return{goToRegister,goToVerify}
+    return{goToRegister,goToVerify,data,
+      getTargetRoute,errorMessage}
     }
 }
 

@@ -9,16 +9,18 @@
       <v-col xs="12">
         <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
           <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
-            <p class="mr-4">کد فرستاده شده برای {{ phoneNumber }} را وارد کنید.</p>
+            <p class="mr-4">کد فرستاده شده برای {{ receivedData }} را وارد کنید.</p>
             <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
               <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
-                <input id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
+
+                <input v-model="data" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
                 <p class="box-p" v-if="seconds>0">{{ seconds }}</p>
                 <button class="box" v-if="seconds <=0" @click="restartTimer">ارسال مجدد</button>
               </div>
               <v-btn @click="goToHome" min-width="100px" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
             </v-form>
           </div>
+          <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p>
         </v-card>
       </v-col>
     </div>
@@ -77,18 +79,30 @@
 </style>
 
 <script>
-import { useRouter } from 'vue-router';
+import { useRouter,useRoute } from 'vue-router';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+
 
 export default {
   setup() {
     const router = useRouter();
+    const route = useRoute();
+    const receivedData = ref('');
+    const data = ref('');
+    const errorMessage = ref('');
+    onMounted(() => {
+      receivedData.value = route.params.data;
+    });
 
     const goToHome = () => {
-      router.push({ name: 'Home' });
+      if (data.value) {
+        router.push({ name: 'Home' });
+      } else {
+        errorMessage.value = 'کد تاییدارسال شده را وارد کنید.';
+      }
+
     };
 
-    const phoneNumber = '09334399089';
     const seconds = ref(59);
     let intervalId;
 
@@ -115,7 +129,7 @@ export default {
       clearInterval(intervalId);
     });
 
-    return { phoneNumber, seconds, restartTimer, goToHome };
+    return { seconds, restartTimer, goToHome,receivedData,data,errorMessage };
   },
 };
 </script>

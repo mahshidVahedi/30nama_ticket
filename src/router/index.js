@@ -44,7 +44,13 @@ const routes = [
         name: 'Details',
         component: Cinema,
 
-      }
+      },
+      // {
+      //   path: '/verify/:data',
+      //   name: 'Verify',
+      //   component: Verify,
+
+      // }
 
       // {
       //   path: '/:catchAll(.*)', // 404 error route
