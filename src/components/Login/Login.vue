@@ -55,7 +55,6 @@ export default {
     setup(){
         const router = useRouter();
         const data = ref('');
-        const route = useRoute();
         const errorMessage = ref('');
 
 
