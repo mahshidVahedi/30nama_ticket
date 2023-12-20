@@ -131,9 +131,32 @@
                           </v-card-subtitle>
                         </v-card-item>
                       </div>
-                      <v-btn class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat" color="red">
+                      <v-btn @click="showDialog = true" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
+                        color="red">
                         خرید بلیت
                       </v-btn>
+                      <v-dialog v-model="showDialog" max-width="500px">
+                        <v-card>
+                          <v-card-title dir="rtl">انتخاب صندلی</v-card-title>
+                          <v-card-text>
+                            <v-container>
+                              <div class="scene mb-8">
+                                صحنه نمایش
+                              </div>
+                              <v-row v-for="row in 8" :key="row">
+                                <v-col v-for="seat in 9" :key="seat">
+                                  <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)"
+                                    :class="{ 'mdi-seat': isSelectedSeat(row, seat), 'mdi-seat-occupied': !isSelectedSeat(row, seat) }"></v-icon>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-btn @click="closeDialog">بستن</v-btn>
+                            <v-btn @click="saveAndCloseDialog" :disabled="!canSave">خرید</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
                     </div>
                   </v-card>
                 </div>
@@ -143,7 +166,8 @@
         </v-window>
       </v-card>
     </div>
-    <div dir="rtl" class="ml-8 mr-8 mb-10 pa-4 pt-1" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
+    <div dir="rtl" class="ml-8 mr-8 mb-10 pa-4 pt-1"
+      style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
       <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ film.title }}</h2>
       <div class="mt-8 mb-5" v-for="(Comment, i) in film.Comments" :key="i">
         <v-card>
@@ -167,8 +191,28 @@
     flex-direction: column;
   }
 }
+
 .no-fill {
   background-color: transparent !important;
+}
+
+.v-icon.mdi-seat {
+  color: green;
+  font-size: 24px;
+}
+
+.v-icon.mdi-seat-occupied {
+  color: red;
+  font-size: 24px;
+}
+.scene{
+  width:300px;
+  height:40px;
+  background-color: #807e7e;
+  margin:auto;
+  border-radius: 10px;
+  text-align: center;
+  padding-top:8px;
 }
 </style>
 
@@ -183,15 +227,52 @@ import photoC2 from '@/assets/cinema1/2.jpg';
 import photoC3 from '@/assets/cinema1/3.jpg';
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
-import { ref, onMounted } from 'vue';
-
+import '@mdi/font/css/materialdesignicons.css';
+import { ref, onMounted, computed } from 'vue';
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
 export default {
   data: () => ({
     tab: null,
     path: mdiWifi,
   }),
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    },
+  },
 
   setup() {
+
+    const showDialog = ref(false);
+    const selectedSeats = ref([]);
+
+    const toggleSeat = (row, seat) => {
+      const seatId = `${row}-${seat}`;
+      if (isSelectedSeat(row, seat)) {
+        selectedSeats.value = selectedSeats.value.filter(s => s !== seatId);
+      } else {
+        selectedSeats.value.push(seatId);
+      }
+    };
+
+    const isSelectedSeat = (row, seat) => {
+      const seatId = `${row}-${seat}`;
+      return selectedSeats.value.includes(seatId);
+    };
+
+    const closeDialog = () => {
+      showDialog.value = false;
+    };
+
+    const saveAndCloseDialog = () => {
+      showDialog.value = false;
+    };
+
+    const canSave = computed(() => {
+      return selectedSeats.value.length > 0;
+    });
 
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
@@ -282,7 +363,7 @@ export default {
           name: 'ناشناس'
         },
         {
-          comment:'فک میکنم انقد رو پرده سینماها بمونه ک با نوه هامونم باید بریم بازم فیلم رو ببینیم',
+          comment: 'فک میکنم انقد رو پرده سینماها بمونه ک با نوه هامونم باید بریم بازم فیلم رو ببینیم',
           name: 'مهتاب نجفی'
         }
       ]
@@ -396,7 +477,7 @@ export default {
     return {
       cinemas, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen,
+      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,
     }
   }
 }
