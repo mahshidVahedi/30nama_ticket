@@ -1,51 +1,49 @@
 <template>
-  <v-carousel  class="slides" cycle hide-delimiters show-arrows="hover">
+  <v-carousel class="slides" cycle hide-delimiters show-arrows="hover">
     <v-carousel-item class="m-5" v-for="(film, i) in films" :key="i">
       <v-img :src="film.backgraoundPhoto" class="align-center ma-0 pa-0"
         gradient="to bottom, rgba(0,0,0,.6), rgba(0,0,0,.7)" cover>
-            <v-row dir="rtl" class="d-flex flex-lg-row flex-xs-column">
-              <v-col cols="3">
-                <v-responsive :aspect-ratio="16/9">
-                <v-img class="mt-10 d-none d-sm-flex mr-3" style="max-height: 300px" :src="film.photo"></v-img>
-              </v-responsive>
+        <v-row dir="rtl" class="d-flex flex-lg-row flex-xs-column">
+          <v-col cols="3">
+            <v-responsive :aspect-ratio="16 / 9">
+              <v-img class="mt-10 d-none d-sm-flex mr-3" style="max-height: 300px" :src="film.photo"></v-img>
+            </v-responsive>
 
-              </v-col>
-              <v-col cols="8">
-                <v-card dir="rtl" variant="text" class="mx-auto align-center text-white g-0 mr-0">
-                <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ film.title }}</v-card-title>
-                <v-card-text dir="rtl">
-                  <div class="mt-3 mb-3">
-                    کارگردان : {{ film.director }}
+          </v-col>
+          <v-col cols="8">
+            <v-card dir="rtl" variant="text" class="mx-auto align-center text-white g-0 mr-0">
+              <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ film.title }}</v-card-title>
+              <v-card-text dir="rtl">
+                <div class="mt-3 mb-3">
+                  کارگردان : {{ film.director }}
+                </div>
+                <div class="d-flex flex-md-row flex-xs-column mt-3 ">
+                  <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
+                    <v-icon class="me-1 " icon="mdi-clock"></v-icon>
+                    {{ film.duration }}
                   </div>
-                  <div class="d-flex flex-md-row flex-xs-column mt-3 ">
-                    <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
-                      <v-icon class="me-1 " icon="mdi-clock"></v-icon>
-                      {{ film.duration }}
-                    </div>
-                    <div color="red" class="d-flex flex-row border-white mt-3 me-3">
-                      <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-                      <div class="text-red ms-1">
-                        {{ film.score }}
-                      </div>
-                    </div>
-                    <div id="genre" class="mt-3 me-3 ms-5">
-                      {{ film.genre }}
+                  <div color="red" class="d-flex flex-row border-white mt-3 me-3">
+                    <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+                    <div class="text-red ms-1">
+                      {{ film.score }}
                     </div>
                   </div>
-                  <div class="mt-5">
-                    {{ film.description }}
+                  <div id="genre" class="mt-3 me-3 ms-5">
+                    {{ film.genre }}
                   </div>
-                </v-card-text>
-                <v-card-actions class="mt-5 ">
-                  <v-btn class="" prepend-icon="mdi-ticket" variant="flat" color="white">
-                    خرید بلیت
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-
-              </v-col>
-              
-            </v-row>
+                </div>
+                <div class="mt-5">
+                  {{ film.description }}
+                </div>
+              </v-card-text>
+              <v-card-actions class="mt-5 ">
+                <v-btn  @click="goToFilmDetails(film)" prepend-icon="mdi-ticket" variant="flat" color="white">
+                  خرید بلیت
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-img>
     </v-carousel-item>
   </v-carousel>
@@ -69,6 +67,7 @@ import photoBG2 from '@/assets/Jangale-Porteghal-8.jpg'
 import photoM2 from '@/assets/jangal.jfif'
 import photoBG3 from '@/assets/gijgahBG.jpeg'
 import photoM3 from '@/assets/gijgah.jfif'
+import { useRouter } from 'vue-router'
 export default {
   setup() {
     const films = [
@@ -103,7 +102,15 @@ export default {
         description: "فیلم گیج‌گاه نخستین فیلم عادل تبریزی محصول سال 1399 است که در آن بازیگرانی همچون جمشید هاشم‌پور، حامد بهداد، باران کوثری، سروش صحت، فرهاد آییش ایفای نقش می‌کنند. این فیلم در سی‌و‌نهمین جنشواره‌ی فیلم فجر نیز حضور داشت و در دو بخش بهترین تدوین و بهترین کارگردان فیلم اولی، نامزد دریافت سیمرغ شد. "
       }
     ]
-    return { films }
+    const router = useRouter();
+
+    const goToFilmDetails = (film) => {
+      router.push(`/film`);
+    };
+    return {
+      films,
+      goToFilmDetails,
+    };
   }
 
 }
