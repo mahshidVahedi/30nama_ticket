@@ -48,15 +48,11 @@ const routes = [
         props:true
 
       },
-<<<<<<< HEAD
-
-=======
       {
         path: '/film',
         name: 'Film',
         component: Film,
       },
->>>>>>> 5024f0a1e1bbfc7d6faf5494b5fbab47c539fbf9
       // {
       //   path: '/verify/:data',
       //   name: 'Verify',

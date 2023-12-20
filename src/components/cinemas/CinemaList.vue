@@ -40,6 +40,7 @@ export default {
   setup() {
     const cinemas = ref([
       {
+        
         id:1,
         name: ' پردیس سینمایی کوروش',
         location: 'اتوبان همت غرب، ستاری شمال',
