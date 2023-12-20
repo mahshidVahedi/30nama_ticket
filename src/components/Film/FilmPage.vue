@@ -138,6 +138,21 @@
                       <v-dialog v-model="showDialog" max-width="500px">
                         <v-card>
                           <v-card-title dir="rtl">انتخاب صندلی</v-card-title>
+                          <div dir="rtl" class="mr-8">
+                            <p>
+                              <v-icon>mdi-movie</v-icon>
+                              {{ film.title }}
+                            </p>
+                            <p>
+                              <v-icon>mdi-map-marker</v-icon>
+                              {{ cinema.name }}
+                            </p>
+                            <p class="mt-3 mb-3 mr-0">
+                              <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
+                               {{ jalaliDay }} {{ jalaliMonth }} - سانس {{ calculateMinute(film.duration * j + currentMinute + 25) }} : {{ currentHour +
+                                calculateHour(film.duration * j + currentMinute + 25) }}
+                            </p>
+                          </div>
                           <v-card-text>
                             <v-container>
                               <div class="scene mb-8">
@@ -205,14 +220,15 @@
   color: red;
   font-size: 24px;
 }
-.scene{
-  width:300px;
-  height:40px;
+
+.scene {
+  width: 300px;
+  height: 40px;
   background-color: #807e7e;
-  margin:auto;
+  margin: auto;
   border-radius: 10px;
   text-align: center;
-  padding-top:8px;
+  padding-top: 8px;
 }
 </style>
 
