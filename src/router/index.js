@@ -6,6 +6,7 @@ import Login from '@/components/Login/Login'
 import Register from '@/components/Login/Register'
 import Verify from '@/components/Login/Verify'
 import Cinema from '@/views/Cinema.vue'
+import Film from '@/views/Film.vue'
 // import NotFound from '@/views/NotFound.vue';
 
 const routes = [
@@ -44,6 +45,11 @@ const routes = [
         name: 'Details',
         component: Cinema,
 
+      },
+      {
+        path: '/film',
+        name: 'Film',
+        component: Film,
       },
       // {
       //   path: '/verify/:data',

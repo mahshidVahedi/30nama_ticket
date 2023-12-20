@@ -5,8 +5,8 @@
     </h3>
     <section class="ma-auto mb-16 " style="width: 80%; height: 900px;">
       <v-list>
-        <a href="">
-          <v-list-item v-for="(item, index) in items" :key="index" style="display: inline-block;" class="item">
+
+          <v-list-item @click="goToFilmDetails" v-for="(item, index) in items" :key="index" style="display: inline-block;" class="item" >
             <v-list-item-avatar>
               <v-img :src="item.image" :alt="item.caption" width="200px" height="auto"></v-img>
             </v-list-item-avatar>
@@ -14,7 +14,7 @@
               <v-list-item-title style="color: black;">{{ item.caption }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-        </a>
+
       </v-list>
     </section>
   </div>
@@ -31,6 +31,7 @@ import image6 from '@/assets/images/hert.jpeg'
 import image7 from '@/assets/images/aame.jpeg'
 import image8 from '@/assets/images/8sobh.jpeg'
 import image9 from '@/assets/images/jooje.jpeg'
+import { useRouter } from 'vue-router';
 export default {
   setup() {
     const items = ref([
@@ -71,9 +72,15 @@ export default {
         caption: 'جوجه تیغی'
       }
     ]);
+    const router = useRouter();
+
+    const goToFilmDetails= () => {
+      router.push({ name: 'Film' });
+    };
+
 
     return {
-      items
+      items,goToFilmDetails
     };
   }
 };
