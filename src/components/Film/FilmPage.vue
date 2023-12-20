@@ -1,35 +1,35 @@
 <template>
-  <v-img :src="film.background" dir="rtl" class="align-center mb-0 pa-0"
+  <v-img :src="film && film.background" dir="rtl" class="align-center mb-0 pa-0"
     gradient="to bottom, rgba(0,0,0,.7), rgba(2,8,0,1)" cover max-height="300px">
     <div dir="rtl" class="d-flex flex-row justify-center align-center mr-0 ml-0 opacity-background">
       <v-card variant="text" height="100%" width="100%"
         class="d-flex flex-row justify-content-start align-center text-white g-0 ms-0" cover>
-        <v-img :src="film.mainPhoto" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
+        <v-img :src="film && film.mainPhoto" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
           class="mt-5 mb-5"></v-img>
         <div class="mr-0">
           <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">
-            <span>{{ film.title }}</span> | <span class="text-subtitle-1">{{ film.director }}</span>
+            <span>{{ film && film.title }}</span> | <span class="text-subtitle-1">{{ film && film.director }}</span>
           </v-card-title>
           <v-card-text dir="rtl">
             <div class="mt-3 mb-3">
-              {{ film.genre }}
+              {{ film && film.genre }}
             </div>
             <div class="d-flex flex-column mt-3 ">
               <div color="red" class="d-flex flex-row border-white mt-3 me-6 text-h6">
                 <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
                 <div class="text-red ms-1 font-weight-bold text-h6">
-                  {{ film.score }}
+                  {{ film && film.score }}
                 </div>
                 <v-chip @click="console.log('clicked')" class="ms-3" color="white" prepend-icon="mdi-star">
                   امتیاز شما
                 </v-chip>
               </div>
               <div class="d-flex flex-row mt-5">
-                <div v-for="(actor, i) in film.actors" :key="i" class="mr-5 ml-5">
+                <div v-for="(actor, i) in film && film.actors" :key="i" class="mr-5 ml-5">
                   <div class="d-flex align-items-center">
                     <v-img :src="actor.photo" width="50px" height="50px" class="mr-2 rounded-lg"
                       style="object-fit: cover;"></v-img>
-                    <span class="ma-4">{{ actor.name }}</span>
+                    <span class="ma-4">{{ film && actor.name }}</span>
                   </div>
                 </div>
               </div>
@@ -42,19 +42,19 @@
   <div dir="rtl" style="background-color: rgb(235, 235, 235);" class="pa-6">
     <div dir="rtl" class="ma-4">
       <h3>
-        درباره {{ film.title }}
+        درباره {{ film && film.title }}
       </h3>
       <p class="ma-4">
-        {{ film.description }}
+        {{ film && film.description }}
       </p>
       <p class="ma-4">
-        خلاصه داستان: {{ film.summery }}
+        خلاصه داستان: {{ film && film.summery }}
       </p>
       <h4>
-        بازیگران {{ film.title }}
+        بازیگران {{ film && film.title }}
       </h4>
       <v-row>
-        <v-col cols="12" sm="6" md="2" v-for="(actor, index) in film.cast" :key="index">
+        <v-col cols="12" sm="6" md="2" v-for="(actor, index) in film && film.cast" :key="index">
           <v-list dense class="no-fill">
             <v-list-item class="no-fill">
               <v-list-item-content>
@@ -66,10 +66,9 @@
       </v-row>
     </div>
     <div class="mt-16 ml-8 mr-8 mb-10 ml-0 pa-4 rounded" style="background-color: white;">
-      <h2 class="ma-4 text-black font-weight-bold">برنامه اکران {{ film.name }}</h2>
+      <h2 class="ma-4 text-black font-weight-bold">برنامه اکران {{ film && film.name }}</h2>
       <v-card>
-        <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start"
-          class="mr-10 mt-5 mb-5" show-arrows>
+        <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start" class=" mt-5 mb-5">
           <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
           <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
           <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
@@ -141,7 +140,7 @@
                           <div dir="rtl" class="mr-8">
                             <p>
                               <v-icon>mdi-movie</v-icon>
-                              {{ film.title }}
+                              {{ film && film.title }}
                             </p>
                             <p>
                               <v-icon>mdi-map-marker</v-icon>
@@ -149,8 +148,9 @@
                             </p>
                             <p class="mt-3 mb-3 mr-0">
                               <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-                               {{ jalaliDay }} {{ jalaliMonth }} - سانس {{ calculateMinute(film.duration * j + currentMinute + 25) }} : {{ currentHour +
-                                calculateHour(film.duration * j + currentMinute + 25) }}
+                              {{ jalaliDay }} {{ jalaliMonth }} - سانس {{ calculateMinute(film.duration * j +
+                                currentMinute + 25) }} : {{ currentHour +
+    calculateHour(film.duration * j + currentMinute + 25) }}
                             </p>
                           </div>
                           <v-card-text>
@@ -183,8 +183,9 @@
     </div>
     <div dir="rtl" class="ml-8 mr-8 mb-10 pa-4 pt-1"
       style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ film.title }}</h2>
-      <div class="mt-8 mb-5" v-for="(Comment, i) in film.Comments" :key="i">
+      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ film && film.title }}
+      </h2>
+      <div class="mt-8 mb-5" v-for="(Comment, i) in film && film.Comments" :key="i">
         <v-card>
           <v-card-subtitle>
             {{ Comment.name }}
@@ -244,7 +245,8 @@ import photoC3 from '@/assets/cinema1/3.jpg';
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
 import { ref, onMounted, computed } from 'vue';
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
+import { aliases, mdi } from 'vuetify/iconsets/mdi';
+import { useRouter, useRoute } from 'vue-router';
 export default {
   data: () => ({
     tab: null,
@@ -325,56 +327,7 @@ export default {
         condition: false,
       }
     ]
-    const film = {
-      id: 1,
-      duration: '85',
-      background: backPhoto,
-      mainPhoto: filmPhoto,
-      title: 'فیلم فسیل',
-      director: 'کریم امینی',
-      genre: 'کمدی',
-      score: '4.5/5',
-      description: "فیلم فسیل به کارگردانی کریم امینی و تهیه‌کنندگی ابراهیم عامریان است. بهرام افشاری، هادی کاظمی، الناز حبیبی، الهه حصاری، ایمان صفا، بابک کریمی، سیدجواد هاشمی و ... در این فیلم کمدی ایفای نقش کرده‌اند.",
-      summery: "با فسيل به دهه پنجاه سفر كنيد...",
-      actors: [
-        {
-          name: 'بهرام افشاری',
-          photo: photoA1,
-        },
-        {
-          name: 'هادی کاظمی',
-          photo: photoA2,
-        },
-        {
-          name: 'الناز حبیبی',
-          photo: photoA3,
-        }
-      ],
-      cast: [
-        'بهرام افشاری',
-        'هادی کاظمی',
-        'الناز حبیبی',
-        'الهه حصاری',
-        'ایمان صفا',
-        'بابک کریمی',
-        'غلامرضا نیکخواه',
-        'جواد هاشمی',
-        'امید روحانی',
-        'علیرضا استادی',
-        'خشایار راد',
-        'قاسم زارع',
-      ],
-      Comments: [
-        {
-          comment: 'به معنای واقعی کلمه عالی بود ، هم موضوعش خوب بود هم این که خنده و کمدی بود',
-          name: 'ناشناس'
-        },
-        {
-          comment: 'فک میکنم انقد رو پرده سینماها بمونه ک با نوه هامونم باید بریم بازم فیلم رو ببینیم',
-          name: 'مهتاب نجفی'
-        }
-      ]
-    }
+
     const scenes = [
       {
         id: 1,
@@ -394,14 +347,8 @@ export default {
       }
 
     ]
-    // const activeFilmIndex = ref(null)
-    // const condition = ref(true);
+
     const openItems = ref([]);
-    // const handleClick = (index) => {
-    //   console.log('The condition for ' + index + ' before is: ' + films[index].condition);
-    //   films[index].condition = !films[index].condition;
-    //   console.log('The condition for ' + index + ' after is: ' + films[index].condition);
-    // };
 
     function handleClick(itemId) {
       cinemas[itemId].condition = !cinemas[itemId].condition;
@@ -457,11 +404,18 @@ export default {
 
       jalaliDay.value = day;
       jalaliMonth.value = month;
-      console.log(jalaliDay, jalaliMonth)
     });
 
     const cinemaScenes = ref([])
     const cinemaSaloons = ref([])
+
+    const route = useRoute();
+    const film = ref(null);
+
+    onMounted(() => {
+      film.value = JSON.parse(route.params.film);
+      console.log(film.value);
+    });
 
     const handleScne = (movie_id, scene, cinema_id) => {
       // if (movie_id === scene.movie_id) {

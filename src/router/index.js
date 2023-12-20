@@ -48,9 +48,10 @@ const routes = [
         props: true
       },
       {
-        path: '/film',
+        path: '/:film',
         name: 'Film',
         component: Film,
+        props: true
       },
 
       // {

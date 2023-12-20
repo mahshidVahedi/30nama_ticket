@@ -19,16 +19,16 @@
               <div color="red" class="d-flex flex-row border-white mt-3 me-3">
                 <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
                 <div class="text-red ms-1 font-weight-bold">
-                  {{cinema &&  cinema.score }}
+                  {{ cinema && cinema.score }}
                 </div>
 
-                <v-chip @click="console.log('The comment is : '+cinema.comment)" class="ms-3" color="white" prepend-icon="mdi-star">
+                <v-chip @click="console.log('clicked')" class="ms-3" color="white" prepend-icon="mdi-star">
                   امتیاز شما
                 </v-chip>
               </div>
               <div class="d-flex flex-row mt-5">
 
-                <div v-for="(feature, i) in cinema &&  cinema.features" :key="i" class="mr-5 ml-5">
+                <div v-for="(feature, i) in cinema && cinema.features" :key="i" class="mr-5 ml-5">
 
                   <v-tooltip location="bottom">
                     <template v-slot:activator="{ on, props }">
@@ -58,10 +58,9 @@
 
   <div dir="rtl" style="background-color: rgb(235, 235, 235);">
     <div class="mt10 ml-8 mr-8 mb-10 ml-0" rounded="5" style="background-color: white;">
-      <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{cinema &&  cinema.name }}</h2>
+      <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{ cinema && cinema.name }}</h2>
       <v-card>
-        <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start"
-          class="mt-5 mb-5">
+        <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start" class="mt-5 mb-5">
           <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
           <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
           <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
@@ -129,8 +128,8 @@
                     <div class="d-flex flex-column">
                       <div class="ml-3 mr-3">
                         <v-card-item>
-                          <p class="mt-3 mb-3 mr-0">
-                            <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
+                          <p class="mt-3 mb-3 ml-2">
+                            <v-icon icon="mdi-clock"></v-icon>
                             سانس {{ calculateMinute(film.duration * j + currentMinute + 25) }} : {{ currentHour +
                               calculateHour(film.duration * j + currentMinute + 50) }}
                           </p>
@@ -145,9 +144,9 @@
                       </v-btn>
                     </div>
                   </v-card>
-                  
+
                 </div>
-                  
+
               </v-row>
 
 
@@ -161,15 +160,16 @@
 
     </div>
 
-    <h2 dir="rtl" class="mt-20 mb-3 mr-10 text-grey font-weight-bold">درباره {{cinema &&  cinema.name }}</h2>
-    <p dir="rtl" class="mr-10 ml-10 mt-7">{{cinema &&  cinema.description }}</p>
+    <h2 dir="rtl" class="mt-20 mb-3 mr-10 text-grey font-weight-bold">درباره {{ cinema && cinema.name }}</h2>
+    <p dir="rtl" class="mr-10 ml-10 mt-7">{{ cinema && cinema.description }}</p>
     <v-btn class="mr-10 mt-5 mb-10" prepend-icon="mdi-phone"><template>
         <v-icon style="color: rgb(26, 133, 26);"></v-icon>
       </template>{{ cinema && cinema.contact }}</v-btn>
 
     <div dir="rtl" class="ml-8 mr-8 mb-10" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
 
-      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name }}</h2>
+      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
+      }}</h2>
       <div class="mt-8 mb-5" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
         <v-card>
           <v-card-subtitle>
@@ -204,19 +204,19 @@ import photoM3 from '@/assets/gijgah.jfif';
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
 import { ref, onMounted } from 'vue';
-import { useRouter,useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 
 
 export default {
- 
+
   data: () => ({
     tab: null,
     path: mdiWifi,
   }),
 
   setup() {
-   
+
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
 
@@ -345,21 +345,21 @@ export default {
     ]
 
     const openItems = ref([]);
-   
+
     function handleClick(itemId) {
-      films[itemId].condition=!films[itemId].condition;
+      films[itemId].condition = !films[itemId].condition;
       if (!isItemOpen(itemId) && films[itemId].condition) {
         openItems.value.push(itemId);
-      } else if(!films[itemId].condition){
+      } else if (!films[itemId].condition) {
         openItems.value.pop(itemId)
       }
     }
 
     function isItemOpen(itemId) {
-      if(openItems.value.includes(itemId)){
+      if (openItems.value.includes(itemId)) {
         return true;
       }
-      else{
+      else {
         return false
       }
     }
@@ -430,7 +430,7 @@ export default {
 
 
     return {
-      cinema,films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
+      cinema, films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
       isItemOpen,
     }

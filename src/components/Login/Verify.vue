@@ -2,7 +2,8 @@
   <div id="app">
     <div style="background-color: rgb(241, 239, 239);" class="d-flex flex-column justify-content-center align-center">
       <div class="d-flex flex-row">
-        <h2 style="margin-top: 5rem;" append-icon="mdi-film" class="h-2 mb-2 pa-2 display-2 font-weight-bold">سینماتیکت</h2>
+        <h2 style="margin-top: 5rem;" append-icon="mdi-film" class="h-2 mb-2 pa-2 display-2 font-weight-bold">سینماتیکت
+        </h2>
         <v-icon color="red" class="mb-2 pa-2" style="margin-top: 6rem;" icon="mdi-film"></v-icon>
       </div>
 
@@ -14,10 +15,11 @@
               <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
 
                 <input v-model="data" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
-                <p class="box-p" v-if="seconds>0">{{ seconds }}</p>
-                <button class="box" v-if="seconds <=0" @click="restartTimer">ارسال مجدد</button>
+                <p class="box-p" v-if="seconds > 0">{{ seconds }}</p>
+                <button class="box" v-if="seconds <= 0" @click="restartTimer">ارسال مجدد</button>
               </div>
-              <v-btn @click="goToHome" min-width="100px" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
+              <v-btn @click="goToHome" min-width="100px" variant="elevated" rounded="lg" color="red" type="submit"
+                class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
             </v-form>
           </div>
           <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
@@ -79,7 +81,7 @@
 </style>
 
 <script>
-import { useRouter,useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 
@@ -90,7 +92,7 @@ export default {
     const receivedData = ref('');
     const data = ref('');
     const errorMessage = ref('');
-    
+
     onMounted(() => {
       receivedData.value = route.params.data;
     });
@@ -131,7 +133,7 @@ export default {
       clearInterval(intervalId);
     });
 
-    return { seconds, restartTimer, goToHome,receivedData,data,errorMessage };
+    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage };
   },
 };
 </script>
