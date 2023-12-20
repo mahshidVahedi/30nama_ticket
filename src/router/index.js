@@ -34,17 +34,20 @@ const routes = [
         component: Register,
       },
       {
-        path: '/verify',
+        path: '/verify/:data',
         name: 'Verify',
         component: Verify,
+        props: true
       },
 
       {
-        path: '/details',
+        path: '/details/:cinema',
         name: 'Details',
         component: Cinema,
+        props:true
 
       },
+
       // {
       //   path: '/verify/:data',
       //   name: 'Verify',

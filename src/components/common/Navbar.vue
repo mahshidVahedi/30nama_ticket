@@ -55,11 +55,16 @@
           <v-icon color="#616161"></v-icon>
         </template>
         مکان</v-btn>
+
+        
       
       </div>
      
         <v-spacer></v-spacer>
         <div class="d-flex flex-row">
+          <v-btn append-icon="mdi-magnify" class="ma-2 d-none d-sm-flex">
+        <input dir="rtl" placeholder="جستجو فیلم، بازیگر و ..." id="" cols="20" rows="5">
+      </v-btn>
           <v-toolbar-title><v-btn @click="goToHome" color="black" append-icon="mdi-film" variant="text" class="font-weight-bold">
         <template v-slot:append>
           <v-icon color="red"></v-icon>
@@ -80,10 +85,10 @@
 
       >
       <v-list>
-        <v-list-item class="d-sm-flex d-md-none">
+        <v-list-item class="d-flex d-sm-none">
           بلیط های من 
         </v-list-item>
-        <v-list-item @click="dialog = true">
+        <v-list-item @click="dialog = true" class="d-flex d-sm-none">
           مکان
         </v-list-item>
         <v-list-item  @click="goToCinemaList">
