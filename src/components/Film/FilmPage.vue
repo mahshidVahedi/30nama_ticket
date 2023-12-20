@@ -237,7 +237,6 @@ export default {
         condition: false,
       }
     ]
-
     const film = {
       id: 1,
       duration: '85',
@@ -291,26 +290,19 @@ export default {
     const scenes = [
       {
         id: 1,
-        saloon_id: 1,
         movie_id: 1,
-
       },
       {
         id: 4,
-        saloon_id: 2,
         movie_id: 2,
       },
       {
         id: 2,
-        saloon_id: 2,
         movie_id: 2,
-
       },
       {
         id: 3,
-        saloon_id: 1,
         movie_id: 3,
-
       }
 
     ]
@@ -324,10 +316,10 @@ export default {
     // };
 
     function handleClick(itemId) {
-      films[itemId].condition = !films[itemId].condition;
-      if (!isItemOpen(itemId) && films[itemId].condition) {
+      cinemas[itemId].condition = !cinemas[itemId].condition;
+      if (!isItemOpen(itemId) && cinemas[itemId].condition) {
         openItems.value.push(itemId);
-      } else if (!films[itemId].condition) {
+      } else if (!cinemas[itemId].condition) {
         openItems.value.pop(itemId)
       }
     }
