@@ -243,7 +243,6 @@ import photoC2 from '@/assets/cinema1/2.jpg';
 import photoC3 from '@/assets/cinema1/3.jpg';
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
-import '@mdi/font/css/materialdesignicons.css';
 import { ref, onMounted, computed } from 'vue';
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 export default {
@@ -251,14 +250,6 @@ export default {
     tab: null,
     path: mdiWifi,
   }),
-  icons: {
-    defaultSet: 'mdi',
-    aliases,
-    sets: {
-      mdi,
-    },
-  },
-
   setup() {
 
     const showDialog = ref(false);
