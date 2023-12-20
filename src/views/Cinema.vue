@@ -1,12 +1,12 @@
 <template>
   <v-app>
-    <v-content>
+    <!-- <v-content> -->
       <router-view>
         <Navbar></Navbar>
         <Cinema></Cinema>
         <Footer></Footer>
       </router-view>
-    </v-content>
+    <!-- </v-content> -->
   </v-app>
 </template>
 

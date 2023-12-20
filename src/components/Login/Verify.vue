@@ -90,6 +90,7 @@ export default {
     const receivedData = ref('');
     const data = ref('');
     const errorMessage = ref('');
+    
     onMounted(() => {
       receivedData.value = route.params.data;
     });

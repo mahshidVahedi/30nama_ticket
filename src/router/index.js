@@ -45,20 +45,13 @@ const routes = [
         path: '/details/:cinema',
         name: 'Details',
         component: Cinema,
-        props:true
-
+        props: true
       },
       {
         path: '/film',
         name: 'Film',
         component: Film,
       },
-      // {
-      //   path: '/verify/:data',
-      //   name: 'Verify',
-      //   component: Verify,
-
-      // }
 
       // {
       //   path: '/:catchAll(.*)', // 404 error route

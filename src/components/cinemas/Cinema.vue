@@ -7,7 +7,7 @@
         class="d-flex flex-row justify-content-start align-center text-white g-0 ms-0" cover>
 
         <v-img :src="cinema && cinema.image" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
-          class="mt-5 mb-5"></v-img>
+          class="mt-5 mb-5 d-none d-sm-flex"></v-img>
         <div class="mr-0">
           <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ cinema && cinema.name }}</v-card-title>
           <v-card-text dir="rtl">
@@ -22,7 +22,7 @@
                   {{cinema &&  cinema.score }}
                 </div>
 
-                <v-chip @click="console.log('clicked')" class="ms-3" color="white" prepend-icon="mdi-star">
+                <v-chip @click="console.log('The comment is : '+cinema.comment)" class="ms-3" color="white" prepend-icon="mdi-star">
                   امتیاز شما
                 </v-chip>
               </div>
@@ -61,7 +61,7 @@
       <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{cinema &&  cinema.name }}</h2>
       <v-card>
         <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start"
-          class="mr-10 mt-5 mb-5" show-arrows>
+          class="mt-5 mb-5">
           <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
           <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
           <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
@@ -170,7 +170,7 @@
     <div dir="rtl" class="ml-8 mr-8 mb-10" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
 
       <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name }}</h2>
-      <div class="mt-8 mb-5" v-for="(Comment, i) in cinema &&  cinema.Comments" :key="i">
+      <div class="mt-8 mb-5" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
         <v-card>
           <v-card-subtitle>
             {{ Comment.name }}
@@ -204,21 +204,19 @@ import photoM3 from '@/assets/gijgah.jfif';
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
 import { ref, onMounted } from 'vue';
+import { useRouter,useRoute } from 'vue-router';
+
+
 
 export default {
-  props: {
-    cinema: {
-      type: Object,
-      required: true
-    }
-  },
+ 
   data: () => ({
     tab: null,
     path: mdiWifi,
   }),
 
   setup() {
-
+   
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
 
@@ -228,6 +226,13 @@ export default {
     const jalaliDayAfterTomorrowDay = ref('');
     const jalaliDayAfterTomorrowMonth = ref('');
 
+    const route = useRoute();
+    const cinema = ref(null);
+
+    onMounted(() => {
+      cinema.value = JSON.parse(route.params.cinema);
+      console.log(cinema.value);
+    });
 
     const calculateMinute = (time) => {
       const number = time % 60
@@ -290,41 +295,6 @@ export default {
       }
     ]
 
-    // const cinema = {
-    //   id: 1,
-    //   image: cinemaPhoto,
-    //   name: 'پردیس سینمایی کورش',
-    //   location: 'اتوبان حکیم غرب، ستاری شمال، جنب پیامبر مرکزی، مترو آریا-شهر',
-    //   score: '3.6/5',
-    //   contact: '02144971930',
-    //   features: [
-    //     {
-    //       value: 'کافی شاپ',
-    //       icon: 'mdi-coffee',
-    //     },
-    //     {
-    //       value: 'فود کورت',
-    //       icon: 'mdi-food',
-    //     },
-    //     {
-    //       value: 'پارکینگ',
-    //       icon: 'mdi-parking',
-    //     }
-
-    //   ],
-
-    //   description: 'پردیس سینمایی کوروش، بزرگترین پردیس سینمایی کشور در طبقات4و6 مجتمع تجاری، فرهنگی و تفریحی کورش با سرمایه گذاری گروه صنعتی گلرنگ طی چهارسال ساخته شده است. 16000متر مربع از مجتمع تجاری، فرهنگی و تفریحی پردیس کورش به 12 سالن سینما اختصاص داده شده که 2800 صندلی به ظرفیت سینماهای کشور اضافه کرده است. پردیس سینمایی کورش کار خود را در ۲۷ مرداد ۱۳۹۳ با اکران فیلم سینمایی شهر موش ها 2 آغاز کرد. نام سالن های سینما کوروش به یاد سینماهای خیابان لاله زار تهران گذاشته شده اند. همچنین این سینما دارای رستورانهای گوناگون و پارکینگ نیز میباشد.',
-    //   Comments: [
-    //     {
-    //       comment: 'بهترین پردیس سینمایی ،عالیییی',
-    //       name: 'ناشناس'
-    //     },
-    //     {
-    //       comment: 'امیدوارم مثل چندسال پیش مجدد فیلم خارجی اکران کنین..واقعا فیلمهایی مثل اپنهایمر-فارست گامپ -پیانیست- ارباب حلقه ها و خیلی های دیگه که ارزش چندبار دیدن رو دارن بهتره اکران کنین',
-    //       name: 'مهتاب نجفی'
-    //     }
-    //   ]
-    // }
 
     const saloons = [
       {
@@ -374,16 +344,8 @@ export default {
 
     ]
 
-
-    // const activeFilmIndex = ref(null)
-    // const condition = ref(true);
     const openItems = ref([]);
-    // const handleClick = (index) => {
-    //   console.log('The condition for ' + index + ' before is: ' + films[index].condition);
-    //   films[index].condition = !films[index].condition;
-    //   console.log('The condition for ' + index + ' after is: ' + films[index].condition);
-    // };
-
+   
     function handleClick(itemId) {
       films[itemId].condition=!films[itemId].condition;
       if (!isItemOpen(itemId) && films[itemId].condition) {
@@ -415,7 +377,6 @@ export default {
       currentHour.value = hour;
       currentMinute.value = minute
 
-      console.log(currentMinute.value)
     };
 
     const formatDigit = (value) => {
@@ -443,7 +404,6 @@ export default {
 
       jalaliDay.value = day;
       jalaliMonth.value = month;
-      console.log(jalaliDay, jalaliMonth)
     });
 
     const cinemaScenes = ref([])
@@ -470,19 +430,12 @@ export default {
 
 
     return {
-      films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
+      cinema,films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
       isItemOpen,
     }
   }
 }
-
-
-//problems :
-//Responsive
-//scenes are shown
-//correct scenes
-//timer for verify
 
 
 </script>
