@@ -7,6 +7,7 @@ import Register from '@/components/Login/Register'
 import Verify from '@/components/Login/Verify'
 import Cinema from '@/views/Cinema.vue'
 import Film from '@/views/Film.vue'
+import Payment from '@/components/payment/Payment.vue'
 // import NotFound from '@/views/NotFound.vue';
 
 const routes = [
@@ -53,6 +54,12 @@ const routes = [
         component: Film,
         props: true
       },
+      {
+        path:'/:film/payment',
+        name:'Payment',
+        component: Payment,
+        props:true
+      }
 
       // {
       //   path: '/:catchAll(.*)', // 404 error route

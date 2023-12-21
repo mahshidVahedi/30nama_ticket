@@ -247,6 +247,7 @@ import moment from 'jalali-moment';
 import { ref, onMounted, computed } from 'vue';
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
 import { useRouter, useRoute } from 'vue-router';
+import router from '@/router';
 export default {
   data: () => ({
     tab: null,
@@ -277,6 +278,7 @@ export default {
 
     const saveAndCloseDialog = () => {
       showDialog.value = false;
+      router.push({name: 'Payment'})
     };
 
     const canSave = computed(() => {
