@@ -139,9 +139,47 @@
                         </v-card-item>
                       </div>
 
-                      <v-btn class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat" color="red">
+                      <v-btn @click="showDialog = true" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat" color="red">
                         خرید بلیت
                       </v-btn>
+                      <v-dialog v-model="showDialog" max-width="500px">
+                        <v-card>
+                          <v-card-title dir="rtl">انتخاب صندلی</v-card-title>
+                          <div dir="rtl" class="mr-8">
+                            <p>
+                              <v-icon>mdi-movie</v-icon>
+                              {{ film && film.title }}
+                            </p>
+                            <p>
+                              <v-icon>mdi-map-marker</v-icon>
+                              {{ cinema.name }}
+                            </p>
+                            <p class="mt-3 mb-3 mr-0">
+                              <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
+                              {{ jalaliDay }} {{ jalaliMonth }} - سانس {{ calculateMinute(film.duration * j +
+                                currentMinute + 25) }} : {{ currentHour +
+                                calculateHour(film.duration * j + currentMinute + 25) }}
+                            </p>
+                          </div>
+                          <v-card-text>
+                            <v-container>
+                              <div class="scene mb-8">
+                                صحنه نمایش
+                              </div>
+                              <v-row v-for="row in 8" :key="row">
+                                <v-col v-for="seat in 9" :key="seat">
+                                  <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)"
+                                    :class="{ 'mdi-seat': isSelectedSeat(row, seat), 'mdi-seat-occupied': !isSelectedSeat(row, seat) }"></v-icon>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-btn @click="closeDialog">بستن</v-btn>
+                            <v-btn @click="saveAndCloseDialog" :disabled="!canSave">خرید</v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
                     </div>
                   </v-card>
 
@@ -203,9 +241,9 @@ import photoM2 from '@/assets/jangal.jfif'
 import photoM3 from '@/assets/gijgah.jfif';
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed} from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-
+import router from '@/router';
 
 
 export default {
@@ -216,6 +254,36 @@ export default {
   }),
 
   setup() {
+
+    const showDialog = ref(false);
+    const selectedSeats = ref([]);
+
+    const toggleSeat = (row, seat) => {
+      const seatId = `${row}-${seat}`;
+      if (isSelectedSeat(row, seat)) {
+        selectedSeats.value = selectedSeats.value.filter(s => s !== seatId);
+      } else {
+        selectedSeats.value.push(seatId);
+      }
+    };
+
+    const isSelectedSeat = (row, seat) => {
+      const seatId = `${row}-${seat}`;
+      return selectedSeats.value.includes(seatId);
+    };
+
+    const closeDialog = () => {
+      showDialog.value = false;
+    };
+
+    const saveAndCloseDialog = () => {
+      showDialog.value = false;
+      router.push({ name: 'Payment' })
+    };
+
+    const canSave = computed(() => {
+      return selectedSeats.value.length > 0;
+    });
 
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
@@ -432,7 +500,7 @@ export default {
     return {
       cinema, films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen,
+      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,
     }
   }
 }

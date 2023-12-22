@@ -150,7 +150,7 @@
                               <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
                               {{ jalaliDay }} {{ jalaliMonth }} - سانس {{ calculateMinute(film.duration * j +
                                 currentMinute + 25) }} : {{ currentHour +
-    calculateHour(film.duration * j + currentMinute + 25) }}
+                                calculateHour(film.duration * j + currentMinute + 25) }}
                             </p>
                           </div>
                           <v-card-text>
@@ -278,7 +278,7 @@ export default {
 
     const saveAndCloseDialog = () => {
       showDialog.value = false;
-      router.push({name: 'Payment'})
+      router.push({ name: 'Payment' })
     };
 
     const canSave = computed(() => {
