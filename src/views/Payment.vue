@@ -2,14 +2,13 @@
   <v-app>
     <v-content>
       <router-view>
-      <Navbar></Navbar>
-      <Payment></Payment>
-      <Footer></Footer>
-    </router-view>
+        <Navbar></Navbar>
+        <Payment></Payment>
+        <Footer></Footer>
+      </router-view>
     </v-content>
   </v-app>
 </template>
-
 
 <style>
 </style>

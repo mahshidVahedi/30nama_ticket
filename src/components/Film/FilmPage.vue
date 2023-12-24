@@ -115,7 +115,7 @@
               <v-row class="d-flex flex-row flex-wrap mt-5 mb-10">
                 <div v-for="(scene, j) in scenes" :key="j">
                   <v-card
-                    v-if="isItemOpen(i) && currentHour + calculateHour(film.duration * j + currentMinute + 30) <= 23"
+                    v-if="isItemOpen(i) && (currentHour + calculateHour(film.duration * j + currentMinute + 30)) <= 23"
                     class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text" style="min-width: 100px ;">
                     <div class="d-flex flex-column">
                       <div class="ml-3 mr-3">
