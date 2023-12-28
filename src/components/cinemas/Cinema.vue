@@ -204,12 +204,30 @@
         <v-icon style="color: rgb(26, 133, 26);"></v-icon>
       </template>{{ cinema && cinema.contact }}</v-btn>
 
-    <div dir="rtl" class="ml-8 mr-8 mb-10" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-
-      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
+    <div dir="rtl" class="ml-8 mr-8 mb-10 pb-5" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
+      
+      <h2  dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
       }}</h2>
-      <div class="mt-8 mb-5" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
-        <v-card>
+  <hr class="ms-3 me-3 mt-5 mb-3" style="color: rgb(144, 144, 142);">
+  <div style="width: 50%;" class="mt-5 mb-10 mr-5 d-flex flex-column ">
+
+<textarea
+  dir="rtl"
+  class="text-right"
+  counter
+  placeholder="دیدگاه شما"
+  :rules="rules"
+  :model-value="value"
+  id="my-textarea"
+  
+></textarea>
+<v-btn color="red" class="mt-5 mb-10 float-left" prepend-icon="mdi-plus" style="width: 20%;">ثبت دیدگاه</v-btn>
+
+  </div>
+
+  
+      <div class="mt-5 mb-5 mr-4" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
+        <v-card elevation="2" dir="rtl" class="mt-10">
           <v-card-subtitle>
             {{ Comment.name }}
           </v-card-subtitle>
@@ -227,12 +245,19 @@
 </template>
 
 <style>
-@media(max-width:425) {
-  #tabs {
-    display: flex;
-    flex-direction: column;
-  }
-}
+ label{
+  direction: rtl;
+ }
+ 
+ /* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
+  width: 800px;
+ } */
+
+ #my-textarea{
+  border-color: solid black;
+  height: 400px;
+  background-color: rgb(194, 191, 191);
+ }
 </style>
 
 <script lang="js">
@@ -251,6 +276,8 @@ export default {
   data: () => ({
     tab: null,
     path: mdiWifi,
+    rules: [v => v.length <= 500 || 'حداکثر 500 کاراکتر'],
+    value: '',
   }),
 
   setup() {
