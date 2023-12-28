@@ -49,6 +49,12 @@ const routes = [
         props: true
       },
       {
+        path: '/details/:cinema/payment',
+        name:'Payment',
+        component: Payment,
+        props:true
+      },
+      {
         path: '/:film',
         name: 'Film',
         component: Film,
