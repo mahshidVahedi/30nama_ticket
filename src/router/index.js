@@ -43,7 +43,7 @@ const routes = [
       },
 
       {
-        path: '/details/:cinema',
+        path: '/details/:id',
         name: 'Details',
         component: Cinema,
         props: true

@@ -324,10 +324,16 @@ export default {
     const route = useRoute();
     const cinema = ref(null);
 
-    onMounted(() => {
-      cinema.value = JSON.parse(route.params.cinema);
-      console.log(cinema.value);
-    });
+    fetch('http://localhost:8080/api/cinemas/:'+route.params.id)
+        .then(response => response.json())
+        .then(data => cinema.value = data.cinema)
+    
+    const router = useRouter();
+
+    // onMounted(() => {
+    //   cinema.value = JSON.parse(route.params.cinema);
+    //   console.log(cinema.value);
+    // });
 
     const calculateMinute = (time) => {
       const number = time % 60
@@ -535,3 +541,30 @@ export default {
 
 
 </script>
+
+
+{
+  "cinema": {
+  "id": 3,
+  "name": "Cinema C",
+  "location": "Location C",
+  "description": "Description C",
+  "city": {},
+  "contact": "345-678-9012",
+  "cinemaType": 1,
+  "score": 5
+  },
+  "features": [
+  {
+  "id": 4,
+  "cinemaid": 3,
+  "feature": 3,
+  "featureName": "food"
+  }
+  ],
+  "message": "found successfully",
+  "status": 1
+  }
+  
+  
+  
