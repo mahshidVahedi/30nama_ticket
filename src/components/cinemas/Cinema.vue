@@ -57,7 +57,7 @@
         </v-row> -->
 
   <div dir="rtl" style="background-color: rgb(235, 235, 235);">
-    <div class="mt10 ml-8 mr-8 mb-10 ml-0" rounded="5" style="background-color: white;">
+    <div class="mt10 ml-8 mr-8 mb-10 ml-0 pa-1" rounded="5" style="background-color: white;">
       <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{ cinema && cinema.name }}</h2>
       <v-card>
         <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start" class="mt-5 mb-5">
@@ -506,6 +506,7 @@ export default {
 
     const handleScne = (movie_id, scene, cinema_id) => {
       // if (movie_id === scene.movie_id) {
+        // cinemaMovie.push(movie)
       //   saloons.forEach((saloon) => {
       //     if (saloon.id === scene.saloon_id) {
       //       if (saloon.cinema_id === cinema_id) {

@@ -8,6 +8,7 @@ import Verify from '@/components/Login/Verify'
 import Cinema from '@/views/Cinema.vue'
 import Film from '@/views/Film.vue'
 import Payment from '@/views/Payment.vue'
+import Ticket from '@/views/Ticket.vue'
 
 const routes = [
   {
@@ -64,8 +65,11 @@ const routes = [
         name:'Payment',
         component: Payment,
         props:true
+      },{
+      path:'/ticket',
+      name:'Ticket',
+      component:Ticket
       }
-
       // {
       //   path: '/:catchAll(.*)', // 404 error route
       //   name: 'NotFound',

@@ -1,4 +1,5 @@
 
+
 <template style="background-color: rgb(235, 235, 235);" dir="rtl" >
     <div style="background-color: rgb(235, 235, 235);">
         <h2 dir="rtl" class="text-h6 ps-10 pl-0 pt-10 font-weight-bold"><b>اطلاعات بلیت و پرداخت</b></h2>
@@ -65,34 +66,7 @@
 
                 </v-card>
                 </v-container>
-                <v-container>
-
-               
-               
-                <v-card dir="rtl" variant="flat" :rounded="4" class="mt-7">
-                    <v-card-title>قوانین خرید بلیت</v-card-title>
-                    <v-card-text>
-                        <v-icon icon="mdi-circle" color="red" class="d-5 mr-2" style="font-size: 10px;"></v-icon>
-                        تا ۲ ساعت قبل از شروع سانس و در صورتی که بلیت را در محل سینما چاپ نکرده باشید، می‌توانید
-
-                        بلیت خود را بدون کسر وجه لغو کنید. مبلغ آن به حساب کاربری شما در سینماتیکت واریز خواهد
-                        شد.</v-card-text>
-
-                    <v-card-text>
-                        <v-icon icon="mdi-circle" color="red" class="d-5 mr-2 ml-2" style="font-size: 10px;"></v-icon>فیلم
-                        در صورتی اکران میشود که حداقل ۵ بلیت فروش رفته باشد.</v-card-text>
-                    <v-card-text><v-icon icon="mdi-circle" color="red" class="d-5 mr-2" style="font-size: 10px;"></v-icon>
-                        برای دریافت بلیت خود ۱۵ دقیقه قبل از شروع سانس به گیشه یا کیوسک های سینماتیکت مراجعه فرمایید.
-                    </v-card-text>
-                    <v-card-text><v-icon icon="mdi-circle" color="red" class="d-5 mr-2 ml-2"
-                            style="font-size: 10px;"></v-icon>
-                        کاربر موظف است اطلاعات شخصی واقعی و صحیح خود را در سایت وارد نماید. سایت سینماتیکت مسئولیتی
-                        در قبال هرگونه مشکل احتمالی که در اثر ارائه اطلاعات غلط از طرف کاربر به این سایت، ایجاد شده است،
-                        ندارد.</v-card-text>
-
-
-                </v-card>
-            </v-container>
+            
             </v-col>
 
             <v-col >
@@ -118,28 +92,7 @@
                 </v-container>
                 
                 
-                <div class="d-flex flex-row">
-                    <v-container>
-                        <v-card variant="flat" class="mt-7 d-flex flex-row">
-                        <v-checkbox  v-model="checkbox1" color="success" class="mr-5"></v-checkbox>
-                        <v-card-text>درگاه ملت</v-card-text>
-                    </v-card>
-                    </v-container>
-                    
-                    <v-container>
-                            
-                    <v-card variant="flat" class="mt-7 d-flex flex-row">
-                        <v-checkbox  v-model="checkbox2" color="success" class="mr-5"></v-checkbox>
-                        <v-card-text>درگاه سامان</v-card-text>
-                    </v-card>
-
-                    </v-container>
-
-
-
-
-                </div>
-                <v-btn @click="goToTicket()" class="mt-10 ms-2" color="red">پرداخت و دریافت بلیت </v-btn>
+                <v-btn @click="goToHome" class="mt-10 ms-2 mb-10" color="red">بازگشت به صفحه اصلی</v-btn>
             </v-col>
 
         </v-row>
@@ -153,17 +106,16 @@
 import image1 from '@/assets/images/hotel.jpeg'
 import { ref,watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
-import router from '@/router';
 
 export default {
 
-    // data () {
-    //   return {
-    //     checkbox1: true,
-    //     checkbox2: false,
-    //   }
-    // },
     setup() {
+
+        const router = useRouter();
+
+        const goToHome = () => {
+            router.push({ name: 'Home' });
+        };
 
         const info = ref({
             image: image1,
@@ -218,13 +170,7 @@ export default {
             checkbox1.value = !newValue;
         });
 
-       
-
-        const goToTicket = () =>{
-            router.push({ name: 'Ticket' })
-        }
-
-        return { info, image1,checkbox1, checkbox2,goToTicket }
+        return { info, image1,checkbox1, checkbox2,goToHome }
     }
 }
 </script>
