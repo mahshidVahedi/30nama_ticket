@@ -9,6 +9,7 @@ import Cinema from '@/views/Cinema.vue'
 import Film from '@/views/Film.vue'
 import Payment from '@/views/Payment.vue'
 import Ticket from '@/views/Ticket.vue'
+import SeatSelect from '@/components/common/SeatSelect.vue'
 
 const routes = [
   {
@@ -69,12 +70,14 @@ const routes = [
       path:'/ticket',
       name:'Ticket',
       component:Ticket
+      },
+      {
+        path: '/SeatSelect',
+        name: 'SeatSelect',
+        component: SeatSelect,
+        props: true
       }
-      // {
-      //   path: '/:catchAll(.*)', // 404 error route
-      //   name: 'NotFound',
-      //   component: NotFound,
-      // },
+
     ],
   },
 ];

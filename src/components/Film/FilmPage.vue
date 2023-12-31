@@ -174,11 +174,11 @@
                           </v-card-subtitle>
                         </v-card-item>
                       </div>
-                      <v-btn @click="showDialog = true" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
+                      <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
                         color="red">
                         خرید بلیت
                       </v-btn>
-                      <v-dialog v-model="showDialog" max-width="500px">
+                      <!-- <v-dialog v-model="showDialog" max-width="500px">
                         <v-card>
                           <v-card-title dir="rtl">انتخاب صندلی</v-card-title>
                           <div dir="rtl" class="mr-8">
@@ -215,7 +215,7 @@
                             <v-btn @click="saveAndCloseDialog" :disabled="!canSave">خرید</v-btn>
                           </v-card-actions>
                         </v-card>
-                      </v-dialog>
+                      </v-dialog> -->
                     </div>
                   </v-card>
                 </div>
@@ -326,6 +326,9 @@ export default {
     const showDialog = ref(false);
     const selectedSeats = ref([]);
 
+    const gotoSeat = () => {
+      router.push('seatSelect')
+    };
     const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
       if (isSelectedSeat(row, seat)) {
@@ -508,7 +511,7 @@ export default {
     return {
       cinemas, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,
+      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat, gotoSeat,
     }
   }
 }
