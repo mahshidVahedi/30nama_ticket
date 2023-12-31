@@ -1,24 +1,22 @@
 <template id="page">
   <div id="container">
-    <v-container>
+    <v-responsive id="kooft">
       <div class="scene">
         صحنه نمایش
       </div>
-      <div id="salon">
-        <v-row v-for="row in 8" :key="row" class="seat-row">
-          <v-col v-for="seat in 9" :key="seat" class="seat-column">
-            <v-icon
-              icon="mdi-seat"
-              @click="toggleSeat(row, seat)"
-              :class="{
+      <v-responsive id="salon" >
+        <!-- <v-infinite-scroll direction="horizontal"> -->
+        <v-row v-for="row in 10" :key="row" class="seat-row">
+            <v-col v-for="seat in 20" :key="seat" class="seat-column">
+              <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)" :class="{
                 'mdi-seat': isSelectedSeat(row, seat),
                 'mdi-seat-occupied': !isSelectedSeat(row, seat)
-              }"
-            ></v-icon>
-          </v-col>
+              }"></v-icon>
+            </v-col>
         </v-row>
-      </div>
-    </v-container>
+        <!-- </v-infinite-scroll> -->
+      </v-responsive>
+    </v-responsive>
     <div dir="rtl" class="ma-8">
       <p>
         <v-icon>mdi-movie</v-icon>
@@ -37,15 +35,21 @@
 </template>
 
 <style>
-#page{
+#page {}
+/* #kooft{
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-wrap: scroll;
+} */
 
-}
 #container {
   width: 80%;
   margin: auto;
   margin-top: 5%;
 }
-
+.seat{
+  flex-wrap: nowrap;
+}
 .v-icon.mdi-seat {
   color: green;
   font-size: 24px;
@@ -58,69 +62,28 @@
 
 .scene {
   width: 90%;
-  height: 40px;
   background-color: #807e7e;
   margin: auto;
   border-radius: 10px;
   text-align: center;
-  padding-top: 8px;
+  padding: 8px;
+  margin-bottom: 5%;
 }
 
 #salon {
-  width: 80%;
+  width: 90%;
   margin: auto;
-  margin-top: 10%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  padding: 15px;
 }
 
 .seat-row {
-  justify-content: center;
-}
-
-.seat-column {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 1 0 11.11%;
-  max-width: 11.11%;
-  padding: 4px;
-}
-@media (min-width: 850px) {
-  #container {
-    width: 80%;
-    height: 480px;
-  }
-
-  .scene{
-    width: 50%;
-  }
-  #salon{
-    width:60% ;
-  }
-}
-@media (min-width: 1250px) {
-  #container {
-    width: 80%;
-    height: 640px;
-  }
-
-  #salon{
-    width:50% ;
-  }
-}
-@media (min-width: 1350px) {
-  #container {
-    width: 80%;
-    height: 640px;
-  }
-
-  #salon{
-    width:40% ;
-  }
-  .scene{
-    width: 41%;
-  }
+  flex-wrap: nowrap;
+  padding: 5px;
 }
 </style>
 <script>
