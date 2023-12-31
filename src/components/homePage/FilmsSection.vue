@@ -471,7 +471,7 @@ export default {
 
     
     const films = ref([])
-      fetch('http://localhost:8080/api/movies')
+      fetch('http://185.128.40.150:8080/api/movies')
         .then(response => response.json())
         .then(data => films.value = data.movies)
     const router = useRouter();

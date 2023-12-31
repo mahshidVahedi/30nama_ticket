@@ -315,7 +315,7 @@ export default {
     //   },
     // ]);
       const cinemas = ref([])
-      fetch('http://localhost:8080/api/cinemas')
+      fetch('http://185.128.40.150:8080/api/cinemas')
         .then(response => response.json())
         .then(data => cinemas.value = data.cinemas)
     const router = useRouter();

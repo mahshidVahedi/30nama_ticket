@@ -20,7 +20,7 @@
                 <div class="text-red ms-1 font-weight-bold text-h6">
                   {{ film && film.score }}
                 </div>
-                <v-chip @click="console.log('clicked')" class="ms-3" color="white" prepend-icon="mdi-star">
+                <v-chip @click="dialog = true" class="ms-3" color="white" prepend-icon="mdi-star">
                   امتیاز شما
                 </v-chip>
               </div>
@@ -39,6 +39,50 @@
       </v-card>
     </div>
   </v-img>
+
+   <v-dialog
+        v-model="dialog"
+        width="auto"
+      >
+        <v-card>
+          <v-card-title class="text-wrap mt-2" dir="rtl">امتیاز شما به {{ film.title }}</v-card-title>
+          <v-card-text dir="rtl">
+              <v-card dir="rtl" variant="outlined" class="mt-2" >
+                <v-card-text >
+                  <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+                  <span>1/5:</span> اصلا فیلم خوبی نبود
+                </v-card-text>
+               </v-card>
+               <v-card dir="rtl" variant="outlined" class="mt-2">
+                <v-card-text >
+                  <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+                  <span>2/5:</span> فیلم خوبی نبود ولی قابل تحمل بود
+                </v-card-text>
+               </v-card>
+               <v-card dir="rtl" variant="outlined" class="mt-2">
+                <v-card-text >
+                  <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+                  <span>3/5:</span> فیلم متوسطی بود، نه خیلی خوب و نه خیلی بد
+                </v-card-text>
+               </v-card>
+               <v-card dir="rtl" variant="outlined" class="mt-2">
+                <v-card-text >
+                  <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+                  <span>4/5:</span> فیلم خوبی بود، اما میتوانست بتر باشد
+                </v-card-text>
+               </v-card>
+
+               <v-card dir="rtl" variant="outlined" class="mt-2">
+                <v-card-text >
+                  <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+                  <span>5/5:</span> عالی بود! انتظاراتم برآورده شد
+                </v-card-text>
+               </v-card>
+          </v-card-text>
+          <v-card-actions ><v-btn  variant="elevated" class="mt-2 mr-3" color="red" block @click="dialog = false">ثبت نظر</v-btn></v-card-actions>
+          
+        </v-card>
+      </v-dialog>
   <div dir="rtl" style="background-color: rgb(235, 235, 235);" class="pa-6">
     <div dir="rtl" class="ma-4">
       <h3>
@@ -150,7 +194,7 @@
                               <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
                               {{ jalaliDay }} {{ jalaliMonth }} - سانس {{ calculateMinute(film.duration * j +
                                 currentMinute + 25) }} : {{ currentHour +
-                                calculateHour(film.duration * j + currentMinute + 25) }}
+    calculateHour(film.duration * j + currentMinute + 25) }}
                             </p>
                           </div>
                           <v-card-text>
@@ -181,23 +225,39 @@
         </v-window>
       </v-card>
     </div>
-    <div dir="rtl" class="ml-8 mr-8 mb-10 pa-4 pt-1"
-      style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ film && film.title }}
-      </h2>
-      <div class="mt-8 mb-5" v-for="(Comment, i) in film && film.Comments" :key="i">
-        <v-card>
-          <v-card-subtitle>
-            {{ Comment.name }}
-          </v-card-subtitle>
 
-          <v-card-text>
-            {{ Comment.comment }}
-          </v-card-text>
-        </v-card>
-      </div>
+
+
+  <div dir="rtl" class="mt-16 ml-8 mr-8 mb-10 ml-0 pa-4 rounded d-flex flex-column" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
+    <h2 dir="rtl" class="mt-5 mb-8 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ film && film.title }}
+    </h2>
+  <v-container dir="rtl"  class="text-right text-black mb-10 ml-10">
+
+    <v-textarea
+      bg-color="rgb(221, 221, 221)"
+      color="black"
+      dir="rtl" class="text-right"
+      placeholder="دیدگاه شما..."
+    ></v-textarea>
+    <v-btn text="ثبت دیدگاه" color="red" class="mt-5 ml-10 float-right pr-0 pl-0" prepend-icon="mdi-plus" style="width: 20%;"></v-btn>
+
+  </v-container>
+  
+    <div class="mt-5 mb-5" v-for="(Comment, i) in film && film.Comments" :key="i">
+      <v-card>
+        <v-card-subtitle>
+          {{ Comment.name }}
+        </v-card-subtitle>
+
+        <v-card-text>
+          {{ Comment.comment }}
+        </v-card-text>
+      </v-card>
     </div>
   </div>
+
+</div>
+
 </template>
 
 <style>
@@ -207,6 +267,11 @@
     flex-direction: column;
   }
 }
+
+/* #my-textarea{
+  background-color: rgb(221, 221, 221);
+  max-height: 10%!important;
+} */
 
 .no-fill {
   background-color: transparent !important;
@@ -252,6 +317,9 @@ export default {
   data: () => ({
     tab: null,
     path: mdiWifi,
+    rules: [v => v.length <= 500 || 'حداکثر 500 کاراکتر'],
+    value: '',
+    dialog : false
   }),
   setup() {
 
