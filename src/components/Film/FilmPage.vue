@@ -8,7 +8,7 @@
           class="mt-5 mb-5"></v-img>
         <div class="mr-0">
           <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">
-            <span>{{ film && film.title }}</span> | <span class="text-subtitle-1">{{ film && film.director }}</span>
+            <span class="text-wrap">{{ film && film.name }}</span> | <span class="text-subtitle-1">{{ director.name }}</span>
           </v-card-title>
           <v-card-text dir="rtl">
             <div class="mt-3 mb-3">
@@ -133,7 +133,7 @@
                       </v-col>
                       <v-col>
                         <div style="max-width: 100%;" class="d-flex flex-column mr-0 mt-5">
-                          <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ cinema.name }}</v-card-title>
+                          <v-card-title class="text-h6 font-weight-bold text-wrap" dir="rtl">{{ cinema.name }}</v-card-title>
                           <v-card-text dir="rtl">
                             <div class="mt-3 mb-3">
                               {{ cinema.location }}
@@ -483,12 +483,18 @@ export default {
     const cinemaSaloons = ref([])
 
     const route = useRoute();
-    const film = ref(null);
+    const film = ref({});
+    const director = ref({})
 
-    onMounted(() => {
-      film.value = JSON.parse(route.params.film);
-      console.log(film.value);
-    });
+    console.log(route.params.id)
+
+    fetch('http://185.128.40.150:8080/api/movies/'+route.params.id)
+        .then(response => response.json())
+        .then(data => {film.value = data.movie
+          director.value = data.movie.director})
+    
+        console.log(director)
+    const router = useRouter();
 
     const handleScne = (movie_id, scene, cinema_id) => {
       // if (movie_id === scene.movie_id) {
@@ -509,7 +515,7 @@ export default {
       // }
     }
     return {
-      cinemas, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
+      cinemas,director, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
       isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat, gotoSeat,
     }

@@ -234,7 +234,7 @@ export default {
     const router = useRouter();
 
     const goToFilmDetails = (film) => {
-      router.push({ name: 'Film', params: { film: JSON.stringify(film) } });
+      router.push({ name: 'Film', params: { id: film.id } });
     };
     return {
       films,

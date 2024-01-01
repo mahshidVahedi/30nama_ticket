@@ -18,13 +18,13 @@
 
               <div color="red" class="d-flex flex-row border-white mt-3 me-3">
                 <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-                <div  class="text-red ms-1 font-weight-bold">
+                <div class="text-red ms-1 font-weight-bold">
                   {{ cinema && cinema.score }}
                 </div>
-                  <v-chip @click="dialog = true" class="ms-3" color="white" prepend-icon="mdi-star">
+                <v-chip @click="dialog = true" class="ms-3" color="white" prepend-icon="mdi-star">
                   امتیاز شما
                 </v-chip>
-                
+
               </div>
               <div class="d-flex flex-row mt-5">
 
@@ -54,19 +54,47 @@
 
   </v-img>
 
-  <v-dialog
-        v-model="dialog"
-        width="auto"
-      >
-        <v-card>
+  <v-dialog v-model="dialog" width="auto">
+    <v-card>
+      <v-card-title class="text-wrap mt-2" dir="rtl">امتیاز شما به {{ cinema.name }}</v-card-title>
+      <v-card-text dir="rtl">
+        <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+            <span>1/5:</span> خیلی ضعیف
           </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>
-          </v-card-actions>
         </v-card>
-      </v-dialog>
+        <v-card dir="rtl" variant="outlined" class="mt-2">
+          <v-card-text>
+            <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+            <span>2/5:</span> ضعیف
+          </v-card-text>
+        </v-card>
+        <v-card dir="rtl" variant="outlined" class="mt-2">
+          <v-card-text>
+            <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+            <span>3/5:</span> متوسط
+          </v-card-text>
+        </v-card>
+        <v-card dir="rtl" variant="outlined" class="mt-2">
+          <v-card-text>
+            <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+            <span>4/5:</span> خوب
+          </v-card-text>
+        </v-card>
+
+        <v-card dir="rtl" variant="outlined" class="mt-2">
+          <v-card-text>
+            <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+            <span>5/5:</span> خیلی خوب
+          </v-card-text>
+        </v-card>
+      </v-card-text>
+      <v-card-actions><v-btn variant="elevated" class="mt-2 mr-3" color="red" block @click="dialog = false">ثبت
+          نظر</v-btn></v-card-actions>
+
+    </v-card>
+  </v-dialog>
   <!-- </v-col>
         </v-row> -->
 
@@ -153,10 +181,11 @@
                         </v-card-item>
                       </div>
 
-                      <v-btn @click="showDialog = true" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat" color="red">
+                      <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
+                        color="red">
                         خرید بلیت
                       </v-btn>
-                      <v-dialog v-model="showDialog" max-width="500px">
+                      <!-- <v-dialog v-model="showDialog" max-width="500px">
                         <v-card>
                           <v-card-title dir="rtl">انتخاب صندلی</v-card-title>
                           <div dir="rtl" class="mr-8">
@@ -193,7 +222,7 @@
                             <v-btn @click="saveAndCloseDialog" :disabled="!canSave">خرید</v-btn>
                           </v-card-actions>
                         </v-card>
-                      </v-dialog>
+                      </v-dialog> -->
                     </div>
                   </v-card>
 
@@ -218,26 +247,23 @@
         <v-icon style="color: rgb(26, 133, 26);"></v-icon>
       </template>{{ cinema && cinema.contact }}</v-btn>
 
-    <div dir="rtl" class="ml-8 mr-8 mb-10 pb-5" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-      
-      <h2  dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
+    <div dir="rtl" class="ml-8 mr-8 mb-10 pb-5"
+      style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
+
+      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
       }}</h2>
-  <hr class="ms-3 me-3 mt-5 mb-3" style="color: rgb(144, 144, 142);">
-  <v-container dir="rtl"  class="text-right text-black mb-10 ml-10">
+      <hr class="ms-3 me-3 mt-5 mb-3" style="color: rgb(144, 144, 142);">
+      <v-container dir="rtl" class="text-right text-black mb-10 ml-10 mr-0">
 
-<v-textarea
-  bg-color="rgb(221, 221, 221)"
-  color="black"
-  dir="rtl" class="text-right"
-  placeholder="دیدگاه شما..."
-></v-textarea>
-<v-container>
-    <v-btn text color="red" class="mt-5" prepend-icon="mdi-plus" style="width: 100%;" block>ثبت دیدگاه</v-btn>
-  </v-container>
+        <v-textarea bg-color="rgb(221, 221, 221)" color="black" dir="rtl" class="text-right"
+          placeholder="دیدگاه شما..."></v-textarea>
+        <v-btn text="ثبت دیدگاه" color="red" class="mt-5 ml-10 float-right pr-0 pl-0" prepend-icon="mdi-plus"
+          style="width: 20%;"></v-btn>
 
-</v-container>
+      </v-container>
 
-  
+
+
       <div class="mt-5 mb-5 mr-4" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
         <v-card elevation="2" dir="rtl" class="mt-10">
           <v-card-subtitle>
@@ -257,19 +283,19 @@
 </template>
 
 <style>
- label{
+label {
   direction: rtl;
- }
- 
- /* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
+}
+
+/* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
   width: 800px;
  } */
 
- #my-textarea{
+#my-textarea {
   border-color: solid black;
   height: 400px;
   background-color: rgb(194, 191, 191);
- }
+}
 </style>
 
 <script lang="js">
@@ -278,7 +304,7 @@ import photoM2 from '@/assets/jangal.jfif'
 import photoM3 from '@/assets/gijgah.jfif';
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
-import { ref, onMounted, computed} from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import router from '@/router';
 
@@ -295,8 +321,16 @@ export default {
 
   setup() {
 
+    //fetch :
+
+
     const showDialog = ref(false);
     const selectedSeats = ref([]);
+
+    const gotoSeat = () => {
+      router.push('seatSelect')
+    };
+
 
     const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
@@ -335,12 +369,15 @@ export default {
     const jalaliDayAfterTomorrowMonth = ref('');
 
     const route = useRoute();
-    const cinema = ref(null);
+    const cinema = ref({});
 
-    fetch('http://localhost:8080/api/cinemas/:'+route.params.id)
-        .then(response => response.json())
-        .then(data => cinema.value = data.cinema)
-    
+    console.log(route.params.id)
+
+    fetch('http://185.128.40.150:8080/api/cinemas/' + route.params.id)
+      .then(response => response.json())
+      .then(data => cinema.value = data.cinema)
+
+    console.log(cinema)
     const router = useRouter();
 
     // onMounted(() => {
@@ -525,7 +562,7 @@ export default {
 
     const handleScne = (movie_id, scene, cinema_id) => {
       // if (movie_id === scene.movie_id) {
-        // cinemaMovie.push(movie)
+      // cinemaMovie.push(movie)
       //   saloons.forEach((saloon) => {
       //     if (saloon.id === scene.saloon_id) {
       //       if (saloon.cinema_id === cinema_id) {
@@ -547,7 +584,7 @@ export default {
     return {
       cinema, films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,
+      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,gotoSeat
     }
   }
 }
