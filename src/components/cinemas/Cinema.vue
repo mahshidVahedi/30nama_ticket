@@ -1,12 +1,12 @@
 <template>
-  <v-img :src="cinema && cinema.image" dir="rtl" class="align-center mb-0 pa-0"
+  <v-img :src="getSrc(cinema.id)" dir="rtl" class="align-center mb-0 pa-0"
     gradient="to bottom, rgba(0,0,0,.7), rgba(2,8,0,1)" cover max-height="300px">
     <div dir="rtl" class="d-flex flex-row justify-center align-center mr-0 ml-0 opacity-background">
 
       <v-card variant="text" height="100%" width="100%"
         class="d-flex flex-row justify-content-start align-center text-white g-0 ms-0" cover>
 
-        <v-img :src="cinema && cinema.image" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
+        <v-img :src="getSrc(cinema.id)" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
           class="mt-5 mb-5 d-none d-sm-flex"></v-img>
         <div class="mr-0">
           <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ cinema && cinema.name }}</v-card-title>
@@ -255,24 +255,24 @@
 
         <v-textarea bg-color="rgb(221, 221, 221)" color="black" dir="rtl" class="text-right"
           placeholder="دیدگاه شما..."></v-textarea>
-        <v-btn text="ثبت دیدگاه" color="red" class="mt-5 ml-10 float-right pr-0 pl-0" prepend-icon="mdi-plus"
-          style="width: 20%;"></v-btn>
+        
+          <v-btn min-width="150px" text="ثبت دیدگاه" color="red" class="mt-5 ml-10 pr-0 pl-0" prepend-icon="mdi-plus" style="width: 20%;" dir="rtl"></v-btn>
 
       </v-container>
 
 
 
-      <div class="mt-5 mb-5 mr-4" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
-        <v-card elevation="2" dir="rtl" class="mt-10">
-          <v-card-subtitle>
-            {{ Comment.name }}
-          </v-card-subtitle>
+      <div class="mt-5 mb-5" v-for="comment in comments " :key="comment.id">
+      <v-card>
+        <v-card-subtitle>
+          {{ comment.name }}
+        </v-card-subtitle>
 
-          <v-card-text>
-            {{ Comment.comment }}
-          </v-card-text>
-        </v-card>
-      </div>
+        <v-card-text>
+          {{ comment.comment }}
+        </v-card-text>
+      </v-card>
+    </div>
 
 
     </div>
@@ -325,9 +325,8 @@ export default {
     const showDialog = ref(false);
     const selectedSeats = ref([]);
     const gotoSeat = () => {
-      router.push('seatSelect')
+      router.push({name: 'SeatSelect'})
     };
-
     
 
 
@@ -379,10 +378,12 @@ export default {
     console.log(cinema)
     const router = useRouter();
 
-    // onMounted(() => {
-    //   cinema.value = JSON.parse(route.params.cinema);
-    //   console.log(cinema.value);
-    // });
+    const comments = ref([])
+    fetch('http://185.128.40.150:8080/api/cinema/comments/'+route.params.id)
+        .then(response => response.json())
+        .then(data => {comments.value = data.comments})
+    
+        console.log('The comments are : '+comments.value)
 
     const calculateMinute = (time) => {
       const number = time % 60
@@ -579,11 +580,16 @@ export default {
       // }
     }
 
+    const getSrc = (id) => {
+          const src = `/src/assets/cinema1/${id}.jpg`
+          return src;
+      }
+
 
     return {
-      cinema, films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
+      cinema, films,comments, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,gotoSeat
+      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,gotoSeat,getSrc
     }
   }
 }
