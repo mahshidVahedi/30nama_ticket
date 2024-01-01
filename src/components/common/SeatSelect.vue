@@ -1,20 +1,19 @@
 <template >
   <div id="container">
-    <v-responsive id="kooft">
+    <v-responsive>
       <div class="scene">
         صحنه نمایش
       </div>
       <v-responsive id="salon">
-        <!-- <v-infinite-scroll direction="horizontal"> -->
-        <v-row v-for="row in 10" :key="row" class="seat-row">
-          <v-col v-for="seat in 20" :key="seat" class="seat-column">
-            <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)" :class="{
-              'mdi-seat': isSelectedSeat(row, seat),
-              'mdi-seat-occupied': !isSelectedSeat(row, seat)
+        <v-row v-for="row in   salon.aliasY  " :key="row" class="seat-row">
+          <v-col v-for="seat in   salon.aliasX  " :key="seat" class="seat-column">
+            <v-icon icon="mdi-seat" @click="toggleSeat(row.row, seat.column)" :class="{
+              'mdi-seat': isSelectedSeat(row.row, seat.column),
+              'mdi-seat-occupied': !isSelectedSeat(row.row, seat.column),
+              'mdi-seat-disabled': seat.disabled
             }"></v-icon>
           </v-col>
         </v-row>
-        <!-- </v-infinite-scroll> -->
       </v-responsive>
     </v-responsive>
 
@@ -22,21 +21,22 @@
   <div class="ticket">
 
     <div dir="rtl" class="ma-8">
-      <v-img :src="info.image" width="75px" class="img">
+      <v-img :src="getSrc(salon.movie.id)" width="75px" class="img">
       </v-img>
       <span>
-      <p class="ma-4">
-        <v-icon>mdi-movie</v-icon>
-        {{ info.filmName }}
-      </p>
-      <p class="ma-4">
-        <v-icon>mdi-map-marker</v-icon>
-        {{ info.cinema }}
-      </p>
-      <p class="ma-4">
-        <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-        {{ info.scene.minute }} : {{ info.scene.hour }}
-      </p></span>
+        <p class="ma-4">
+          <v-icon>mdi-movie</v-icon>
+          {{ saloon.movie.name }}
+        </p>
+        <p class="ma-4">
+          <v-icon>mdi-map-marker</v-icon>
+          {{ saloon.cinema.name }}
+        </p>
+        <p class="ma-4">
+          <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
+          {{ saloon.scene.minute }} : {{ saloon.scene.hour }}
+        </p>
+      </span>
     </div>
     <v-btn @click="saveAndCloseDialog" :disabled="!canSave" color="red">
       ثبت صندلی و نمایش جزئیات
@@ -101,7 +101,8 @@
 .img {
   display: inline-block;
 }
-span{
+
+span {
   display: inline-block;
   margin-right: 3%;
 }
@@ -117,8 +118,20 @@ export default {
     path: mdiWifi,
   }),
   setup() {
+    const salon = ref({});
     const selectedSeats = ref([]);
-
+    const fetchSeatsData = () => {
+      fetch('http://185.128.40.150:8080/api/seats')
+        .then(response => response.json())
+        .then(data => {
+          salon.value = data.seats;
+          const soldSeats = data.sold_tickets.map(ticket => ({
+            row: ticket.seatX,
+            column: ticket.seatY
+          }));
+          disableSoldSeats(soldSeats);
+        });
+    };
     const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
       if (isSelectedSeat(row, seat)) {
@@ -127,20 +140,27 @@ export default {
         selectedSeats.value.push(seatId);
       }
     };
-
     const isSelectedSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
       return selectedSeats.value.includes(seatId);
     };
-
     const saveAndCloseDialog = () => {
       router.push({ name: 'Payment' })
     };
-
     const canSave = computed(() => {
       return selectedSeats.value.length > 0;
     });
-    const info = ref({
+    const disableSoldSeats = (soldSeats) => {
+      salon.value.seats.forEach(seat => {
+        const isSold = soldSeats.some(soldSeat => soldSeat.row === seat.row && soldSeat.column === seat.column);
+        seat.disabled = isSold;
+      });
+      const getSrc = (id) => {
+          const src = `/src/assets/images/${id}.jpeg`
+          return src;
+      }
+    };
+    const saloon = ref({
       filmName: 'هتل',
       number: 3,
       cinema: 'پردیس سینمای کورش',
@@ -155,8 +175,17 @@ export default {
         saloonId: 4
       }
     })
-    return { selectedSeats, toggleSeat, isSelectedSeat, saveAndCloseDialog, canSave, info };
+    onMounted(fetchSeatsData);
+    return {
+      selectedSeats,
+      toggleSeat,
+      isSelectedSeat,
+      saveAndCloseDialog,
+      canSave,
+      saloon,
+      salon,
+      getSrc
+    };
   }
 }
 </script>
-
