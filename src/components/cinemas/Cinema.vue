@@ -181,12 +181,7 @@
                         </v-card-item>
                       </div>
 
-<<<<<<< HEAD
-                      <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
-                        color="red">
-=======
                       <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat" color="red">
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
                         خرید بلیت
                       </v-btn>
                       <!-- <v-dialog v-model="showDialog" max-width="500px">
@@ -251,16 +246,9 @@
         <v-icon style="color: rgb(26, 133, 26);"></v-icon>
       </template>{{ cinema && cinema.contact }}</v-btn>
 
-<<<<<<< HEAD
-    <div dir="rtl" class="ml-8 mr-8 mb-10 pb-5"
-      style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-
-      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
-=======
     <div dir="rtl" class="ml-8 mr-8 mb-10 pb-5" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
 
       <h2  dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
       }}</h2>
       <hr class="ms-3 me-3 mt-5 mb-3" style="color: rgb(144, 144, 142);">
       <v-container dir="rtl" class="text-right text-black mb-10 ml-10 mr-0">
@@ -274,10 +262,6 @@
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
       <div class="mt-5 mb-5 mr-4" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
         <v-card elevation="2" dir="rtl" class="mt-10">
           <v-card-subtitle>
@@ -299,15 +283,9 @@
 <style>
 label {
   direction: rtl;
-<<<<<<< HEAD
-}
-
-/* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
-=======
  }
 
  /* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
   width: 800px;
  } */
 
@@ -350,9 +328,7 @@ export default {
       router.push('seatSelect')
     };
 
-    const gotoSeat = () => {
-      router.push('seatSelect')
-    };
+    
 
 
     const toggleSeat = (row, seat) => {
@@ -394,7 +370,6 @@ export default {
     const route = useRoute();
     const cinema = ref({});
 
-<<<<<<< HEAD
     console.log(route.params.id)
 
     fetch('http://185.128.40.150:8080/api/cinemas/' + route.params.id)
@@ -402,12 +377,6 @@ export default {
       .then(data => cinema.value = data.cinema)
 
     console.log(cinema)
-=======
-    fetch('http://localhost:8080/api/cinemas/:'+route.params.id)
-        .then(response => response.json())
-        .then(data => cinema.value = data.cinema)
-
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
     const router = useRouter();
 
     // onMounted(() => {
