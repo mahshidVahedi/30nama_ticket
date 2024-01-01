@@ -1,12 +1,12 @@
 <template>
-  <v-img :src="cinema && cinema.image" dir="rtl" class="align-center mb-0 pa-0"
+  <v-img :src="getSrc(cinema.id)" dir="rtl" class="align-center mb-0 pa-0"
     gradient="to bottom, rgba(0,0,0,.7), rgba(2,8,0,1)" cover max-height="300px">
     <div dir="rtl" class="d-flex flex-row justify-center align-center mr-0 ml-0 opacity-background">
 
       <v-card variant="text" height="100%" width="100%"
         class="d-flex flex-row justify-content-start align-center text-white g-0 ms-0" cover>
 
-        <v-img :src="cinema && cinema.image" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
+        <v-img :src="getSrc(cinema.id)" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
           class="mt-5 mb-5 d-none d-sm-flex"></v-img>
         <div class="mr-0">
           <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">{{ cinema && cinema.name }}</v-card-title>
@@ -181,12 +181,7 @@
                         </v-card-item>
                       </div>
 
-<<<<<<< HEAD
-                      <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
-                        color="red">
-=======
                       <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat" color="red">
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
                         خرید بلیت
                       </v-btn>
                       <!-- <v-dialog v-model="showDialog" max-width="500px">
@@ -251,44 +246,33 @@
         <v-icon style="color: rgb(26, 133, 26);"></v-icon>
       </template>{{ cinema && cinema.contact }}</v-btn>
 
-<<<<<<< HEAD
-    <div dir="rtl" class="ml-8 mr-8 mb-10 pb-5"
-      style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-
-      <h2 dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
-=======
     <div dir="rtl" class="ml-8 mr-8 mb-10 pb-5" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
 
       <h2  dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
       }}</h2>
       <hr class="ms-3 me-3 mt-5 mb-3" style="color: rgb(144, 144, 142);">
       <v-container dir="rtl" class="text-right text-black mb-10 ml-10 mr-0">
 
         <v-textarea bg-color="rgb(221, 221, 221)" color="black" dir="rtl" class="text-right"
           placeholder="دیدگاه شما..."></v-textarea>
-        <v-btn text="ثبت دیدگاه" color="red" class="mt-5 ml-10 float-right pr-0 pl-0" prepend-icon="mdi-plus"
-          style="width: 20%;"></v-btn>
+        
+          <v-btn min-width="150px" text="ثبت دیدگاه" color="red" class="mt-5 ml-10 pr-0 pl-0" prepend-icon="mdi-plus" style="width: 20%;" dir="rtl"></v-btn>
 
       </v-container>
 
 
 
-<<<<<<< HEAD
-=======
+      <div class="mt-5 mb-5" v-for="comment in comments " :key="comment.id">
+      <v-card>
+        <v-card-subtitle>
+          {{ comment.name }}
+        </v-card-subtitle>
 
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
-      <div class="mt-5 mb-5 mr-4" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
-        <v-card elevation="2" dir="rtl" class="mt-10">
-          <v-card-subtitle>
-            {{ Comment.name }}
-          </v-card-subtitle>
-
-          <v-card-text>
-            {{ Comment.comment }}
-          </v-card-text>
-        </v-card>
-      </div>
+        <v-card-text>
+          {{ comment.comment }}
+        </v-card-text>
+      </v-card>
+    </div>
 
 
     </div>
@@ -299,15 +283,9 @@
 <style>
 label {
   direction: rtl;
-<<<<<<< HEAD
-}
-
-/* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
-=======
  }
 
  /* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
   width: 800px;
  } */
 
@@ -347,12 +325,9 @@ export default {
     const showDialog = ref(false);
     const selectedSeats = ref([]);
     const gotoSeat = () => {
-      router.push('seatSelect')
+      router.push({name: 'SeatSelect'})
     };
-
-    const gotoSeat = () => {
-      router.push('seatSelect')
-    };
+    
 
 
     const toggleSeat = (row, seat) => {
@@ -394,7 +369,6 @@ export default {
     const route = useRoute();
     const cinema = ref({});
 
-<<<<<<< HEAD
     console.log(route.params.id)
 
     fetch('http://185.128.40.150:8080/api/cinemas/' + route.params.id)
@@ -402,18 +376,14 @@ export default {
       .then(data => cinema.value = data.cinema)
 
     console.log(cinema)
-=======
-    fetch('http://localhost:8080/api/cinemas/:'+route.params.id)
-        .then(response => response.json())
-        .then(data => cinema.value = data.cinema)
-
->>>>>>> f3ff019e603e98837fa5657d3c54c7366efac7ed
     const router = useRouter();
 
-    // onMounted(() => {
-    //   cinema.value = JSON.parse(route.params.cinema);
-    //   console.log(cinema.value);
-    // });
+    const comments = ref([])
+    fetch('http://185.128.40.150:8080/api/cinema/comments/'+route.params.id)
+        .then(response => response.json())
+        .then(data => {comments.value = data.comments})
+    
+        console.log('The comments are : '+comments.value)
 
     const calculateMinute = (time) => {
       const number = time % 60
@@ -610,11 +580,16 @@ export default {
       // }
     }
 
+    const getSrc = (id) => {
+          const src = `/src/assets/cinema1/${id}.jpg`
+          return src;
+      }
+
 
     return {
-      cinema, films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
+      cinema, films,comments, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,gotoSeat
+      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,gotoSeat,getSrc
     }
   }
 }

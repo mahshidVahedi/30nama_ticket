@@ -1,10 +1,10 @@
 <template>
-  <v-img :src="film && film.background" dir="rtl" class="align-center mb-0 pa-0"
+  <v-img :src="getSrc(film.id)" dir="rtl" class="align-center mb-0 pa-0"
     gradient="to bottom, rgba(0,0,0,.7), rgba(2,8,0,1)" cover max-height="300px">
     <div dir="rtl" class="d-flex flex-row justify-center align-center mr-0 ml-0 opacity-background">
       <v-card variant="text" height="100%" width="100%"
         class="d-flex flex-row justify-content-start align-center text-white g-0 ms-0" cover>
-        <v-img :src="film && film.mainPhoto" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
+        <v-img :src="getSrc(film.id)" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
           class="mt-5 mb-5"></v-img>
         <div class="mr-0">
           <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">
@@ -45,7 +45,7 @@
         width="auto"
       >
         <v-card>
-          <v-card-title class="text-wrap mt-2" dir="rtl">امتیاز شما به {{ film.title }}</v-card-title>
+          <v-card-title class="text-wrap mt-2" dir="rtl">امتیاز شما به {{ film.name }}</v-card-title>
           <v-card-text dir="rtl">
               <v-card dir="rtl" variant="outlined" class="mt-2" >
                 <v-card-text >
@@ -243,14 +243,14 @@
 
   </v-container>
 
-    <div class="mt-5 mb-5" v-for="(Comment, i) in film && film.Comments" :key="i">
+    <div class="mt-5 mb-5" v-for="comment in comments " :key="comment.id">
       <v-card>
         <v-card-subtitle>
-          {{ Comment.name }}
+          {{ comment.name }}
         </v-card-subtitle>
 
         <v-card-text>
-          {{ Comment.comment }}
+          {{ comment.comment }}
         </v-card-text>
       </v-card>
     </div>
@@ -327,8 +327,9 @@ export default {
     const selectedSeats = ref([]);
 
     const gotoSeat = () => {
-      router.push('seatSelect')
+      router.push({name: 'SeatSelect'})
     };
+
     const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
       if (isSelectedSeat(row, seat)) {
@@ -485,15 +486,23 @@ export default {
     const route = useRoute();
     const film = ref({});
     const director = ref({})
+    const comments = ref([])
 
     console.log(route.params.id)
 
     fetch('http://185.128.40.150:8080/api/movies/'+route.params.id)
         .then(response => response.json())
         .then(data => {film.value = data.movie
-          director.value = data.movie.director})
+          director.value = data.movie.director
+          })
     
         console.log(director)
+
+        fetch('http://185.128.40.150:8080/api/movie/comments/'+route.params.id)
+        .then(response => response.json())
+        .then(data => {comments.value = data.comments})
+    
+        console.log(comments)
     const router = useRouter();
 
     const handleScne = (movie_id, scene, cinema_id) => {
@@ -514,10 +523,15 @@ export default {
       //   })
       // }
     }
+
+    const getSrc = (id) => {
+          const src = `/src/assets/images/${id}.jpeg`
+          return src;
+      }
     return {
-      cinemas,director, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
+      cinemas,director,comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat, gotoSeat,
+      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat, gotoSeat,getSrc
     }
   }
 }

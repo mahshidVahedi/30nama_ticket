@@ -56,13 +56,13 @@ const routes = [
         props:true
       },
       {
-        path: '/films/:id',
+        path: '/:id',
         name: 'Film',
         component: Film,
         props: true
       },
       {
-        path:'films/:id/payment',
+        path:'/:id/payment',
         name:'Payment',
         component: Payment,
         props:true
@@ -72,13 +72,13 @@ const routes = [
       component:Ticket
       },
       {
-        path: '/SeatSelect',
+        path: '/:id/seatSelect',
         name: 'SeatSelect',
         component: SeatSelect,
         props: true
       },
       {
-        path: '/cinemas/SeatSelect',
+        path: '/cinemas/:id/SeatSelect',
         name: 'SeatSelect',
         component: SeatSelect,
         props: true
