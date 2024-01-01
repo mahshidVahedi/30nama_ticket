@@ -64,12 +64,12 @@
 
   <v-navigation-drawer v-model="drawer" location="top" class="d-flex d-md-none">
     <v-list>
-      <v-list-item class="d-flex d-sm-none">
+      <!-- <v-list-item class="d-flex d-sm-none">
         بلیط های من
       </v-list-item>
       <v-list-item @click="dialog = true" class="d-flex d-sm-none">
         مکان
-      </v-list-item>
+      </v-list-item> -->
       <v-list-item @click="goToCinemaList">
         سینما
       </v-list-item>

@@ -18,13 +18,13 @@
 
               <div color="red" class="d-flex flex-row border-white mt-3 me-3">
                 <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-                <div class="text-red ms-1 font-weight-bold">
+                <div  class="text-red ms-1 font-weight-bold">
                   {{ cinema && cinema.score }}
                 </div>
-
-                <v-chip @click="console.log('clicked')" class="ms-3" color="white" prepend-icon="mdi-star">
+                  <v-chip @click="dialog = true" class="ms-3" color="white" prepend-icon="mdi-star">
                   امتیاز شما
                 </v-chip>
+                
               </div>
               <div class="d-flex flex-row mt-5">
 
@@ -53,6 +53,20 @@
     </div>
 
   </v-img>
+
+  <v-dialog
+        v-model="dialog"
+        width="auto"
+      >
+        <v-card>
+          <v-card-text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" block @click="dialog = false">Close Dialog</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
   <!-- </v-col>
         </v-row> -->
 
@@ -209,21 +223,19 @@
       <h2  dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
       }}</h2>
   <hr class="ms-3 me-3 mt-5 mb-3" style="color: rgb(144, 144, 142);">
-  <div style="width: 50%;" class="mt-5 mb-10 mr-5 d-flex flex-column ">
+  <v-container dir="rtl"  class="text-right text-black mb-10 ml-10">
 
-<textarea
-  dir="rtl"
-  class="text-right"
-  counter
-  placeholder="دیدگاه شما"
-  :rules="rules"
-  :model-value="value"
-  id="my-textarea"
-  
-></textarea>
-<v-btn color="red" class="mt-5 mb-10 float-left" prepend-icon="mdi-plus" style="width: 20%;">ثبت دیدگاه</v-btn>
+<v-textarea
+  bg-color="rgb(221, 221, 221)"
+  color="black"
+  dir="rtl" class="text-right"
+  placeholder="دیدگاه شما..."
+></v-textarea>
+<v-container>
+    <v-btn text color="red" class="mt-5" prepend-icon="mdi-plus" style="width: 100%;" block>ثبت دیدگاه</v-btn>
+  </v-container>
 
-  </div>
+</v-container>
 
   
       <div class="mt-5 mb-5 mr-4" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
@@ -278,6 +290,7 @@ export default {
     path: mdiWifi,
     rules: [v => v.length <= 500 || 'حداکثر 500 کاراکتر'],
     value: '',
+    dialog: false,
   }),
 
   setup() {

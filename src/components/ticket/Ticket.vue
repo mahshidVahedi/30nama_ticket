@@ -50,17 +50,17 @@
                         </v-col>
                     </v-row>
 
-                    <hr class="ms-3 me-3 mt-5 mb-3" style="color: beige;">
-                    <div dir="rtl">
-                        <h3 class="mr-5 mb-5">{{ info.selectedSeats.length }} صندلی برای شما</h3>
-                        <div class="d-flex flex-row">
+                    <div  dir="rtl">
+                        <h3 class="mr-5 mb-5 mt-8">موقعیت صندلی :</h3>
+                        <div id="chairs" class="d-flex flex-row">
                             <div v-for="(seat, i) in info.selectedSeats" :key="i" class="mr-5 mb-5 d-flex flex-row">
                                 <v-chip class=""> ردیف {{ seat.row }} صندلی {{ seat.seat }}</v-chip>
 
 
                             </div>
                         </div>
-
+                            
+                        <div class="mr-5 mb-5 mt-5">کد رزرو : <span style="color:#3baea0;" class="font-weight-bold">{{ info.reserveCode }}</span></div>
 
                     </div>
 
@@ -69,23 +69,18 @@
             
             </v-col>
 
-            <v-col >
+            <v-col  >
                 <v-container >
                     <v-card :rounded="4" variant="flat" class="d-flex flex-column justify-content-start ml-10  ms-2 mt-10">
-                    <v-card-title class="font-weight-bold mt-5" dir="rtl">جزئیات پرداخت</v-card-title>
-                    <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mt-8">
-                        <p>بلیت به ارزش 60,000 تومان</p>
-                        <p>{{ info.number }} عدد</p>
-                        <p>{{ info.number * 60000 }} تومان</p>
+                        <v-card-text dir="rtl" id="dash" class="d-flex flex-row justify-space-between mt-5 pb-5 ">
+                            
+                                <p class="ms-0">مجموع هزینه</p>
+                                <p class="ms-7">{{ info.number * 60000 * 0.04 + info.number * 60000 }} تومان</p>
+
                     </v-card-text>
-                    <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
-                        <p class="ms-0">کارمزد خرید آنلاین</p>
-                        <p class="ms-7">4%</p>
-                        <p class="ms-7">{{ info.number * 60000 * 0.04 }} تومان</p>
-                    </v-card-text>
-                    <hr class="ms-3 me-3 mt-3" style="color: beige;">
-                    <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
-                        <p class="ms-0">مبلغ قابل پرداخت</p>
+                    <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mb-5">
+                        <p class="ms-0">بلیت</p>
+                        <p class="ms-7">{{info.number}} عدد</p>
                         <p class="ms-7">{{ info.number * 60000 * 0.04 + info.number * 60000 }} تومان</p>
                     </v-card-text>
                 </v-card>
@@ -100,6 +95,15 @@
         
     </div>
 </template>
+
+<style>
+
+#chairs,#dash{
+    border-bottom: dashed rgb(211, 210, 210);
+}
+
+</style>
+
 
 
 <script lang="js">
@@ -139,8 +143,13 @@ export default {
                 {
                     seat: 9,
                     row: 9
+                },
+                {
+                    seat: 10,
+                    row: 9
                 }
-            ]
+            ],
+            reserveCode:80025282
 
 
 
