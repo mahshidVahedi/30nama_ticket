@@ -38,7 +38,7 @@
         {{ info.scene.minute }} : {{ info.scene.hour }}
       </p></span>
     </div>
-    <v-btn color="red">
+    <v-btn @click="saveAndCloseDialog" :disabled="!canSave" color="red">
       ثبت صندلی و نمایش جزئیات
     </v-btn>
   </div>
@@ -117,11 +117,7 @@ export default {
     path: mdiWifi,
   }),
   setup() {
-
     const selectedSeats = ref([]);
-    const gotoSeat = () => {
-      router.push('seatSelect')
-    };
 
     const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
@@ -138,7 +134,6 @@ export default {
     };
 
     const saveAndCloseDialog = () => {
-      showDialog.value = false;
       router.push({ name: 'Payment' })
     };
 

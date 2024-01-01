@@ -24,7 +24,7 @@
                   <v-chip @click="dialog = true" class="ms-3" color="white" prepend-icon="mdi-star">
                   امتیاز شما
                 </v-chip>
-                
+
               </div>
               <div class="d-flex flex-row mt-5">
 
@@ -153,10 +153,10 @@
                         </v-card-item>
                       </div>
 
-                      <v-btn @click="showDialog = true" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat" color="red">
+                      <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat" color="red">
                         خرید بلیت
                       </v-btn>
-                      <v-dialog v-model="showDialog" max-width="500px">
+                      <!-- <v-dialog v-model="showDialog" max-width="500px">
                         <v-card>
                           <v-card-title dir="rtl">انتخاب صندلی</v-card-title>
                           <div dir="rtl" class="mr-8">
@@ -193,7 +193,7 @@
                             <v-btn @click="saveAndCloseDialog" :disabled="!canSave">خرید</v-btn>
                           </v-card-actions>
                         </v-card>
-                      </v-dialog>
+                      </v-dialog> -->
                     </div>
                   </v-card>
 
@@ -219,7 +219,7 @@
       </template>{{ cinema && cinema.contact }}</v-btn>
 
     <div dir="rtl" class="ml-8 mr-8 mb-10 pb-5" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-      
+
       <h2  dir="rtl" class="mt-10 mb-3 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ cinema && cinema.name
       }}</h2>
   <hr class="ms-3 me-3 mt-5 mb-3" style="color: rgb(144, 144, 142);">
@@ -237,7 +237,7 @@
 
 </v-container>
 
-  
+
       <div class="mt-5 mb-5 mr-4" v-for="(Comment, i) in cinema && cinema.Comments" :key="i">
         <v-card elevation="2" dir="rtl" class="mt-10">
           <v-card-subtitle>
@@ -260,7 +260,7 @@
  label{
   direction: rtl;
  }
- 
+
  /* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
   width: 800px;
  } */
@@ -297,6 +297,9 @@ export default {
 
     const showDialog = ref(false);
     const selectedSeats = ref([]);
+    const gotoSeat = () => {
+      router.push('seatSelect')
+    };
 
     const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
@@ -340,7 +343,7 @@ export default {
     fetch('http://localhost:8080/api/cinemas/:'+route.params.id)
         .then(response => response.json())
         .then(data => cinema.value = data.cinema)
-    
+
     const router = useRouter();
 
     // onMounted(() => {
@@ -547,7 +550,7 @@ export default {
     return {
       cinema, films, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,
+      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat,gotoSeat
     }
   }
 }
@@ -578,6 +581,6 @@ export default {
   "message": "found successfully",
   "status": 1
   }
-  
-  
-  
+
+
+
