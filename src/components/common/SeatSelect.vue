@@ -1,55 +1,61 @@
-<template id="page">
+<template >
   <div id="container">
     <v-responsive id="kooft">
       <div class="scene">
         صحنه نمایش
       </div>
-      <v-responsive id="salon" >
+      <v-responsive id="salon">
         <!-- <v-infinite-scroll direction="horizontal"> -->
         <v-row v-for="row in 10" :key="row" class="seat-row">
-            <v-col v-for="seat in 20" :key="seat" class="seat-column">
-              <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)" :class="{
-                'mdi-seat': isSelectedSeat(row, seat),
-                'mdi-seat-occupied': !isSelectedSeat(row, seat)
-              }"></v-icon>
-            </v-col>
+          <v-col v-for="seat in 20" :key="seat" class="seat-column">
+            <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)" :class="{
+              'mdi-seat': isSelectedSeat(row, seat),
+              'mdi-seat-occupied': !isSelectedSeat(row, seat)
+            }"></v-icon>
+          </v-col>
         </v-row>
         <!-- </v-infinite-scroll> -->
       </v-responsive>
     </v-responsive>
+
+  </div>
+  <div class="ticket">
+
     <div dir="rtl" class="ma-8">
-      <p>
+      <v-img :src="info.image" width="75px" class="img">
+      </v-img>
+      <span>
+      <p class="ma-4">
         <v-icon>mdi-movie</v-icon>
         {{ info.filmName }}
       </p>
-      <p>
+      <p class="ma-4">
         <v-icon>mdi-map-marker</v-icon>
         {{ info.cinema }}
       </p>
-      <p class="mt-3 mb-3 mr-0">
+      <p class="ma-4">
         <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
         {{ info.scene.minute }} : {{ info.scene.hour }}
-      </p>
+      </p></span>
     </div>
+    <v-btn @click="saveAndCloseDialog" :disabled="!canSave" color="red">
+      ثبت صندلی و نمایش جزئیات
+    </v-btn>
   </div>
 </template>
 
 <style>
-#page {}
-/* #kooft{
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-wrap: scroll;
-} */
-
 #container {
   width: 80%;
   margin: auto;
   margin-top: 5%;
+  margin-bottom: 5%;
 }
-.seat{
+
+.seat {
   flex-wrap: nowrap;
 }
+
 .v-icon.mdi-seat {
   color: green;
   font-size: 24px;
@@ -85,22 +91,33 @@
   flex-wrap: nowrap;
   padding: 5px;
 }
+
+.ticket {
+  background-color: #313032;
+  padding: 3%;
+  color: aliceblue;
+}
+
+.img {
+  display: inline-block;
+}
+span{
+  display: inline-block;
+  margin-right: 3%;
+}
 </style>
 <script>
 import { mdiWifi } from '@mdi/js';
 import { ref, onMounted, computed } from 'vue';
 import router from '@/router';
+import image from '@/assets/images/4.jpeg'
 export default {
   data: () => ({
     tab: null,
     path: mdiWifi,
   }),
   setup() {
-
     const selectedSeats = ref([]);
-    const gotoSeat = () => {
-      router.push('seatSelect')
-    };
 
     const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
@@ -117,7 +134,6 @@ export default {
     };
 
     const saveAndCloseDialog = () => {
-      showDialog.value = false;
       router.push({ name: 'Payment' })
     };
 
@@ -128,6 +144,7 @@ export default {
       filmName: 'هتل',
       number: 3,
       cinema: 'پردیس سینمای کورش',
+      image: image,
       selectedDate: {
         day: 30,
         month: 'دی'

@@ -80,7 +80,7 @@
                </v-card>
           </v-card-text>
           <v-card-actions ><v-btn  variant="elevated" class="mt-2 mr-3" color="red" block @click="dialog = false">ثبت نظر</v-btn></v-card-actions>
-          
+
         </v-card>
       </v-dialog>
   <div dir="rtl" style="background-color: rgb(235, 235, 235);" class="pa-6">
@@ -239,10 +239,10 @@
       dir="rtl" class="text-right"
       placeholder="دیدگاه شما..."
     ></v-textarea>
-    <v-btn text="ثبت دیدگاه" color="red" class="mt-5 ml-10 float-right pr-0 pl-0" prepend-icon="mdi-plus" style="width: 20%;"></v-btn>
+    <v-btn min-width="150px" text="ثبت دیدگاه" color="red" class="mt-5 ml-10 pr-0 pl-0" prepend-icon="mdi-plus" style="width: 20%;" dir="rtl"></v-btn>
 
   </v-container>
-  
+
     <div class="mt-5 mb-5" v-for="(Comment, i) in film && film.Comments" :key="i">
       <v-card>
         <v-card-subtitle>
