@@ -446,7 +446,25 @@ export default {
 
 
     const router = useRouter();
-
+    const comment = ref('');
+    fetch(`http://185.128.40.150:8080/api/movie/comments/:id`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ comment: comment.value }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response data
+          console.log(data);
+          // Reset the comment field
+          comment.value = '';
+        })
+        .catch(error => {
+          // Handle any errors
+          console.error(error);
+        });
     const sceneCinemas = ref([])
     const handleScne = (movie_id, scene, cinema_id) => {
         scenes.forEach
@@ -464,7 +482,7 @@ export default {
     return {
       scenes, cinemas, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, showDialog, selectedSeats, toggleSeat, closeDialog, saveAndCloseDialog, canSave, isSelectedSeat, gotoSeat, getSrc, getSrcCinema
+      isItemOpen,  getSrc, getSrcCinema
     }
   }
 }
