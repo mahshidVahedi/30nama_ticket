@@ -7,7 +7,7 @@
       <v-responsive id="salon">
         <v-row v-for="row in   salon.aliasY  " :key="row" class="seat-row">
           <v-col v-for="seat in   salon.aliasX  " :key="seat" class="seat-column">
-            <v-icon icon="mdi-seat" @click="toggleSeat(row.row, seat.column)" :class="{
+            <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)" :class="{
               'mdi-seat': isSelectedSeat(row.row, seat.column),
               'mdi-seat-occupied': !isSelectedSeat(row.row, seat.column),
               'mdi-seat-disabled': seat.disabled

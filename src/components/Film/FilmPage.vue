@@ -228,7 +228,7 @@
 
     <div dir="rtl" class="mt-16 ml-8 mr-8 mb-10 ml-0 pa-4 rounded d-flex flex-column"
       style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-      <h2 dir="rtl" class="mt-5 mb-8 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ film && film.title }}
+      <h2 dir="rtl" class="mt-5 mb-8 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{  film.name }}
       </h2>
       <v-container dir="rtl" class="text-right text-black mb-10 ml-10">
 
@@ -494,11 +494,11 @@ export default {
 
     console.log(director)
 
-    // fetch('http://185.128.40.150:8080/api/movie/comments/'+route.params.id)
-    // .then(response => response.json())
-    // .then(data => {comments.value = data.comments})
+    fetch('http://185.128.40.150:8080/api/movie/comments/'+route.params.id)
+    .then(response => response.json())
+    .then(data => {comments.value = data.comments})
 
-    // console.log(comments)
+    console.log(comments)
 
     const scenes = ref([]);
 

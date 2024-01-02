@@ -1,4 +1,3 @@
-
 <template style="background-color: rgb(235, 235, 235);" dir="rtl" >
   <div style="background-color: rgb(235, 235, 235);">
     <h2 dir="rtl" class="text-h6 ps-10 pl-0 pt-10 font-weight-bold"><b>اطلاعات بلیت و پرداخت</b></h2>
@@ -49,7 +48,7 @@
 
               <hr class="ms-3 me-3 mt-5 mb-3" style="color: beige;">
               <div dir="rtl">
-                <h3 class="mr-5 mb-5">{{ preTicket.length }} صندلی برای شما</h3>
+                <h3 class="mr-5 mb-5">{{ count }} صندلی برای شما</h3>
                 <div class="d-flex flex-row">
                   <div v-for="(ticket, i) in preTicket" :key="i" class="mr-5 mb-5 d-flex flex-row">
                     <v-chip class=""> ردیف {{ ticket.seatX }} صندلی {{ ticket.seatY }}</v-chip>
@@ -90,18 +89,18 @@
               <v-card-title class="font-weight-bold mt-5" dir="rtl">جزئیات پرداخت</v-card-title>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mt-8">
                 <p>بلیت به ارزش 60,000 تومان</p>
-                <p>{{ preTicket.length }} عدد</p>
-                <p>{{ preTicket.length * 60000 }} تومان</p>
+                <p>{{ count}} عدد</p>
+                <p>{{ count * 60000 }} تومان</p>
               </v-card-text>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
                 <p class="ms-0">کارمزد خرید آنلاین</p>
                 <p class="ms-7">4%</p>
-                <p class="ms-7">{{ preTicket.length * 60000 * 0.04 }} تومان</p>
+                <p class="ms-7">{{ count * 60000 * 0.04 }} تومان</p>
               </v-card-text>
               <hr class="ms-3 me-3 mt-3" style="color: beige;">
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
                 <p class="ms-0">مبلغ قابل پرداخت</p>
-                <p class="ms-7">{{ preTicket.length * 60000 * 0.04 + preTicket.length * 60000 }} تومان</p>
+                <p class="ms-7">{{ count * 60000 * 0.04 +count* 60000 }} تومان</p>
               </v-card-text>
             </v-card>
           </v-container>
@@ -180,15 +179,18 @@ export default {
     const movie = ref({});
     const cinema = ref({});
     const salon = ref({});
-    const fetchPreTicketData = () => {
-      fetch('http://185.128.40.150/api/ticket/token/pre')
+    const count = ref()
+      fetch('http://185.128.40.150:8080/api/ticket/token/pre/abc123')
         .then(response => response.json())
         .then(data => {
+          count.value = data.count
           preTicket.value = data.tickets;
           scene.value = data.tickets.scene;
           movie.value = data.tickets.scene.movie;
           cinema.value = data.tickets.scene.cinema;
           salon.value = data.tickets.scene.salon;
+          console.log(preTicket.value)
+
         });
       // const handleCheckbox = ()=>{
       //     if(this.checkbox1){
@@ -222,11 +224,9 @@ export default {
         const src = `/src/assets/images/${id}.jpeg`
         return src;
       }
-      onMounted(fetchPreTicketData);
 
-      return { info, image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc };
+      return { image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc,count };
 
-    }
   }
 }
 </script>
