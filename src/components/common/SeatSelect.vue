@@ -34,7 +34,7 @@
         </p>
         <p class="ma-4">
           <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-          {{ salon.startTime }}
+          {{ scene_details.startTime }}
         </p>
       </span>
     </div>
@@ -119,13 +119,15 @@ export default {
   }),
   setup() {
     const salon = ref({});
+    const scene_details = ref({})
     const selectedSeats = ref([]);
     const movie = ref({});
     const cinema= ref({});
-      fetch('http://185.128.40.150/api/seats/1')
+      fetch('http://185.128.40.150:8080/api/seats/1')
         .then(response => response.json())
         .then(data => {
-          salon.value = data.scene_details;
+          scene_details.value = data.scene_details;
+          salon.value = data.scene_details.saloon
           movie.value = data.scene_details.movie;
           cinema.value = data.scene_details.cinema;
           const soldSeats = data.sold_tickets.map(ticket => ({
@@ -189,6 +191,7 @@ export default {
       getSrc,
       movie,
       cinema,
+      scene_details
     };
   }
 }
