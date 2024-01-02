@@ -122,8 +122,7 @@ export default {
     const selectedSeats = ref([]);
     const movie = ref({});
     const cinema= ref({});
-    const fetchSeatsData = () => {
-      fetch('http://185.128.40.150/api/seats')
+      fetch('http://185.128.40.150/api/seats/1')
         .then(response => response.json())
         .then(data => {
           salon.value = data.scene_details;
@@ -135,7 +134,6 @@ export default {
           }));
           disableSoldSeats(soldSeats);
         });
-    };
     const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
       if (isSelectedSeat(row, seat)) {
@@ -180,7 +178,6 @@ export default {
         saloonId: 4
       }
     })
-    onMounted(fetchSeatsData);
     return {
       selectedSeats,
       toggleSeat,
