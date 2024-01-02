@@ -7,16 +7,19 @@
       <v-responsive id="salon">
         <v-row v-for="row in   salon.aliasY  " :key="row" class="seat-row">
           <v-col v-for="seat in   salon.aliasX  " :key="seat" class="seat-column">
-            <v-icon icon="mdi-seat" @click="toggleSeat(row.row, seat.column)" :class="{
-              'mdi-seat': isSelectedSeat(row.row, seat.column),
-              'mdi-seat-occupied': !isSelectedSeat(row.row, seat.column),
-              'mdi-seat-disabled': seat.disabled
-            }"></v-icon>
+            <v-icon
+              icon="mdi-seat"
+              @click="toggleSeat(row, seat)"
+              :class="{
+                'mdi-seat': isSelectedSeat(row, seat),
+                'mdi-seat-occupied': !isSelectedSeat(row, seat),
+                'mdi-seat-disabled': seat.disabled
+              }"
+            ></v-icon>
           </v-col>
         </v-row>
       </v-responsive>
     </v-responsive>
-
   </div>
   <div class="ticket">
 
@@ -122,21 +125,21 @@ export default {
     const scene_details = ref({})
     const selectedSeats = ref([]);
     const movie = ref({});
-    const cinema= ref({});
-      fetch('http://185.128.40.150:8080/api/seats/1')
-        .then(response => response.json())
-        .then(data => {
-          scene_details.value = data.scene_details;
-          salon.value = data.scene_details.saloon
-          movie.value = data.scene_details.movie;
-          cinema.value = data.scene_details.cinema;
-          const soldSeats = data.sold_tickets.map(ticket => ({
-            row: ticket.seatX,
-            column: ticket.seatY
-          }));
-          disableSoldSeats(soldSeats);
-        });
-    const toggleSeat = (row, seat) => {
+    const cinema = ref({});
+    fetch('http://185.128.40.150:8080/api/seats/1')
+      .then(response => response.json())
+      .then(data => {
+        scene_details.value = data.scene_details;
+        salon.value = data.scene_details.saloon
+        movie.value = data.scene_details.movie;
+        cinema.value = data.scene_details.cinema;
+        const soldSeats = data.sold_tickets.map(salon => ({
+          row: salon.seatX,
+          column: salon.seatY
+        }));
+        disableSoldSeats(soldSeats);
+      });
+      const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
       if (isSelectedSeat(row, seat)) {
         selectedSeats.value = selectedSeats.value.filter(s => s !== seatId);
@@ -165,34 +168,20 @@ export default {
       const src = `/src/assets/images/${id}.jpeg`
       return src;
     }
-    const saloon = ref({
-      filmName: 'هتل',
-      number: 3,
-      cinema: 'پردیس سینمای کورش',
-      image: image,
-      selectedDate: {
-        day: 30,
-        month: 'دی'
-      },
-      scene: {
-        hour: 23,
-        minute: 50,
-        saloonId: 4
-      }
-    })
     return {
       selectedSeats,
       toggleSeat,
       isSelectedSeat,
       saveAndCloseDialog,
       canSave,
-      saloon,
       salon,
       getSrc,
       movie,
       cinema,
       scene_details
     };
-  }
+  },
+  inheritAttrs: false
 }
+
 </script>
