@@ -1,4 +1,4 @@
-<template >
+<template>
   <div id="container">
     <v-responsive>
       <div class="scene">
@@ -77,6 +77,7 @@
   text-align: center;
   padding: 8px;
   margin-bottom: 5%;
+  margin-right: 8%;
 }
 
 #salon {
