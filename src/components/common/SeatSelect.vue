@@ -34,7 +34,7 @@
         </p>
         <p class="ma-4">
           <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-          {{ saloon.scene.minute }} : {{ saloon.scene.hour }}
+          {{ salon.startTime }}
         </p>
       </span>
     </div>
@@ -121,7 +121,7 @@ export default {
     const salon = ref({});
     const selectedSeats = ref([]);
     const fetchSeatsData = () => {
-      fetch('http://185.128.40.150:8080/api/seats')
+      fetch('http://185.128.40.150/api/seats')
         .then(response => response.json())
         .then(data => {
           salon.value = data.seats;
