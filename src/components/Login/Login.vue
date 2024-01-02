@@ -22,7 +22,7 @@
                 <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
                     <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
                     <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
-                        <v-text-field v-model="data" min-width="100px" class="ml-0 mb-3" dir="rtl" rounded="lg"
+                        <v-text-field v-model="number" min-width="100px" class="ml-0 mb-3" dir="rtl" rounded="lg"
                             label="شماره موبایل"></v-text-field>
 
                         <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey"
@@ -59,25 +59,44 @@ import { useRoute, useRouter } from 'vue-router';
 export default {
     setup() {
         const router = useRouter();
-        const data = ref('');
+        const number = ref('');
         const errorMessage = ref('');
-
+        const uid = ref()
 
         const goToRegister = () => {
             router.push({ name: 'Register' });
         };
 
         const goToVerify = () => {
-            if (data.value) {
-                router.push({ name: 'Verify', params: { data: data.value } });
+            if (number.value) {
+                fetch('http://185.128.40.150:8080/api/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ PhoneNumber: number.value }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error submitting comment');
+                        }
+                        return response.json(); // Parse the response as JSON
+                    })
+                    .then(data => {
+                        const uid = data.uid; // Get the uid from the response
+                        console.log('UID:', uid);
+                        router.push({ name: 'Verify', params: { uid: uid } });
+                    })
+                    .catch(error => {
+                        console.error('Error submitting comment:', error);
+                    });
             } else {
                 errorMessage.value = 'شماره تلفن خود را وارد کنید.';
                 window.alert(errorMessage.value);
             }
-
         };
 
-        return { goToRegister, goToVerify, data, errorMessage }
+        return { goToRegister, goToVerify, number, errorMessage }
     }
 }
 

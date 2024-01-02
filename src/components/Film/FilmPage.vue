@@ -46,39 +46,39 @@
       <v-card-title class="text-wrap mt-2" dir="rtl">امتیاز شما به {{ film.name }}</v-card-title>
       <v-card-text dir="rtl">
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
-            <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>1/5:</span> اصلا فیلم خوبی نبود
+          <v-card-text @click="submitRating(rate1)">
+            <v-icon  class="ms-5" color="red" icon="mdi-heart"></v-icon>
+            <span>{{rate1}}/5:</span> اصلا فیلم خوبی نبود
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
+          <v-card-text @click="submitRating(rate2)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>2/5:</span> فیلم خوبی نبود ولی قابل تحمل بود
+            <span>{{rate2}}/5:</span> فیلم خوبی نبود ولی قابل تحمل بود
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
+          <v-card-text @click="submitRating(rate3)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>3/5:</span> فیلم متوسطی بود، نه خیلی خوب و نه خیلی بد
+            <span>{{rate3}}/5:</span> فیلم متوسطی بود، نه خیلی خوب و نه خیلی بد
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
+          <v-card-text @click="submitRating(rate4)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>4/5:</span> فیلم خوبی بود، اما میتوانست بتر باشد
+            <span>{{rate4}}/5:</span> فیلم خوبی بود، اما میتوانست بتر باشد
           </v-card-text>
         </v-card>
 
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
+          <v-card-text @click="submitRating(rate5)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>5/5:</span> عالی بود! انتظاراتم برآورده شد
+            <span>{{rate5}}/5:</span> عالی بود! انتظاراتم برآورده شد
           </v-card-text>
         </v-card>
       </v-card-text>
-      <v-card-actions><v-btn variant="elevated" class="mt-2 mr-3" color="red" block @click="dialog = false">ثبت
-          نظر</v-btn></v-card-actions>
+      <!-- <v-card-actions><v-btn variant="elevated" class="mt-2 mr-3" color="red" block @click="dialog = false">ثبت
+          نظر</v-btn></v-card-actions> -->
 
     </v-card>
   </v-dialog>
@@ -277,6 +277,11 @@ export default {
   }),
   setup() {
 
+    const rate1 = 1
+    const rate2 = 2
+    const rate3 = 3
+    const rate4 = 4
+    const rate5 = 5
 
     const gotoSeat = () => {
       router.push({ name: 'SeatSelect' })
@@ -449,7 +454,36 @@ export default {
       // Make the POST request to the backend
       fetch('http://185.128.40.150:8080/api/movie/comment/add/' + route.params.id, {
         method: 'POST',
-        body: JSON.stringify({ comment: comment.value , name: 'w', }),
+        body: JSON.stringify({ comment: comment.value , name: 'ناشناس', }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error submitting comment');
+          }
+          return response.text(); // Get the response text
+        })
+        .then(text => {
+          console.log('Response:', text); // Log the response text
+          const data = JSON.parse(text); // Try parsing the response as JSON
+          console.log('Comment submitted:', data);
+          comment.value = '';
+        })
+        .catch(error => {
+          console.error('Error submitting comment:', error);
+        });
+    };
+
+
+    const submitRating = (rate) => {
+      // dialog = false
+      console.log(rate)
+      // Make the POST request to the backend
+      fetch('http://185.128.40.150:8080/api/movie/rating/add/' + route.params.id, {
+        method: 'POST',
+        body: JSON.stringify({ score: rate }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -486,7 +520,7 @@ export default {
     return {
       scenes, cinemas, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, getSrc, getSrcCinema, comment, submitComment,
+      isItemOpen, getSrc, getSrcCinema, comment, submitComment,submitRating,rate1,rate2,rate3,rate4,rate5,
     }
   }
 }

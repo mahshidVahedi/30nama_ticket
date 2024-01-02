@@ -10,11 +10,11 @@
       <v-col xs="12">
         <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
           <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
-            <p class="mr-4">کد فرستاده شده برای {{ receivedData }} را وارد کنید.</p>
+            <p class="mr-4">کد وارد شده را وارد کنید</p>
             <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
               <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
 
-                <input v-model="data" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
+                <input v-model="otp" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
                 <p class="box-p" v-if="seconds > 0">{{ seconds }}</p>
                 <button class="box" v-if="seconds <= 0" @click="restartTimer">ارسال مجدد</button>
               </div>
@@ -92,16 +92,38 @@ export default {
     const receivedData = ref('');
     const data = ref('');
     const errorMessage = ref('');
+    const otp = ref()
 
     onMounted(() => {
-      receivedData.value = route.params.data;
+      receivedData.value = route.params.uid;
     });
 
     const goToHome = () => {
-      if (data.value) {
-        router.push({ name: 'Home' });
+      if (otp.value) {
+        fetch('http://185.128.40.150:8080/api/verify_login', {
+          method: 'POST',
+          body: JSON.stringify({ OTP: otp.value }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error submitting comment');
+            }
+            return response.json(); // Parse the response as JSON
+          })
+          .then(text => {
+            console.log('Response:', text); // Log the response text
+            const data = JSON.parse(text); // Try parsing the response as JSON
+            console.log(' verified aand response : '+data);
+            router.push({ name: 'Home' });
+          })
+          .catch(error => {
+            console.error('Error submitting comment:', error);
+          });
       } else {
-        errorMessage.value = 'کد تایید ارسال شده را وارد کنید.'
+        errorMessage.value = 'شماره تلفن خود را وارد کنید.';
         window.alert(errorMessage.value);
       }
 
