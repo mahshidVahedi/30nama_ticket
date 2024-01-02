@@ -13,28 +13,28 @@
                 <v-col cols="4">
 
                   <v-img :rounded="4" style="max-height: 250px;max-width: 200px; min-height: 100px; min-width: 100px;"
-                    class="mt-5 ml-0 ms-5" src='@/assets/images/hotel.jpeg'></v-img>
+                    class="mt-5 ml-0 ms-5" :src="getSrc(movie.id)"></v-img>
                 </v-col>
                 <v-col>
                   <div class="d-flex flex-column mr-0 mt-4">
-                    <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ info.filmName }}</v-card-title>
+                    <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ movie.namer }}</v-card-title>
                     <v-card-text dir="rtl">
                       <div class="d-flex flex-column mt-3 ">
                         <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
                           <v-icon class="me-1 " icon="mdi-crosshairs-gps"></v-icon>
-                          {{ info.cinema }}
+                          {{ cinema.name }} - {{ salon.name }}
                         </div>
                         <div dir="rtl" class="d-flex flex-row border-white mt-5">
                           <v-icon icon="mdi-clock"></v-icon>
                           <div class="ms-1">
-                            سانس {{ info.scene.minute }} : {{ info.scene.hour }}
+                            سانس {{ scene.startTime }}
                           </div>
-                          <div class="d-flex flex-row border-white">
+                          <!-- <div class="d-flex flex-row border-white">
                             <v-icon class="ms-5" icon="mdi-clock"></v-icon>
                             <div class="ms-1">
-                              {{ info.selectedDate.day }} {{ info.selectedDate.month }}
+                              {{ preTicket.date }}
                             </div>
-                          </div>
+                          </div> -->
 
                         </div>
 
@@ -49,24 +49,16 @@
 
               <hr class="ms-3 me-3 mt-5 mb-3" style="color: beige;">
               <div dir="rtl">
-                <h3 class="mr-5 mb-5">{{ info.selectedSeats.length }} صندلی برای شما</h3>
+                <h3 class="mr-5 mb-5">{{ preTicket.length }} صندلی برای شما</h3>
                 <div class="d-flex flex-row">
-                  <div v-for="(seat, i) in info.selectedSeats" :key="i" class="mr-5 mb-5 d-flex flex-row">
-                    <v-chip class=""> ردیف {{ seat.row }} صندلی {{ seat.seat }}</v-chip>
-
-
+                  <div v-for="(ticket, i) in preTicket" :key="i" class="mr-5 mb-5 d-flex flex-row">
+                    <v-chip class=""> ردیف {{ ticket.seatX }} صندلی {{ ticket.seatY }}</v-chip>
                   </div>
                 </div>
-
-
               </div>
-
             </v-card>
           </v-container>
           <v-container>
-
-
-
             <v-card dir="rtl" variant="flat" :rounded="4" class="mt-7">
               <v-card-title>قوانین خرید بلیت</v-card-title>
               <v-card-text>
@@ -98,18 +90,18 @@
               <v-card-title class="font-weight-bold mt-5" dir="rtl">جزئیات پرداخت</v-card-title>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mt-8">
                 <p>بلیت به ارزش 60,000 تومان</p>
-                <p>{{ info.number }} عدد</p>
-                <p>{{ info.number * 60000 }} تومان</p>
+                <p>{{ preTicket.length }} عدد</p>
+                <p>{{ preTicket.length * 60000 }} تومان</p>
               </v-card-text>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
                 <p class="ms-0">کارمزد خرید آنلاین</p>
                 <p class="ms-7">4%</p>
-                <p class="ms-7">{{ info.number * 60000 * 0.04 }} تومان</p>
+                <p class="ms-7">{{ preTicket.length * 60000 * 0.04 }} تومان</p>
               </v-card-text>
               <hr class="ms-3 me-3 mt-3" style="color: beige;">
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
                 <p class="ms-0">مبلغ قابل پرداخت</p>
-                <p class="ms-7">{{ info.number * 60000 * 0.04 + info.number * 60000 }} تومان</p>
+                <p class="ms-7">{{ preTicket.length * 60000 * 0.04 + preTicket.length * 60000 }} تومان</p>
               </v-card-text>
             </v-card>
           </v-container>
@@ -158,66 +150,83 @@ export default {
   // },
   setup() {
 
-    const info = ref({
-      image: image1,
-      filmName: 'هتل',
-      number: 3,
-      cinema: 'پردیس سینمایی کورش',
-      selectedDate: {
-        day: 30,
-        month: 'دی'
-      },
-      scene: {
-        hour: 23,
-        minute: 50,
-        saloonId: 4
-      },
-      selectedSeats: [
-        {
-          seat: 8,
-          row: 9,
-        },
-        {
-          seat: 9,
-          row: 9
-        }
-      ]
-
-
-
-    })
-
-
-    // const handleCheckbox = ()=>{
-    //     if(this.checkbox1){
-    //         this.checkbox2=!this.checkbox2;
+    // const info = ref({
+    //   image: image1,
+    //   filmName: 'هتل',
+    //   number: 3,
+    //   cinema: 'پردیس سینمایی کورش',
+    //   selectedDate: {
+    //     day: 30,
+    //     month: 'دی'
+    //   },
+    //   scene: {
+    //     hour: 23,
+    //     minute: 50,
+    //     saloonId: 4
+    //   },
+    //   selectedSeats: [
+    //     {
+    //       seat: 8,
+    //       row: 9,
+    //     },
+    //     {
+    //       seat: 9,
+    //       row: 9
     //     }
+    //   ]
+    // })
+    const preTicket = ref([]);
+    const scene = ref({});
+    const movie = ref({});
+    const cinema = ref({});
+    const salon = ref({});
+    const fetchPreTicketData = () => {
+      fetch('http://185.128.40.150/api/ticket/token/pre')
+        .then(response => response.json())
+        .then(data => {
+          preTicket.value = data.tickets;
+          scene.value = data.tickets.scene;
+          movie.value = data.tickets.scene.movie;
+          cinema.value = data.tickets.scene.cinema;
+          salon.value = data.tickets.scene.salon;
+        });
+      // const handleCheckbox = ()=>{
+      //     if(this.checkbox1){
+      //         this.checkbox2=!this.checkbox2;
+      //     }
 
-    //     else if(this.checkbox2){
-    //         this.checkbox1=!this.checkbox1;
-    //     }
-    // }
+      //     else if(this.checkbox2){
+      //         this.checkbox1=!this.checkbox1;
+      //     }
+      // }
 
-    const checkbox1 = ref(true);
-    const checkbox2 = ref(false);
+      const checkbox1 = ref(true);
+      const checkbox2 = ref(false);
 
-    // Watch the value of checkbox1 and update checkbox2 accordingly
-    watch(checkbox1, (newValue) => {
-      checkbox2.value = !newValue;
-    });
+      // Watch the value of checkbox1 and update checkbox2 accordingly
+      watch(checkbox1, (newValue) => {
+        checkbox2.value = !newValue;
+      });
 
-    // Watch the value of checkbox2 and update checkbox1 accordingly
-    watch(checkbox2, (newValue) => {
-      checkbox1.value = !newValue;
-    });
+      // Watch the value of checkbox2 and update checkbox1 accordingly
+      watch(checkbox2, (newValue) => {
+        checkbox1.value = !newValue;
+      });
 
 
 
-    const goToTicket = () => {
-      router.push({ name: 'Ticket' })
+      const goToTicket = () => {
+        router.push({ name: 'Ticket' })
+      }
+      const getSrc = (id) => {
+        const src = `/src/assets/images/${id}.jpeg`
+        return src;
+      }
+      onMounted(fetchPreTicketData);
+
+      return { info, image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc };
+
     }
-
-    return { info, image1, checkbox1, checkbox2, goToTicket }
   }
 }
 </script>

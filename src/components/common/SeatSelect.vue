@@ -21,16 +21,16 @@
   <div class="ticket">
 
     <div dir="rtl" class="ma-8">
-      <v-img :src="getSrc(salon.movie.id)" width="75px" class="img">
+      <v-img :src="getSrc(movie.id)" width="75px" class="img">
       </v-img>
       <span>
         <p class="ma-4">
           <v-icon>mdi-movie</v-icon>
-          {{ saloon.movie.name }}
+          {{ movie.name }}
         </p>
         <p class="ma-4">
           <v-icon>mdi-map-marker</v-icon>
-          {{ saloon.cinema.name }}
+          {{ cinema.name }}
         </p>
         <p class="ma-4">
           <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
@@ -120,11 +120,15 @@ export default {
   setup() {
     const salon = ref({});
     const selectedSeats = ref([]);
+    const movie = ref({});
+    const cinema= ref({});
     const fetchSeatsData = () => {
       fetch('http://185.128.40.150/api/seats')
         .then(response => response.json())
         .then(data => {
-          salon.value = data.seats;
+          salon.value = data.scene_details;
+          movie.value = data.scene_details.movie;
+          cinema.value = data.scene_details.cinema;
           const soldSeats = data.sold_tickets.map(ticket => ({
             row: ticket.seatX,
             column: ticket.seatY
@@ -155,11 +159,12 @@ export default {
         const isSold = soldSeats.some(soldSeat => soldSeat.row === seat.row && soldSeat.column === seat.column);
         seat.disabled = isSold;
       });
-      const getSrc = (id) => {
-          const src = `/src/assets/images/${id}.jpeg`
-          return src;
-      }
+
     };
+    const getSrc = (id) => {
+      const src = `/src/assets/images/${id}.jpeg`
+      return src;
+    }
     const saloon = ref({
       filmName: 'هتل',
       number: 3,
@@ -184,7 +189,9 @@ export default {
       canSave,
       saloon,
       salon,
-      getSrc
+      getSrc,
+      movie,
+      cinema,
     };
   }
 }
