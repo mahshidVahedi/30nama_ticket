@@ -7,7 +7,7 @@
 
         <v-col>
           <v-container>
-            <v-card :rounded="4" variant="flat" class=" mt-10">
+            <v-card :rounded="4" variant="flat" class=" mt-10" @click="showmovie">
               <v-row dir="rtl" class="flex-column flex-md-row justify-content-start justify-sm-center align-start">
                 <v-col cols="4">
 
@@ -185,13 +185,18 @@ export default {
         .then(data => {
           count.value = data.count
           preTicket.value = data.tickets;
-          scene.value = data.tickets.scene;
-          movie.value = data.tickets.scene.movie;
-          cinema.value = data.tickets.scene.cinema;
+          scene.value = data.tickets[0].scene;
+          movie.value = data.tickets[0].scene.movie;
+          cinema.value = data.tickets[0].scene.cinema;
           salon.value = data.tickets.scene.salon;
-          console.log(preTicket.value)
 
         });
+
+
+    const showmovie = ()=>{
+      console.log(preTicket)
+
+    }
       // const handleCheckbox = ()=>{
       //     if(this.checkbox1){
       //         this.checkbox2=!this.checkbox2;
@@ -225,7 +230,7 @@ export default {
         return src;
       }
 
-      return { image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc,count };
+      return { image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc,count,showmovie };
 
   }
 }

@@ -16,7 +16,7 @@
                 </v-col>
                 <v-col>
                   <div class="d-flex flex-column mr-0 mt-4">
-                    <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ movie.name }}</v-card-title>
+                    <v-card-title class="text-h6 font-weight-bold text-wrap" dir="rtl">{{ movie.name }}</v-card-title>
                     <v-card-text dir="rtl">
                       <div class="d-flex flex-column mt-3 ">
                         <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
@@ -49,12 +49,12 @@
               <div dir="rtl">
                 <h3 class="mr-5 mb-5 mt-8">موقعیت صندلی :</h3>
                 <div id="chairs" class="d-flex flex-row">
-                  <div v-for="(ticket, i) in preTicket" :key="i" class="mr-5 mb-5 d-flex flex-row">
+                  <div v-for="(ticket, i) in tickets" :key="i" class="mr-5 mb-5 d-flex flex-row">
                     <v-chip class=""> ردیف {{ ticket.seatX }} صندلی {{ ticket.seatY }}</v-chip>
                   </div>
                 </div>
-                <div v-for="n in 1 " :key="n" class="mr-5 mb-5 mt-5">کد رزرو : <span style="color:#3baea0;" class="font-weight-bold">
-                {{ ticket[n].reserveCode }}</span></div>
+                <div class="mr-5 mb-5 mt-5">کد رزرو : <span style="color:#3baea0;" class="font-weight-bold">
+                {{ reserveCode }}</span></div>
               </div>
             </v-card>
           </v-container>
@@ -67,13 +67,13 @@
               <v-card-text dir="rtl" id="dash" class="d-flex flex-row justify-space-between mt-5 pb-5 ">
 
                 <p class="ms-0">مجموع هزینه</p>
-                <p class="ms-7">{{ ticket.length * 60000 * 0.04 + ticket.length * 60000 }} تومان</p>
+                <p class="ms-7">{{  count* 60000 * 0.04 + count * 60000 }} تومان</p>
 
               </v-card-text>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mb-5">
                 <p class="ms-0">بلیت</p>
-                <p class="ms-7">{{ ticket.length }} عدد</p>
-                <p class="ms-7">{{ ticket.length * 60000 * 0.04 + ticket.length * 60000 }} تومان</p>
+                <p class="ms-7">{{ count }} عدد</p>
+                <p class="ms-7">{{ count * 60000 * 0.04 + count * 60000 }} تومان</p>
               </v-card-text>
             </v-card>
           </v-container>
@@ -108,21 +108,27 @@ export default {
     const goToHome = () => {
       router.push({ name: 'Home' });
     };
-    const ticket = ref([]);
+    const tickets = ref([]);
     const scene = ref({});
     const movie = ref({});
     const cinema = ref({});
     const salon = ref({});
-    const fetchTicketData = () => {
-      fetch('http://185.128.40.150/api/ticket/token/rea')
+    const count = ref();
+    const reserveCode = ref()
+      fetch('http://185.128.40.150:8080/api/ticket/token/rea/abc124')
         .then(response => response.json())
         .then(data => {
-          preTicket.value = data.tickets;
-          scene.value = data.tickets.scene;
-          movie.value = data.tickets.scene.movie;
-          cinema.value = data.tickets.scene.cinema;
-          salon.value = data.tickets.scene.salon;
+          count.value = data.count
+          tickets.value = data.tickets;
+          scene.value = data.tickets[0].scene;
+          movie.value = data.tickets[0].scene.movie;
+          cinema.value = data.tickets[0].scene.cinema;
+          salon.value = data.tickets[0].scene.saloon;
+          reserveCode.value = data.tickets[0].reserveCode
         });
+
+
+      
 
       const info = ref({
         image: image1,
@@ -186,8 +192,7 @@ export default {
         return src;
       }
 
-      return { info, image1, checkbox1, checkbox2, goToHome, ticket, movie, salon, scene, cinema, getSrc }
+      return { info, image1, checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode }
     }
-  }
 }
 </script>
