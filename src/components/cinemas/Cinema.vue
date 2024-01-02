@@ -512,7 +512,7 @@ export default {
     return {
       cinema, films,comments, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen,gotoSeat,getSrc
+      isItemOpen,gotoSeat,getSrc,
     }
   }
 }

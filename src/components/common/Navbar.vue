@@ -23,7 +23,6 @@
         سینما تیکت</v-btn>
     </div>
   </div>
-
   <v-toolbar flat app color="white" prominent dir="rtl" class="d-flex d-md-none">
     <div class="d-flex flex-row">
       <!-- <v-btn color="black" append-icon="mdi-ticket" variant="text" class="d-none d-sm-flex">

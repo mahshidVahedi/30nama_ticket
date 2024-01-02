@@ -158,7 +158,8 @@
               </v-card>
               <v-row class="d-flex flex-row flex-wrap mt-5 mb-10">
                 <div v-for="(scene, j) in scenes" :key="j">
-                  <v-card v-if="isItemOpen(j) && (currentHour + calculateHour(film.duration * j + currentMinute + 30)) <= 23"
+                  <v-card
+                    v-if="isItemOpen(j) && (currentHour + calculateHour(film.duration * j + currentMinute + 30)) <= 23"
                     class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text" style="min-width: 100px ;">
                     <div class="d-flex flex-column">
                       <div class="ml-3 mr-3">
@@ -187,14 +188,13 @@
     </div>
     <div dir="rtl" class="mt-16 ml-8 mr-8 mb-10 ml-0 pa-4 rounded d-flex flex-column"
       style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
-      <h2 dir="rtl" class="mt-5 mb-8 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ film && film.title }}
+      <h2 dir="rtl" class="mt-5 mb-8 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ film.name }}
       </h2>
       <v-container dir="rtl" class="text-right text-black mb-10 ml-10">
-
-        <v-textarea bg-color="rgb(221, 221, 221)" color="black" dir="rtl" class="text-right"
+        <v-textarea v-model="comment" bg-color="rgb(221, 221, 221)" color="black" dir="rtl" class="text-right"
           placeholder="دیدگاه شما..."></v-textarea>
-        <v-btn min-width="150px" text="ثبت دیدگاه" color="red" class="mt-5 ml-10 pr-0 pl-0" prepend-icon="mdi-plus"
-          style="width: 20%;" dir="rtl"></v-btn>
+        <v-btn @click="submitComment" min-width="150px" text="ثبت دیدگاه" color="red" class="mt-5 ml-10 pr-0 pl-0"
+          prepend-icon="mdi-plus" style="width: 20%;" dir="rtl"></v-btn>
 
       </v-container>
 
@@ -443,33 +443,37 @@ export default {
         console.log(scenes.value); // Logging the modified scenes array
       })
       .catch(error => console.error('Error fetching data:', error));
-
-
     const router = useRouter();
     const comment = ref('');
-    fetch(`http://185.128.40.150:8080/api/movie/comments/:id`, {
+    const submitComment = () => {
+      // Make the POST request to the backend
+      fetch('http://185.128.40.150:8080/api/movie/comment/add/' + route.params.id, {
         method: 'POST',
+        body: JSON.stringify({ comment: comment.value , name: 'w', }),
         headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ comment: comment.value }),
+          'Content-Type': 'application/json'
+        }
       })
-        .then(response => response.json())
-        .then(data => {
-          // Handle the response data
-          console.log(data);
-          // Reset the comment field
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error submitting comment');
+          }
+          return response.text(); // Get the response text
+        })
+        .then(text => {
+          console.log('Response:', text); // Log the response text
+          const data = JSON.parse(text); // Try parsing the response as JSON
+          console.log('Comment submitted:', data);
           comment.value = '';
         })
         .catch(error => {
-          // Handle any errors
-          console.error(error);
+          console.error('Error submitting comment:', error);
         });
+    };
     const sceneCinemas = ref([])
     const handleScne = (movie_id, scene, cinema_id) => {
-        scenes.forEach
+      scenes.forEach
     }
-
     const getSrc = (id) => {
       const src = `/src/assets/images/${id}.jpeg`
       return src;
@@ -482,7 +486,7 @@ export default {
     return {
       scenes, cinemas, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen,  getSrc, getSrcCinema
+      isItemOpen, getSrc, getSrcCinema, comment, submitComment,
     }
   }
 }
