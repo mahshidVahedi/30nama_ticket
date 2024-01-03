@@ -4,12 +4,14 @@ import Home from '@/views/Home.vue';
 import Cinemas from '@/views/Cinemas.vue'
 import Login from '@/components/Login/Login'
 import Register from '@/components/Login/Register'
-import Verify from '@/components/Login/Verify'
 import Cinema from '@/views/Cinema.vue'
 import Film from '@/views/Film.vue'
 import Payment from '@/views/Payment.vue'
 import Ticket from '@/views/Ticket.vue'
 import SeatSelect from '@/components/common/SeatSelect.vue'
+import VerifyLogin from '@/components/Login/VerifyLogin'
+import VerifySignUp from '@/components/Login/VerifySignUp'
+
 
 const routes = [
   {
@@ -37,12 +39,17 @@ const routes = [
         component: Register,
       },
       {
-        path: '/verify/:data',
-        name: 'Verify',
-        component: Verify,
+        path: '/verify_login/:uuid',
+        name: 'VerifyLogin',
+        component: VerifyLogin,
         props: true
       },
-
+      {
+        path: '/verify_signUp/:uuid',
+        name: 'VerifySignUp',
+        component: VerifySignUp,
+        props: true
+      },
       {
         path: '/cinemas/:id',
         name: 'Details',
