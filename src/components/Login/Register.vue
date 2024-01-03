@@ -53,13 +53,38 @@ export default {
         const router = useRouter();
         const number = ref('')
 
-        const goToVerify = () => {
+        const goToVerify = (event) => {
+            event.preventDefault();
+            console.log(number)
             if (number.value) {
-                router.push({ name: 'Verify', params: { data: number.value } });
+                console.log(number.value)
+                fetch('http://localhost:8080/api/signup', {
+                    method: 'POST',
+                    body: JSON.stringify({ PhoneNumber: number.value }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error number sign up');
+                        }
+                        console.log(response)
+                        return response.json(); // Parse the response as JSON
+                    })
+                    .then(data => {
+                        console.log(data)
+                        const uid = data.uuid; // Get the uid from the response
+                        console.log('UID:', uid);
+                        router.push({ name: 'VerifySignUp', params: { uuid: uid } });
+                    })
+                    .catch(error => {
+                        console.error('Error sign up :', error);
+                    });
             } else {
-                window.alert('شماره خود را وارد کنید.')
+                errorMessage.value = 'شماره تلفن خود را وارد کنید.';
+                window.alert(errorMessage.value);
             }
-
         };
         return { goToVerify, number }
 

@@ -92,15 +92,15 @@ export default {
     const receivedData = ref('');
     const data = ref('');
     const errorMessage = ref('');
-    const otp = ref()
+    const otp = ref('')
+    receivedData.value = route.params.uuid;
 
-    onMounted(() => {
-      receivedData.value = route.params.uid;
-    });
 
-    const goToHome = () => {
+    const goToHome = (event) => {
+      event.preventDefault();
       if (otp.value) {
-        fetch('http://185.128.40.150:8080/api/verify_login', {
+        console.log(otp.value)
+        fetch('http://localhost:8080/api/verify_signup/'+receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
           headers: {
@@ -109,21 +109,20 @@ export default {
         })
           .then(response => {
             if (!response.ok) {
-              throw new Error('Error submitting comment');
+              throw new Error('Error verify sign up comment');
             }
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
             console.log('Response:', text); // Log the response text
-            const data = JSON.parse(text); // Try parsing the response as JSON
-            console.log(' verified aand response : '+data);
+            
             router.push({ name: 'Home' });
           })
           .catch(error => {
-            console.error('Error submitting comment:', error);
+            console.error('Error verify sign up:', error);
           });
       } else {
-        errorMessage.value = 'شماره تلفن خود را وارد کنید.';
+        errorMessage.value = 'کد ارسال شده را وارد کنید.';
         window.alert(errorMessage.value);
       }
 
@@ -155,7 +154,7 @@ export default {
       clearInterval(intervalId);
     });
 
-    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage };
+    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage ,otp};
   },
 };
 </script>

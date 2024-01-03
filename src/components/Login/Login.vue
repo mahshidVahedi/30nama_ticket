@@ -67,9 +67,12 @@ export default {
             router.push({ name: 'Register' });
         };
 
-        const goToVerify = () => {
+        const goToVerify = (event) => {
+            event.preventDefault();
+            console.log(number)
             if (number.value) {
-                fetch('http://185.128.40.150:8080/api/login', {
+                console.log(number.value)
+                fetch('http://localhost:8080/api/login', {
                     method: 'POST',
                     body: JSON.stringify({ PhoneNumber: number.value }),
                     headers: {
@@ -80,12 +83,14 @@ export default {
                         if (!response.ok) {
                             throw new Error('Error submitting comment');
                         }
+                        console.log(response)
                         return response.json(); // Parse the response as JSON
                     })
                     .then(data => {
-                        const uid = data.uid; // Get the uid from the response
+                        console.log(data)
+                        const uid = data.uuid; // Get the uid from the response
                         console.log('UID:', uid);
-                        router.push({ name: 'Verify', params: { uid: uid } });
+                        router.push({ name: 'VerifyLogin', params: { uuid: uid } });
                     })
                     .catch(error => {
                         console.error('Error submitting comment:', error);
