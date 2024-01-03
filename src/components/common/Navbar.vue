@@ -198,18 +198,10 @@ export default {
         const f = data.movies[0];
         dialogVisible.value = true;
         searchResults.value = data.response;
-<<<<<<< HEAD
-        movies.value = searchResults.movies;
-        movie.value = movies[0].value;
-        name.value = movie.value.name;
-        searchQuery.value = '';
-        console.log(name);
-=======
         // movies.value = data.movies;
         // movie.value = f.name;
         // console.log(movie);
         searchQuery.value = '';
->>>>>>> 65a5f73006d8ab20e4a5441376e20948c706e584
       } catch (error) {
         console.error('Error fetching search results:', error);
       }

@@ -67,9 +67,9 @@ import photoBG2 from '@/assets/Jangale-Porteghal-8.jpg'
 import photoM2 from '@/assets/jangal.jfif'
 import photoBG3 from '@/assets/gijgahBG.jpeg'
 import photoM3 from '@/assets/gijgah.jfif'
-import image2 from '@/assets/images/jangal.jpeg'
-import image3 from '@/assets/images/fosil.jpeg'
-import image4 from '@/assets/images/gijgah.jpeg'
+import image2 from '@/assets/images/2.jpeg'
+import image3 from '@/assets/images/3.jpeg'
+import image1 from '@/assets/images/1.jpeg'
 import photoA1 from '@/assets/Film1/ac1.jpg';
 import photoA2 from '@/assets/Film1/ac2.jpg';
 import photoA3 from '@/assets/Film1/ac3.jpg';
@@ -79,12 +79,12 @@ export default {
     const films = [
       {
         id: 3,
-        image: image2,
+        image: image3,
         duration: 152,
-        photo: photoM2,
-        backgraoundPhoto: photoBG2,
-        background: photoBG2,
-        mainPhoto: image2,
+        photo: image3,
+        backgraoundPhoto: image3,
+        background: image3,
+        mainPhoto: image3,
         title: "The Dark Knight",
         director: "c2",
         genre: "Action",
@@ -94,13 +94,13 @@ export default {
       },
       {
         id: 2,
-        image: image3,
+        image: image2,
         caption: 'The Godfather',
         duration: 175,
-        photo: photoM1,
-        background: image3,
-        mainPhoto: image3,
-        backgraoundPhoto: photoBG1,
+        photo: image2,
+        background: image2,
+        mainPhoto: image2,
+        backgraoundPhoto: image2,
         title: 'The Godfather',
         director: 'c2',
         genre: 'Crime',
@@ -109,13 +109,13 @@ export default {
       },
       {
         id: 1,
-        image: image4,
+        image: image1,
         caption: 'The Shawshank Redemption',
         duration: 142,
-        photo: photoM3,
-        background: photoBG3,
-        mainPhoto: image4,
-        backgraoundPhoto: photoBG3,
+        photo: image1,
+        background: image1,
+        mainPhoto: image1,
+        backgraoundPhoto: image1,
         title: 'The Shawshank Redemption',
         director: 'c1',
         genre: 'Drama',
