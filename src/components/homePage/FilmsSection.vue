@@ -1,7 +1,7 @@
 <template>
-  <div style="direction: rtl;" class="mt-10">
-    <h3>
-      فیلم ایرانی
+  <div class="mt-10">
+    <h3 style="margin-right: 200px;">
+      Films
     </h3>
     <section class="ma-auto mb-16 " style="width: 80%; height: 900px;">
       <v-list>
@@ -469,7 +469,7 @@ export default {
     //   }
     // ]);
 
-    
+
     const films = ref([])
       fetch('http://185.128.40.150:8080/api/movies')
         .then(response => response.json())
@@ -479,7 +479,7 @@ export default {
     const goToFilmDetails = (film) => {
       router.push({ name: 'Film', params: { id: film.id } });
     };
- 
+
       const getSrc = (id) => {
           const src = `/src/assets/images/${id}.jpeg`
           return src;
