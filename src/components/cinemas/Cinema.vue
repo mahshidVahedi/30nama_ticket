@@ -28,16 +28,16 @@
               </div>
               <div class="d-flex flex-row mt-5">
 
-                <div v-for="(feature, i) in cinema && cinema.features" :key="i" class="mr-5 ml-5">
+                <div v-for="feature in features" :key="feature.id" class="mr-5 ml-5">
 
                   <v-tooltip location="bottom">
                     <template v-slot:activator="{ on, props }">
 
                       <v-icon v-bind="props" v-on="on" color="grey-lighten-1">
-                        {{ feature.icon }}
+                        {{findFeatureicon(feature.featureName)}}
                       </v-icon>
                     </template>
-                    <span>{{ feature.value }}</span>
+                    <span>{{findFeatureValue(feature.featureName)}}</span>
                   </v-tooltip>
 
                 </div>
@@ -103,14 +103,14 @@
       <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{ cinema && cinema.name }}</h2>
       <v-card>
         <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start" class="mt-5 mb-5">
-          <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
-          <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
-          <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
+          <v-tab :value="1"  @click="handleTab(1)">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
+          <v-tab :value="2"  @click="handleTab(2)">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
+          <v-tab :value="3"  @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-window-item v-for="n in 3" :key="n" :value="n">
 
-            <div class="mt-10 ml-0" v-for="(film, i) in films" :key="i">
+            <div class="mt-10 ml-0" v-for="(scene, index) in scenes" :key="index">
 
               <v-card dir="rtl" variant="text" class="mr-10 ml-10 pt-0">
 
@@ -121,16 +121,13 @@
                         <v-responsive :aspect-ratio="16 / 9">
                           <v-img rounded="4"
                             style="max-height: 300px;max-width: 200px; min-height: 100px; min-width: 100px;"
-                            :src="film.photo"></v-img>
+                            :src="getSrcMovie(scene.MovieId)"></v-img>
                         </v-responsive>
                       </v-col>
                       <v-col>
                         <div style="max-width: 100%;" class="d-flex flex-column mr-0 mt-5">
-                          <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ film.title }}</v-card-title>
+                          <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ scene.MovieName }}</v-card-title>
                           <v-card-text dir="rtl">
-                            <div class="mt-3 mb-3">
-                              کارگردان : {{ film.director }}
-                            </div>
                             <v-chip>{{ film.genre }}</v-chip>
                             <div class="d-flex flex-row mt-3 ">
                               <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
@@ -154,7 +151,7 @@
 
                   </v-col>
                   <v-col>
-                    <v-btn @click="handleClick(i)" class="mr-10">سانس ها</v-btn>
+                    <v-btn @click="handleClick(index)" class="mr-10">سانس ها</v-btn>
                   </v-col>
                 </v-row>
 
@@ -163,32 +160,31 @@
               </v-card>
 
               <v-row class="d-flex flex-row flex-wrap mt-5 mb-10">
-                <div v-for="(scene, j) in scenes" :key="j">
-                  <v-card
-                    v-if="isItemOpen(i) && currentHour + calculateHour(film.duration * j + currentMinute + 30) <= 23"
-                    class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text" style="min-width: 100px ;">
+                <div v-if="conditions[index]">
+                  <v-card v-for="saloon in scene.SceneSaloon" class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5"
+                    variant="text" style="min-width: 100px ;">
+
                     <div class="d-flex flex-column">
                       <div class="ml-3 mr-3">
+                        <v-card-title>{{ saloon.SaloonName }}</v-card-title>
                         <v-card-item>
-                          <p class="mt-3 mb-3 ml-2">
-                            <v-icon icon="mdi-clock"></v-icon>
-                            سانس {{ calculateMinute(film.duration * j + currentMinute + 25) }} : {{ currentHour +
-                              calculateHour(film.duration * j + currentMinute + 50) }}
+
+                          <p class="mt-3 mb-3 mr-0">
+                            <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
+                            سانس {{ saloon.StartTime }}
                           </p>
                           <v-card-subtitle>
                             60000 تومان
                           </v-card-subtitle>
                         </v-card-item>
                       </div>
-
-                      <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat" color="red">
+                      <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
+                        color="red">
                         خرید بلیت
                       </v-btn>
                     </div>
                   </v-card>
-
                 </div>
-
               </v-row>
 
 
@@ -207,9 +203,9 @@
     <v-btn class="mr-10 mt-5 mb-16" prepend-icon="mdi-phone"><template>
         <v-icon style="color: rgb(26, 133, 26);"></v-icon>
       </template>{{ cinema && cinema.contact }}</v-btn>
-      <div style="height: 200px;">
+    <div style="height: 200px;">
 
-      </div>
+    </div>
 
     <!-- <div dir="rtl" class="ml-8 mr-8 mb-10 pb-5" style="background-color: white; margin-bottom: 300px;border-radius: 10px;">
 
@@ -222,7 +218,7 @@
           placeholder="دیدگاه شما..."></v-textarea>
           <v-btn min-width="150px" text="ثبت دیدگاه" color="red" class="mt-5 ml-10 pr-0 pl-0" prepend-icon="mdi-plus" style="width: 20%;" dir="rtl"></v-btn>
       </v-container> -->
-      <!-- <div class="mt-5 mb-5" v-for="comment in comments " :key="comment.id">
+    <!-- <div class="mt-5 mb-5" v-for="comment in comments " :key="comment.id">
       <v-card>
         <v-card-subtitle>
           {{ comment.name }}
@@ -238,9 +234,9 @@
 <style>
 label {
   direction: rtl;
- }
+}
 
- /* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
+/* #my-textarea .v-input__control ,#my-textarea  .v-input__details{
   width: 800px;
  } */
 
@@ -278,7 +274,7 @@ export default {
 
 
     const gotoSeat = () => {
-      router.push({name: 'SeatSelect'})
+      router.push({ name: 'SeatSelect' })
     };
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
@@ -293,20 +289,23 @@ export default {
     const cinema = ref({});
 
     console.log(route.params.id)
+    const features = ref([])
 
     fetch('http://185.128.40.150:8080/api/cinemas/' + route.params.id)
       .then(response => response.json())
-      .then(data => cinema.value = data.cinema)
+      .then(data =>{ cinema.value = data.cinema
+                      features.value = data.features})
 
     console.log(cinema)
+    console.log(features)
     const router = useRouter();
 
     const comments = ref([])
-    fetch('http://185.128.40.150:8080/api/cinema/comments/id'+route.params.id)
-        .then(response => response.json())
-        .then(data => {comments.value = data.comments})
+    fetch('http://185.128.40.150:8080/api/cinema/comments/id' + route.params.id)
+      .then(response => response.json())
+      .then(data => { comments.value = data.comments })
 
-        console.log('The comments are : '+comments.value)
+    console.log('The comments are : ' + comments.value)
 
     const calculateMinute = (time) => {
       const number = time % 60
@@ -318,115 +317,171 @@ export default {
     const calculateHour = (time) => {
       return Math.floor(time / 60)
     }
-    const films = [
-      {
-        id: 1,
-        title: 'فسیل',
-        director: 'کریم امینی',
-        photo: photoM1,
-        score: '4.5/5',
-        duration: '85',
-        genre: 'کمدی',
-        description: "فیلم فسیل به کارگردانی کریم امینی و تهیه‌کنندگی ابراهیم عامریان است. بهرام افشاری، هادی کاظمی، الناز حبیبی، الهه حصاری، ایمان صفا، بابک کریمی، سیدجواد هاشمی و ... در این فیلم کمدی ایفای نقش کرده‌اند.",
-        casts: [
-          ' بهرام افشاری',
-          'هادی کاظمی',
+    // const films = [
+    //   {
+    //     id: 1,
+    //     title: 'فسیل',
+    //     director: 'کریم امینی',
+    //     photo: photoM1,
+    //     score: '4.5/5',
+    //     duration: '85',
+    //     genre: 'کمدی',
+    //     description: "فیلم فسیل به کارگردانی کریم امینی و تهیه‌کنندگی ابراهیم عامریان است. بهرام افشاری، هادی کاظمی، الناز حبیبی، الهه حصاری، ایمان صفا، بابک کریمی، سیدجواد هاشمی و ... در این فیلم کمدی ایفای نقش کرده‌اند.",
+    //     casts: [
+    //       ' بهرام افشاری',
+    //       'هادی کاظمی',
 
-        ],
-        condition: false,
-      },
-      {
-        id: 2,
-        title: 'جنگل پرتقال',
-        director: ' آرمان خوانساریان',
-        photo: photoM2,
-        score: '4/5',
-        duration: '90',
-        genre: 'درام',
-        description: "فیلم جنگل پرتقال نویسندگی و کارگردانی آرمان خوانساریان و محصول سال 1401 است. سارا بهرامی، میرسعید مولویان، رضا بهبودی، رضا عموزاد، فراز سرابی، داوود فتحعلی بیگی، فرشته مرعشی، ارشیا نیک‌بین، حمیدرضا عباسی، زینب شعبانی و حسام نورانی بازیگران این فیلم هستند.",
-        casts: [
-          'سارا بهرامی ',
-          'میرسعید مولویان',
+    //     ],
+    //     condition: false,
+    //   },
+    //   {
+    //     id: 2,
+    //     title: 'جنگل پرتقال',
+    //     director: ' آرمان خوانساریان',
+    //     photo: photoM2,
+    //     score: '4/5',
+    //     duration: '90',
+    //     genre: 'درام',
+    //     description: "فیلم جنگل پرتقال نویسندگی و کارگردانی آرمان خوانساریان و محصول سال 1401 است. سارا بهرامی، میرسعید مولویان، رضا بهبودی، رضا عموزاد، فراز سرابی، داوود فتحعلی بیگی، فرشته مرعشی، ارشیا نیک‌بین، حمیدرضا عباسی، زینب شعبانی و حسام نورانی بازیگران این فیلم هستند.",
+    //     casts: [
+    //       'سارا بهرامی ',
+    //       'میرسعید مولویان',
 
-        ],
-        condition: false,
-      },
-      {
-        id: 3,
-        title: 'گیجگاه',
-        director: ' عادل تبریزی',
-        photo: photoM3,
-        score: '2.9/5',
-        duration: '105',
-        genre: 'عاشقانه',
-        description: "فیلم گیج‌گاه نخستین فیلم عادل تبریزی محصول سال 1399 است که در آن بازیگرانی همچون جمشید هاشم‌پور، حامد بهداد، باران کوثری، سروش صحت، فرهاد آییش ایفای نقش می‌کنند. این فیلم در سی‌و‌نهمین جنشواره‌ی فیلم فجر نیز حضور داشت و در دو بخش بهترین تدوین و بهترین کارگردان فیلم اولی، نامزد دریافت سیمرغ شد. ",
-        casts: [
-          'حامد بهداد ',
-          'باران کوثری',
+    //     ],
+    //     condition: false,
+    //   },
+    //   {
+    //     id: 3,
+    //     title: 'گیجگاه',
+    //     director: ' عادل تبریزی',
+    //     photo: photoM3,
+    //     score: '2.9/5',
+    //     duration: '105',
+    //     genre: 'عاشقانه',
+    //     description: "فیلم گیج‌گاه نخستین فیلم عادل تبریزی محصول سال 1399 است که در آن بازیگرانی همچون جمشید هاشم‌پور، حامد بهداد، باران کوثری، سروش صحت، فرهاد آییش ایفای نقش می‌کنند. این فیلم در سی‌و‌نهمین جنشواره‌ی فیلم فجر نیز حضور داشت و در دو بخش بهترین تدوین و بهترین کارگردان فیلم اولی، نامزد دریافت سیمرغ شد. ",
+    //     casts: [
+    //       'حامد بهداد ',
+    //       'باران کوثری',
 
-        ],
-        condition: false,
+    //     ],
+    //     condition: false,
+    //   }
+    // ]
+
+
+    // const saloons = [
+    //   {
+    //     id: 1,
+    //     name: 'خورشیدنو',
+    //     cinema_id: 1,
+
+    //   },
+    //   {
+    //     id: 2,
+    //     name: 'گراند سینما',
+    //     cinema_id: 1,
+
+    //   },
+    //   {
+    //     id: 2,
+    //     name: 'سالن 1',
+    //     cinema_id: 2,
+
+    //   }
+    // ]
+
+    // const scenes = [
+    //   {
+    //     id: 1,
+    //     saloon_id: 1,
+    //     movie_id: 1,
+
+    //   },
+    //   {
+    //     id: 4,
+    //     saloon_id: 2,
+    //     movie_id: 2,
+    //   },
+    //   {
+    //     id: 2,
+    //     saloon_id: 2,
+    //     movie_id: 2,
+
+    //   },
+    //   {
+    //     id: 3,
+    //     saloon_id: 1,
+    //     movie_id: 3,
+
+    //   }
+
+    // ]
+
+
+    const scenes = ref([]);
+    const SceneSaloon = ref([])
+
+    const handleTab = (tabValue) => {
+      fetchSearchResults(tabValue)
+    }
+
+    const fetchSearchResults = async (tabValue) => {
+      try {
+        let apiUrl = '';
+
+        const today = new Date();
+        const currentDate = today.toISOString().split('T')[0];
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const tomorrowDate = tomorrow.toISOString().split('T')[0];
+
+        const dayAfterTomorrow = new Date(today);
+        dayAfterTomorrow.setDate(today.getDate() + 2);
+        const dayAfterTomorrowDate = dayAfterTomorrow.toISOString().split('T')[0];
+
+        switch (tabValue) {
+          case 1:
+            apiUrl = `http://185.128.40.150:8080/api/cinema/movies/${route.params.id}?time=${currentDate}`;
+            break;
+          case 2:
+            apiUrl = `http://185.128.40.150:8080/api/cinema/movies/${route.params.id}?time=${tomorrowDate}`;
+            break;
+          case 3:
+            apiUrl = `http://185.128.40.150:8080/api/cinema/movies/${route.params.id}?time=${dayAfterTomorrowDate}`;
+            break;
+          default:
+            apiUrl = '';
+            break;
+        }
+        if (apiUrl) {
+          const response = await fetch(apiUrl);
+          const data = await response.json();
+          // Process the API response data here
+          console.log(data);
+          if (data.status == 0 || data.status == "0") {
+
+          }
+          scenes.value = data.scene
+          
+        }
+      } catch (error) {
+        console.error('Error fetching search results:', error);
       }
-    ]
-
-
-    const saloons = [
-      {
-        id: 1,
-        name: 'خورشیدنو',
-        cinema_id: 1,
-
-      },
-      {
-        id: 2,
-        name: 'گراند سینما',
-        cinema_id: 1,
-
-      },
-      {
-        id: 2,
-        name: 'سالن 1',
-        cinema_id: 2,
-
-      }
-    ]
-
-    const scenes = [
-      {
-        id: 1,
-        saloon_id: 1,
-        movie_id: 1,
-
-      },
-      {
-        id: 4,
-        saloon_id: 2,
-        movie_id: 2,
-      },
-      {
-        id: 2,
-        saloon_id: 2,
-        movie_id: 2,
-
-      },
-      {
-        id: 3,
-        saloon_id: 1,
-        movie_id: 3,
-
-      }
-
-    ]
+    };
 
     const openItems = ref([]);
 
+    const conditions = ref([])
+
+    for (let i = 0; i < scenes.value.length; i++) {
+      conditions.value[i] = false;
+    }
+
     function handleClick(itemId) {
-      films[itemId].condition = !films[itemId].condition;
-      if (!isItemOpen(itemId) && films[itemId].condition) {
-        openItems.value.push(itemId);
-      } else if (!films[itemId].condition) {
-        openItems.value.pop(itemId)
-      }
+      console.log(itemId);
+      console.log(scenes.value[itemId].SceneSaloon);
+      conditions.value[itemId] = !conditions.value[itemId];
     }
 
     function isItemOpen(itemId) {
@@ -504,15 +559,38 @@ export default {
     }
 
     const getSrc = (id) => {
-          const src = `/src/assets/cinema1/${id}.jpg`
-          return src;
-      }
+      const src = `/src/assets/cinema1/${id}.jpg`
+      return src;
+    }
+
+    const getSrcMovie = (id)=>{
+      const src = `/src/assets/images/${id}.jpeg`
+      return src;
+    }
+
+    const findFeatureicon = (value)=>{
+      console.log(value)
+      return `mdi-${value}`
+    }
+
+    const findFeatureValue = (value) =>{
+      console.log(value)
+        if (value ==='food'){
+          return 'فود کورت'
+        } 
+        else if (value ==='coffee'){
+          return 'کافی شاپ'
+        }
+        else if (value ==='parking'){
+          return 'پارکینگ'
+        }
+    }
 
 
     return {
-      cinema, films,comments, saloons, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
+      cinema, comments, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen,gotoSeat,getSrc,
+      isItemOpen, gotoSeat, getSrc, conditions,getSrcMovie,features,findFeatureicon,findFeatureValue,handleTab
     }
   }
 }

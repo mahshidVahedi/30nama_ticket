@@ -26,11 +26,14 @@
                 </v-chip>
               </div>
               <div class="d-flex flex-row mt-5">
-                <div v-for="(actor, i) in film && film.actors" :key="i" class="mr-5 ml-5">
-                  <div class="d-flex align-items-center">
-                    <v-img :src="actor.photo" width="50px" height="50px" class="mr-2 rounded-lg"
-                      style="object-fit: cover;"></v-img>
-                    <span class="ma-4">{{ film && actor.name }}</span>
+                <div v-for="actor in actors" :key="actor.id" class="mr-5 ml-5">
+                  <div class="d-flex align-items-center mt-5">
+                    <!-- <v-img :src="actor.photo" width="50px" height="50px" class="mr-2 rounded-lg"
+                      style="object-fit: cover;"></v-img> -->
+                    <h4>
+                      بازیگران {{ film && film.name }} :
+                    </h4>
+                    <span class="mr-5">{{ actor.cast.name }}</span>
                   </div>
                 </div>
               </div>
@@ -47,33 +50,33 @@
       <v-card-text dir="rtl">
         <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text @click="submitRating(rate1)">
-            <v-icon  class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>{{rate1}}/5:</span> اصلا فیلم خوبی نبود
+            <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+            <span>{{ rate1 }}/5:</span> اصلا فیلم خوبی نبود
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text @click="submitRating(rate2)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>{{rate2}}/5:</span> فیلم خوبی نبود ولی قابل تحمل بود
+            <span>{{ rate2 }}/5:</span> فیلم خوبی نبود ولی قابل تحمل بود
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text @click="submitRating(rate3)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>{{rate3}}/5:</span> فیلم متوسطی بود، نه خیلی خوب و نه خیلی بد
+            <span>{{ rate3 }}/5:</span> فیلم متوسطی بود، نه خیلی خوب و نه خیلی بد
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text @click="submitRating(rate4)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>{{rate4}}/5:</span> فیلم خوبی بود، اما میتوانست بتر باشد
+            <span>{{ rate4 }}/5:</span> فیلم خوبی بود، اما میتوانست بتر باشد
           </v-card-text>
         </v-card>
 
         <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text @click="submitRating(rate5)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>{{rate5}}/5:</span> عالی بود! انتظاراتم برآورده شد
+            <span>{{ rate5 }}/5:</span> عالی بود! انتظاراتم برآورده شد
           </v-card-text>
         </v-card>
       </v-card-text>
@@ -93,9 +96,7 @@
       <p class="ma-4">
         خلاصه داستان: {{ film && film.summery }}
       </p>
-      <h4>
-        بازیگران {{ film && film.name }}
-      </h4>
+
       <v-row>
         <v-col cols="12" sm="6" md="2" v-for="(actor, index) in film && film.cast" :key="index">
           <v-list dense class="no-fill">
@@ -112,13 +113,14 @@
       <h2 class="ma-4 text-black font-weight-bold">برنامه اکران {{ film && film.name }}</h2>
       <v-card>
         <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start" class=" mt-5 mb-5">
-          <v-tab :value="1">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
-          <v-tab :value="2">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
-          <v-tab :value="3">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
+          <v-tab :value="1" @click="handleTab(1)">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
+          <v-tab :value="2" @click="handleTab(2)">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
+          <v-tab :value="3" @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth
+          }}</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-window-item v-for="n in 3" :key="n" :value="n">
-            <div class="mt-10 ml-0" v-for="scene in scenes" :key="scene.id">
+            <div class="mt-10 ml-0" v-for="(scene, index) in scenes" :key="index">
               <v-card dir="rtl" variant="text" class="mr-10 ml-10 pt-0">
                 <v-row class="flex-lg-row flex-s-column justify-content-between">
                   <v-col col="9">
@@ -127,14 +129,14 @@
                         <v-responsive :aspect-ratio="16 / 9">
                           <v-img class="rounded-4"
                             style="max-height: 300px;max-width: 200px; min-height: 100px; min-width: 100px;"
-                            :src="getSrcCinema(scene.cinema.id)"></v-img>
+                            :src="getSrcCinema(scene.CinemaId)"></v-img>
                         </v-responsive>
                       </v-col>
                       <v-col>
                         <div style="max-width: 100%;" class="d-flex flex-column mr-0 mt-5">
-                          <v-card-title class="text-h6 font-weight-bold text-wrap" dir="rtl">{{ scene.cinema.name
+                          <v-card-title class="text-h6 font-weight-bold text-wrap" dir="rtl">{{ scene.CinemaName
                           }}</v-card-title>
-                          <v-card-text dir="rtl">
+                          <!-- <v-card-text dir="rtl">
                             <div class="mt-3 mb-3">
                               {{ scene.cinema.location }}
                             </div>
@@ -146,27 +148,29 @@
                                 </div>
                               </div>
                             </div>
-                          </v-card-text>
+                          </v-card-text> -->
                         </div>
                       </v-col>
                     </v-row>
                   </v-col>
                   <v-col>
-                    <v-btn @click="handleClick(i)" class="mr-10">سانس ها</v-btn>
+                    <v-btn @click="handleClick(index)" class="mr-10">سانس ها</v-btn>
                   </v-col>
                 </v-row>
               </v-card>
               <v-row class="d-flex flex-row flex-wrap mt-5 mb-10">
-                <div v-for="(scene, j) in scenes" :key="j">
-                  <v-card
-                    v-if="isItemOpen(j) && (currentHour + calculateHour(film.duration * j + currentMinute + 30)) <= 23"
-                    class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text" style="min-width: 100px ;">
+                <div v-if="conditions[index]">
+                  <v-card v-for="saloon in scene.SceneSaloon" class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5"
+                    variant="text" style="min-width: 100px ;">
+
                     <div class="d-flex flex-column">
                       <div class="ml-3 mr-3">
+                        <v-card-title>{{ saloon.SaloonName }}</v-card-title>
                         <v-card-item>
+
                           <p class="mt-3 mb-3 mr-0">
                             <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-                            سانس {{ scene.startTime }}
+                            سانس {{ saloon.StartTime }}
                           </p>
                           <v-card-subtitle>
                             60000 تومان
@@ -269,7 +273,7 @@ import { useRouter, useRoute } from 'vue-router';
 import router from '@/router';
 export default {
   data: () => ({
-    tab: null,
+    tab: 1,
     path: mdiWifi,
     rules: [v => v.length <= 500 || 'حداکثر 500 کاراکتر'],
     value: '',
@@ -277,6 +281,7 @@ export default {
   }),
   setup() {
 
+    const tab = ref(1)
     const rate1 = 1
     const rate2 = 2
     const rate3 = 3
@@ -286,6 +291,7 @@ export default {
     const gotoSeat = () => {
       router.push({ name: 'SeatSelect' })
     };
+
 
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
@@ -354,23 +360,9 @@ export default {
 
     const openItems = ref([]);
 
-    function handleClick(itemId) {
-      scenes[itemId].condition = !scenes[itemId].condition;
-      if (!isItemOpen(itemId) && scenes[itemId].condition) {
-        openItems.value.push(itemId);
-      } else if (!scenes[itemId].condition) {
-        openItems.value.pop(itemId)
-      }
-    }
 
-    function isItemOpen(itemId) {
-      if (openItems.value.includes(itemId)) {
-        return true;
-      }
-      else {
-        return false
-      }
-    }
+
+
     const currentHour = ref('');
     const currentMinute = ref('')
 
@@ -417,6 +409,7 @@ export default {
     const film = ref({});
     const director = ref({})
     const comments = ref([])
+    const actors = ref([])
 
     console.log(route.params.id)
 
@@ -425,36 +418,94 @@ export default {
       .then(data => {
         film.value = data.movie
         director.value = data.movie.director
+        actors.value = data.actors
       })
 
     console.log(director)
 
-    fetch('http://185.128.40.150:8080/api/movie/comments/'+route.params.id)
-    .then(response => response.json())
-    .then(data => {comments.value = data.comments})
-
-    console.log(comments)
+    fetch('http://185.128.40.150:8080/api/movie/comments/' + route.params.id)
+      .then(response => response.json())
+      .then(data => { comments.value = data.comments })
 
     const scenes = ref([]);
+    const SceneSaloon = ref([])
 
-    fetch('http://185.128.40.150:8080/api/movie/cinemas/' + route.params.id)
-      .then(response => response.json())
-      .then(data => {
-        // Add a condition property to each scene
-        scenes.value = data.scene.map(scene => ({
-          ...scene,
-          condition: false // Replace this with your condition logic
-        }));
-        console.log(scenes.value); // Logging the modified scenes array
-      })
-      .catch(error => console.error('Error fetching data:', error));
+    const handleTab = (tabValue) => {
+      fetchSearchResults(tabValue)
+    }
+
+    const fetchSearchResults = async (tabValue) => {
+      try {
+        let apiUrl = '';
+
+        const today = new Date();
+        const currentDate = today.toISOString().split('T')[0];
+
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        const tomorrowDate = tomorrow.toISOString().split('T')[0];
+
+        const dayAfterTomorrow = new Date(today);
+        dayAfterTomorrow.setDate(today.getDate() + 2);
+        const dayAfterTomorrowDate = dayAfterTomorrow.toISOString().split('T')[0];
+
+        switch (tabValue) {
+          case 1:
+            apiUrl = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=${currentDate}`;
+            break;
+          case 2:
+            apiUrl = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=${tomorrowDate}`;
+            break;
+          case 3:
+            apiUrl = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=${dayAfterTomorrowDate}`;
+            break;
+          default:
+            apiUrl = '';
+            break;
+        }
+        if (apiUrl) {
+          const response = await fetch(apiUrl);
+          const data = await response.json();
+          // Process the API response data here
+          console.log(data);
+          if (data.status == 0 || data.status == "0") {
+
+          }
+          scenes.value = data.scene
+          console.log(scenes.value[1].SceneSaloon);
+        }
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+    };
+
+    // onMounted(() => {
+    //   fetchSearchResults()
+
+    // })
+
+    // fetch('http://185.128.40.150:8080/api/movie/cinemas/' + route.params.id)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     scenes.value = data.scene
+    //       console.log(scenes.value[1].SceneSaloon);
+    //   })
+    //   .catch(error => console.error('Error fetching data:', error));
+
+    // .map(scene => ({
+    //     ...scene,
+    //     condition: true 
+    //   }));
+
+
+
     const router = useRouter();
     const comment = ref('');
     const submitComment = () => {
       // Make the POST request to the backend
       fetch('http://185.128.40.150:8080/api/movie/comment/add/' + route.params.id, {
         method: 'POST',
-        body: JSON.stringify({ comment: comment.value , name: 'ناشناس', }),
+        body: JSON.stringify({ comment: comment.value, name: 'ناشناس', }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -517,10 +568,31 @@ export default {
       const src = `/src/assets/cinema1/${id}.jpg`
       return src;
     }
+
+    const conditions = ref([])
+
+    for (let i = 0; i < scenes.value.length; i++) {
+      conditions.value[i] = false;
+    }
+
+    function handleClick(itemId) {
+      console.log(itemId);
+      console.log(scenes.value[itemId].SceneSaloon);
+      conditions.value[itemId] = !conditions.value[itemId];
+    }
+
+    function isItemOpen(itemId) {
+      if (openItems.value.includes(itemId)) {
+        return true;
+      }
+      else {
+        return false
+      }
+    }
     return {
       scenes, cinemas, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, getSrc, getSrcCinema, comment, submitComment,submitRating,rate1,rate2,rate3,rate4,rate5,
+      isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors
     }
   }
 }

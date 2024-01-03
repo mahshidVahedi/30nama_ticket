@@ -146,6 +146,7 @@ export default {
     const restartTimer = () => {
       clearInterval(intervalId);
       startTimer();
+      
     };
 
     onMounted(startTimer);

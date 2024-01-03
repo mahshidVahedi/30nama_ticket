@@ -161,10 +161,10 @@ export default {
         dialogVisible.value = true;
         searchResults.value = data.response;
         movies.value = searchResults.movies;
-        movie.value = movies[0];
-        name.value = movie.name;
+        movie.value = movies[0].value;
+        name.value = movie.value.name;
         searchQuery.value = '';
-        console.log(name.value);
+        console.log(name);
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
