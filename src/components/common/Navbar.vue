@@ -8,9 +8,25 @@
         ورود یا ثبت نام</v-btn>
     </div>
     <div class="d-flex flex-row ma-2 pa-2">
-      <v-btn append-icon="mdi-magnify" class="ma-2">
-        <input dir="rtl" placeholder="جستجو فیلم، بازیگر و ..." id="" cols="20" rows="5">
-      </v-btn>
+      <!-- <input :value="searchQuery" @input="updateSearchQuery" dir="rtl" placeholder="جستجو فیلم، بازیگر و ..." id=""
+        cols="20" rows="5"> -->
+      <v-text-field v-model="searchQuery" class="kooft" dir="rtl" placeholder="جستجو فیلم، بازیگر و ..."></v-text-field>
+      <v-btn @click="fetchSearchResults" color="black" append-icon="mdi-magnify" class="ma-2 pa-0"></v-btn>
+      <v-dialog max-width="600" v-model="dialogVisible">
+        <v-card>
+          <v-card-title>Search Results</v-card-title>
+          <v-card-text>
+            <v-list>
+              <v-list-item v-for="item in movie" :key="movie.id">
+                <v-list-item-title>{{ movie.name }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="dialogVisible = false">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-btn @click="goToCinemaList" color="black" append-icon="mdi-movie" variant="text" class="ma-2 pa-2">
         <template v-slot:append>
           <v-icon color="#616161"></v-icon>
@@ -25,21 +41,6 @@
   </div>
   <v-toolbar flat app color="white" prominent dir="rtl" class="d-flex d-md-none">
     <div class="d-flex flex-row">
-      <!-- <v-btn color="black" append-icon="mdi-ticket" variant="text" class="d-none d-sm-flex">
-        <template v-slot:append>
-          <v-icon color="#616161"></v-icon>
-        </template>
-        بلیط های من</v-btn>
-
-      <v-btn @click="dialog = true" variant="text" color="black" append-icon="mdi-crosshairs-gps"
-        class="d-none d-sm-flex">
-        <template v-slot:append>
-          <v-icon color="#616161"></v-icon>
-        </template>
-        مکان</v-btn> -->
-
-
-
     </div>
 
     <v-spacer></v-spacer>
@@ -63,12 +64,6 @@
 
   <v-navigation-drawer v-model="drawer" location="top" class="d-flex d-md-none">
     <v-list>
-      <!-- <v-list-item class="d-flex d-sm-none">
-        بلیط های من
-      </v-list-item>
-      <v-list-item @click="dialog = true" class="d-flex d-sm-none">
-        مکان
-      </v-list-item> -->
       <v-list-item @click="goToCinemaList">
         سینما
       </v-list-item>
@@ -114,69 +109,76 @@
   font-family: 'Cairo Play', sans-serif;
 }
 
-input {
+.input {
+  width: 450px;
+  height: 50px;
   background: white url("assets/search-icon.svg") no-repeat 15px center;
   background-size: 15px 15px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
 }
+
+.kooft {
+  width: 300px;
+}
 </style>
 
 <script>
+
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 
 export default {
-  data() {
-    return {
-      dialog: false,
-      drawer: false,
-    }
-  },
   setup() {
     const router = useRouter();
+    const drawer = ref(false);
+    const dialogVisible = ref(false);
+    const searchQuery = ref('');
+    const searchResults = ref([]);
+    const movie = ref({});
 
     const goToHome = () => {
-      router.push({ name: 'Home' });
+      router.push('/');
     };
 
     const goToCinemaList = () => {
-      router.push({ name: 'Cinemas' });
+      router.push('/cinema-list');
     };
-
 
     const goToLogin = () => {
-      router.push({ name: 'Login' });
+      router.push('/login');
     };
 
-    const cities = [
-      'تهران',
-      'مشهد',
-      'تبریز',
-      'قم',
-      'اراک',
-      'شیراز',
-      'یزد',
-      'کرمان',
-      'اسفهان',
-      'کرج',
-      'اهواز',
-      'کرمانشاه',
-      'ارومیه',
-      'رشت',
-      'همدان',
-      'اردبیل',
-      'ساری',
-      'سنندج'
-    ]
+    const fetchSearchResults = async () => {
+      console.log(searchQuery.value);
+      try {
+        const response = await fetch(`http://185.128.40.150:8080/api/movie/search/${searchQuery.value}`);
+        console.log(`http://185.128.40.150:8080/api/movie/search/${searchQuery.value}`);
+        const data = await response.json();
+        dialogVisible.value = true;
+        searchResults.value = data.response;
+        movie.value = searchResults.movies[0].name;
+        searchQuery.value = '';
+
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+      }
+
+    };
 
     return {
-      goToCinemaList,
+      drawer,
+      dialogVisible,
+      searchQuery,
+      searchResults,
       goToHome,
+      goToCinemaList,
       goToLogin,
-      cities
+      fetchSearchResults,
+      movie,
     };
   },
 };
-</script>
 
+</script>
