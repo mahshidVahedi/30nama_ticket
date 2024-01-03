@@ -17,9 +17,9 @@
           <v-card-title>Search Results</v-card-title>
           <v-card-text>
             <v-list>
-              <v-list-item v-for="item in movie" :key="movie.id">
-                <v-list-item-title>{{ movie.name }}</v-list-item-title>
-              </v-list-item>
+              <!-- <v-list-item v-for="item in movie" :key="movie.id"> -->
+                <v-list-item-title>{{ name }}</v-list-item-title>
+              <!-- </v-list-item> -->
             </v-list>
           </v-card-text>
           <v-card-actions>
@@ -137,6 +137,8 @@ export default {
     const searchQuery = ref('');
     const searchResults = ref([]);
     const movie = ref({});
+    const movies = ref([]);
+    const name = ref('');
 
     const goToHome = () => {
       router.push('/');
@@ -158,9 +160,11 @@ export default {
         const data = await response.json();
         dialogVisible.value = true;
         searchResults.value = data.response;
-        movie.value = searchResults.movies[0].name;
+        movies.value = searchResults.movies;
+        movie.value = movies[0];
+        name.value = movie.name;
         searchQuery.value = '';
-
+        console.log(name.value);
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
@@ -169,6 +173,7 @@ export default {
 
     return {
       drawer,
+      movies,
       dialogVisible,
       searchQuery,
       searchResults,
@@ -177,6 +182,7 @@ export default {
       goToLogin,
       fetchSearchResults,
       movie,
+      name,
     };
   },
 };

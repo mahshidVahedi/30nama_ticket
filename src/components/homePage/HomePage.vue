@@ -1,9 +1,6 @@
 <template>
   <Navbar></Navbar>
   <Slidershow></Slidershow>
-  <div>
-    salam mikham test begigiram
-  </div>
   <FilmSection></FilmSection>
   <Footer></Footer>
 
