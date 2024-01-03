@@ -8,22 +8,31 @@
         ورود یا ثبت نام</v-btn>
     </div>
     <div class="d-flex flex-row ma-2 pa-2">
-      <!-- <input :value="searchQuery" @input="updateSearchQuery" dir="rtl" placeholder="جستجو فیلم، بازیگر و ..." id=""
+      <!-- <input :value="searchQuery" @input="updateSearchQuery" dir="rtl" placeholder="جستجو فیلم ..." id=""
         cols="20" rows="5"> -->
       <v-text-field v-model="searchQuery" class="kooft" dir="rtl" placeholder="جستجو فیلم، بازیگر و ..."></v-text-field>
       <v-btn @click="fetchSearchResults" color="black" append-icon="mdi-magnify" class="ma-2 pa-0"></v-btn>
-      <v-dialog max-width="600" v-model="dialogVisible">
+      <v-dialog style="width: 60%; height: 600px;" v-model="dialogVisible">
         <v-card>
-          <v-card-title>Search Results</v-card-title>
+          <v-card-title dir="rtl">نتایج جستجو</v-card-title>
           <v-card-text>
-            <v-list>
-              <!-- <v-list-item v-for="item in movie" :key="movie.id"> -->
-                <v-list-item-title>{{ name }}</v-list-item-title>
-              <!-- </v-list-item> -->
+            <v-list dense>
+              <!-- <v-list-item v-for="item in movies">
+                <v-list-item-title>{{ item }}</v-list-item-title>
+              </v-list-item> -->
+              <v-list-item @click="goToFilmDetails(film)" v-for="film in movies" :key="film.id"
+                style="display: inline-block;" class="item">
+                <v-list-item-avatar>
+                  <v-img :src="getSrc(film.id)" :alt="film.name" width="200px" height="auto"></v-img>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title style="color: black;">{{ film.name }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
             </v-list>
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" @click="dialogVisible = false">Close</v-btn>
+            <v-btn color="primary" @click="dialogVisible = false">بستن</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -135,10 +144,12 @@ export default {
     const drawer = ref(false);
     const dialogVisible = ref(false);
     const searchQuery = ref('');
-    const searchResults = ref([]);
-    const movie = ref({});
-    const movies = ref([]);
-    const name = ref('');
+    const searchResults = ref({});
+    let movie = ref({});
+    const movies = [];
+    let i = 0;
+    // const name= '';
+    //const name = ref('');
 
     const goToHome = () => {
       router.push('/');
@@ -152,19 +163,53 @@ export default {
       router.push('/login');
     };
 
+    const goToFilmDetails = (film) => {
+      router.push({ name: 'Film', params: { id: film.id } });
+    };
+
+    const getSrc = (id) => {
+      const src = `/src/assets/images/${id}.jpeg`
+      return src;
+    }
+
+
     const fetchSearchResults = async () => {
       console.log(searchQuery.value);
+
       try {
         const response = await fetch(`http://185.128.40.150:8080/api/movie/search/${searchQuery.value}`);
-        console.log(`http://185.128.40.150:8080/api/movie/search/${searchQuery.value}`);
         const data = await response.json();
+        const allMovies = data.movies;
+        const allDirectors = data.directorMovies;
+        const cinemas = data.cinemas;
+        allMovies.forEach(element => {
+          if (element != null && element != undefined) {
+            // console.log(movies);
+            movie = element;
+            // console.log(movie);
+            // if (movie !== '') {
+            movies[i] = movie;
+            // }
+            //console.log(movies[i]);
+            i = i + 1;
+          }
+        });
+
+        const f = data.movies[0];
         dialogVisible.value = true;
         searchResults.value = data.response;
+<<<<<<< HEAD
         movies.value = searchResults.movies;
         movie.value = movies[0].value;
         name.value = movie.value.name;
         searchQuery.value = '';
         console.log(name);
+=======
+        // movies.value = data.movies;
+        // movie.value = f.name;
+        // console.log(movie);
+        searchQuery.value = '';
+>>>>>>> 65a5f73006d8ab20e4a5441376e20948c706e584
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
@@ -181,8 +226,9 @@ export default {
       goToCinemaList,
       goToLogin,
       fetchSearchResults,
-      movie,
-      name,
+      movies,
+      getSrc,
+      goToFilmDetails,
     };
   },
 };
