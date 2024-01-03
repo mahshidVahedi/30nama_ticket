@@ -58,7 +58,7 @@ export default {
             console.log(number)
             if (number.value) {
                 console.log(number.value)
-                fetch('http://localhost:8080/api/signup', {
+                fetch('http://185.128.40.150:8080/api/signup', {
                     method: 'POST',
                     body: JSON.stringify({ PhoneNumber: number.value }),
                     headers: {

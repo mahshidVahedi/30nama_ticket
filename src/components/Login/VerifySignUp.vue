@@ -100,7 +100,7 @@ export default {
       event.preventDefault();
       if (otp.value) {
         console.log(otp.value)
-        fetch('http://localhost:8080/api/verify_signup/'+receivedData.value, {
+        fetch('http://185.128.40.150:8080/api/verify_signup/'+receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
           headers: {
@@ -115,7 +115,7 @@ export default {
           })
           .then(text => {
             console.log('Response:', text); // Log the response text
-            
+
             router.push({ name: 'Home' });
           })
           .catch(error => {
