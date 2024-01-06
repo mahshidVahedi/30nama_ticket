@@ -7,7 +7,7 @@
 
         <v-col>
           <v-container>
-            <v-card :rounded="4" variant="flat" class=" mt-10" @click="showmovie">
+            <v-card :rounded="4" variant="flat" class=" mt-10" >
               <v-row dir="rtl" class="flex-column flex-md-row justify-content-start justify-sm-center align-start">
                 <v-col cols="4">
 
@@ -16,7 +16,7 @@
                 </v-col>
                 <v-col>
                   <div class="d-flex flex-column mr-0 mt-4">
-                    <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ movie.namer }}</v-card-title>
+                    <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ movie.name }}</v-card-title>
                     <v-card-text dir="rtl">
                       <div class="d-flex flex-column mt-3 ">
                         <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
@@ -188,34 +188,17 @@ export default {
           scene.value = data.tickets[0].scene;
           movie.value = data.tickets[0].scene.movie;
           cinema.value = data.tickets[0].scene.cinema;
-          salon.value = data.tickets.scene.salon;
+          salon.value = data.tickets[0].scene.saloon;
 
         });
-
-
-    const showmovie = ()=>{
-      console.log(preTicket)
-
-    }
-      // const handleCheckbox = ()=>{
-      //     if(this.checkbox1){
-      //         this.checkbox2=!this.checkbox2;
-      //     }
-
-      //     else if(this.checkbox2){
-      //         this.checkbox1=!this.checkbox1;
-      //     }
-      // }
 
       const checkbox1 = ref(true);
       const checkbox2 = ref(false);
 
-      // Watch the value of checkbox1 and update checkbox2 accordingly
       watch(checkbox1, (newValue) => {
         checkbox2.value = !newValue;
       });
 
-      // Watch the value of checkbox2 and update checkbox1 accordingly
       watch(checkbox2, (newValue) => {
         checkbox1.value = !newValue;
       });
@@ -230,7 +213,7 @@ export default {
         return src;
       }
 
-      return { image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc,count,showmovie };
+      return { image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc,count };
 
   }
 }

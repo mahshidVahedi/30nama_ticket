@@ -34,10 +34,10 @@
                     <template v-slot:activator="{ on, props }">
 
                       <v-icon v-bind="props" v-on="on" color="grey-lighten-1">
-                        {{findFeatureicon(feature.featureName)}}
+                        {{ findFeatureicon(feature.featureName) }}
                       </v-icon>
                     </template>
-                    <span>{{findFeatureValue(feature.featureName)}}</span>
+                    <span>{{ findFeatureValue(feature.featureName) }}</span>
                   </v-tooltip>
 
                 </div>
@@ -59,34 +59,34 @@
       <v-card-title class="text-wrap mt-2" dir="rtl">امتیاز شما به {{ cinema.name }}</v-card-title>
       <v-card-text dir="rtl">
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
+          <v-card-text @click="submitRating(rate1)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>1/5:</span> خیلی ضعیف
+            <span>{{ rate1 }}/5:</span> خیلی ضعیف
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
+          <v-card-text @click="submitRating(rate2)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>2/5:</span> ضعیف
+            <span>{{rate2}}/5:</span> ضعیف
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
+          <v-card-text @click="submitRating(rate3)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>3/5:</span> متوسط
+            <span>{{rate3}}/5:</span> متوسط
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
+          <v-card-text @click="submitRating(rate4)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>4/5:</span> خوب
+            <span>{{rate4}}/5:</span> خوب
           </v-card-text>
         </v-card>
 
         <v-card dir="rtl" variant="outlined" class="mt-2">
-          <v-card-text>
+          <v-card-text @click="submitRating(rate5)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>5/5:</span> خیلی خوب
+            <span>{{rate5}}/5:</span> خیلی خوب
           </v-card-text>
         </v-card>
       </v-card-text>
@@ -103,9 +103,10 @@
       <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{ cinema && cinema.name }}</h2>
       <v-card>
         <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start" class="mt-5 mb-5">
-          <v-tab :value="1"  @click="handleTab(1)">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
-          <v-tab :value="2"  @click="handleTab(2)">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
-          <v-tab :value="3"  @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
+          <v-tab :value="1" @click="handleTab(1)">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
+          <v-tab :value="2" @click="handleTab(2)">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
+          <v-tab :value="3" @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth
+          }}</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-window-item v-for="n in 3" :key="n" :value="n">
@@ -178,7 +179,7 @@
                           </v-card-subtitle>
                         </v-card-item>
                       </div>
-                      <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
+                      <v-btn @click="gotoSeat(saloon.SceneId)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
                         color="red">
                         خرید بلیت
                       </v-btn>
@@ -265,16 +266,44 @@ export default {
     path: mdiWifi,
     rules: [v => v.length <= 500 || 'حداکثر 500 کاراکتر'],
     value: '',
-    dialog: false,
   }),
 
   setup() {
 
-    //fetch :
+    const rate1 = 1
+    const rate2 = 2
+    const rate3 = 3
+    const rate4 = 4
+    const rate5 = 5
+    const dialog = ref(false)
 
+    const submitRating = (rate) => {
+      dialog.value = false
+      console.log(rate)
+      fetch('http://185.128.40.150:8080/api/movie/rating/add/' + route.params.id, {
+        method: 'POST',
+        body: JSON.stringify({ score: rate }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error submitting score');
+          }
+          return response.text(); 
+        })
+        .then(text => {
+          console.log('Response:', text); 
+        })
+        .catch(error => {
+          console.error('Error submitting rate:', error);
+        });
+    };
 
-    const gotoSeat = () => {
-      router.push({ name: 'SeatSelect' })
+    const gotoSeat = (index) => {
+      console.log(index)
+      router.push({ name: 'SeatSelect',params: { id: index }})
     };
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
@@ -293,8 +322,10 @@ export default {
 
     fetch('http://185.128.40.150:8080/api/cinemas/' + route.params.id)
       .then(response => response.json())
-      .then(data =>{ cinema.value = data.cinema
-                      features.value = data.features})
+      .then(data => {
+        cinema.value = data.cinema
+        features.value = data.features
+      })
 
     console.log(cinema)
     console.log(features)
@@ -419,7 +450,11 @@ export default {
 
 
     const scenes = ref([]);
-    const SceneSaloon = ref([])
+    const firstApi = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=2024-01-02`;
+
+    fetch(firstApi)
+      .then(response => response.json())
+      .then(data => { scenes.value = data.scene })
 
     const handleTab = (tabValue) => {
       fetchSearchResults(tabValue)
@@ -463,7 +498,7 @@ export default {
 
           }
           scenes.value = data.scene
-          
+
         }
       } catch (error) {
         console.error('Error fetching search results:', error);
@@ -471,7 +506,6 @@ export default {
     };
 
     const openItems = ref([]);
-
     const conditions = ref([])
 
     for (let i = 0; i < scenes.value.length; i++) {
@@ -538,59 +572,44 @@ export default {
     const cinemaScenes = ref([])
     const cinemaSaloons = ref([])
 
-    const handleScne = (movie_id, scene, cinema_id) => {
-      // if (movie_id === scene.movie_id) {
-      // cinemaMovie.push(movie)
-      //   saloons.forEach((saloon) => {
-      //     if (saloon.id === scene.saloon_id) {
-      //       if (saloon.cinema_id === cinema_id) {
-      //         cinemaScenes.value.push(scene)
-      //         cinemaSaloons.value.push(saloon)
-      //         Object.values(cinemaScenes).forEach((scene) => {
-      //           console.log('The scene is : ' + scene.value)
-      //         })
-      //         Object.values(cinemaSaloons).forEach((saloon) => {
-      //           console.log('The saloon is : ' + saloon.value)
-      //         })
-      //       }
-      //     }
-      //   })
-      // }
-    }
-
     const getSrc = (id) => {
       const src = `/src/assets/cinema1/${id}.jpg`
       return src;
     }
 
-    const getSrcMovie = (id)=>{
+    const getSrcMovie = (id) => {
       const src = `/src/assets/images/${id}.jpeg`
       return src;
     }
 
-    const findFeatureicon = (value)=>{
+    const findFeatureicon = (value) => {
       console.log(value)
-      return `mdi-${value}`
+      if(value==='ghaza'){
+        return 'mdi-food'
+      }else{
+        return `mdi-${value}`
+
+      }
     }
 
-    const findFeatureValue = (value) =>{
+    const findFeatureValue = (value) => {
       console.log(value)
-        if (value ==='food'){
-          return 'فود کورت'
-        } 
-        else if (value ==='coffee'){
-          return 'کافی شاپ'
-        }
-        else if (value ==='parking'){
-          return 'پارکینگ'
-        }
+      if (value === 'food' || value === 'ghaza') {
+        return 'فود کورت'
+      }
+      else if (value === 'coffee') {
+        return 'کافی شاپ'
+      }
+      else if (value === 'parking') {
+        return 'پارکینگ'
+      }
     }
 
 
     return {
       cinema, comments, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
-      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, gotoSeat, getSrc, conditions,getSrcMovie,features,findFeatureicon,findFeatureValue,handleTab
+      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons,dialog,
+      isItemOpen, gotoSeat, getSrc, conditions, getSrcMovie, features, findFeatureicon, findFeatureValue, handleTab,submitRating,rate1,rate2,rate3,rate4,rate5
     }
   }
 }

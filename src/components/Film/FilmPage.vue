@@ -177,7 +177,7 @@
                           </v-card-subtitle>
                         </v-card-item>
                       </div>
-                      <v-btn @click="gotoSeat()" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
+                      <v-btn @click="gotoSeat(saloon.SceneId)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
                         color="red">
                         خرید بلیت
                       </v-btn>
@@ -277,7 +277,6 @@ export default {
     path: mdiWifi,
     rules: [v => v.length <= 500 || 'حداکثر 500 کاراکتر'],
     value: '',
-    dialog: false
   }),
   setup() {
 
@@ -287,9 +286,11 @@ export default {
     const rate3 = 3
     const rate4 = 4
     const rate5 = 5
+    const dialog =ref(false)
 
-    const gotoSeat = () => {
-      router.push({ name: 'SeatSelect' })
+    const gotoSeat = (index) => {
+      console.log(index)
+      router.push({ name: 'SeatSelect',params: { id: index }})
     };
 
 
@@ -359,10 +360,6 @@ export default {
     // ]
 
     const openItems = ref([]);
-
-
-
-
     const currentHour = ref('');
     const currentMinute = ref('')
 
@@ -428,8 +425,12 @@ export default {
       .then(data => { comments.value = data.comments })
 
     const scenes = ref([]);
-    const SceneSaloon = ref([])
+    const firstApi = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=2024-01-02`;
 
+    fetch(firstApi)
+      .then(response => response.json())
+      .then(data => {scenes.value = data.scene
+ })
     const handleTab = (tabValue) => {
       fetchSearchResults(tabValue)
     }
@@ -451,7 +452,7 @@ export default {
 
         switch (tabValue) {
           case 1:
-            apiUrl = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=${currentDate}`;
+            apiUrl = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=2024-01-02`;
             break;
           case 2:
             apiUrl = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=${tomorrowDate}`;
@@ -472,31 +473,11 @@ export default {
 
           }
           scenes.value = data.scene
-          console.log(scenes.value[1].SceneSaloon);
         }
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
     };
-
-    // onMounted(() => {
-    //   fetchSearchResults()
-
-    // })
-
-    // fetch('http://185.128.40.150:8080/api/movie/cinemas/' + route.params.id)
-    //   .then(response => response.json())
-    //   .then(data => {
-    //     scenes.value = data.scene
-    //       console.log(scenes.value[1].SceneSaloon);
-    //   })
-    //   .catch(error => console.error('Error fetching data:', error));
-
-    // .map(scene => ({
-    //     ...scene,
-    //     condition: true 
-    //   }));
-
 
 
     const router = useRouter();
@@ -529,36 +510,29 @@ export default {
 
 
     const submitRating = (rate) => {
-      // dialog = false
+      dialog.value = false
       console.log(rate)
-      // Make the POST request to the backend
       fetch('http://185.128.40.150:8080/api/movie/rating/add/' + route.params.id, {
         method: 'POST',
-        body: JSON.stringify({ score: rate }),
+        body: JSON.stringify({ score: rate}),
         headers: {
           'Content-Type': 'application/json'
         }
       })
         .then(response => {
           if (!response.ok) {
-            throw new Error('Error submitting comment');
+            throw new Error('Error submitting score');
           }
-          return response.text(); // Get the response text
+          return response.text(); 
         })
         .then(text => {
-          console.log('Response:', text); // Log the response text
-          const data = JSON.parse(text); // Try parsing the response as JSON
-          console.log('Comment submitted:', data);
-          comment.value = '';
+          console.log('Response:', text); 
         })
         .catch(error => {
-          console.error('Error submitting comment:', error);
+          console.error('Error submitting rate:', error);
         });
     };
-    const sceneCinemas = ref([])
-    const handleScne = (movie_id, scene, cinema_id) => {
-      scenes.forEach
-    }
+
     const getSrc = (id) => {
       const src = `/src/assets/images/${id}.jpeg`
       return src;
@@ -576,8 +550,6 @@ export default {
     }
 
     function handleClick(itemId) {
-      console.log(itemId);
-      console.log(scenes.value[itemId].SceneSaloon);
       conditions.value[itemId] = !conditions.value[itemId];
     }
 
@@ -591,8 +563,8 @@ export default {
     }
     return {
       scenes, cinemas, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
-      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, handleScne, cinemaScenes, cinemaSaloons,
-      isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors
+      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons,dialog,
+      isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors,gotoSeat
     }
   }
 }

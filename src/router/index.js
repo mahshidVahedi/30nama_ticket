@@ -79,7 +79,7 @@ const routes = [
       component:Ticket
       },
       {
-        path: '/:id/seatSelect',
+        path: '/:id/seatSelect/:id',
         name: 'SeatSelect',
         component: SeatSelect,
         props: true

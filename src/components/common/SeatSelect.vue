@@ -112,22 +112,26 @@ span {
 }
 </style>
 <script>
-import { mdiWifi } from '@mdi/js';
+import { mdiPackageVariantClosedMinus, mdiWifi } from '@mdi/js';
 import { ref, onMounted, computed } from 'vue';
 import router from '@/router';
 import image from '@/assets/images/4.jpeg'
+import { useRouter, useRoute } from 'vue-router';
 export default {
   data: () => ({
     tab: null,
     path: mdiWifi,
   }),
   setup() {
+    const router = useRouter();
+    const route = useRoute();
     const salon = ref({});
     const scene_details = ref({})
     const selectedSeats = ref([]);
     const movie = ref({});
     const cinema = ref({});
-    fetch('http://185.128.40.150:8080/api/seats/1')
+    console.log(route.params.id)
+    fetch('http://185.128.40.150:8080/api/seats/'+ route.params.id)
       .then(response => response.json())
       .then(data => {
         scene_details.value = data.scene_details;
