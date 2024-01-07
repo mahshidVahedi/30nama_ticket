@@ -128,7 +128,7 @@ export default {
 
     };
 
-    const seconds = ref(59);
+    const seconds = ref(5);
     let intervalId;
 
     const updateNumber = () => {
@@ -140,15 +140,37 @@ export default {
     };
 
     const startTimer = () => {
+      console.log('in start timer')
       intervalId = setInterval(updateNumber, 1000);
     };
 
-    const restartTimer = () => {
+    const restartTimer = (event) => {
+      // event.preventDefault();
+      console.log("in functionn")
       clearInterval(intervalId);
       startTimer();
+      
+      fetch('http://185.128.40.150:8080/api/resend_otp/'+receivedData.value, {
+          method: 'POST',
+          body: JSON.stringify(),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error resend verify login');
+            }
+            return response.json(); // Parse the response as JSON
+          })
+          .then(text => {
+            console.log('Response:', text); // Log the response text
+            
+          })
+
     };
 
-    onMounted(startTimer);
+    // onMounted(startTimer);
 
     onBeforeUnmount(() => {
       clearInterval(intervalId);

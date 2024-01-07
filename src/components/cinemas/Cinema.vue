@@ -90,8 +90,7 @@
           </v-card-text>
         </v-card>
       </v-card-text>
-      <v-card-actions><v-btn variant="elevated" class="mt-2 mr-3" color="red" block @click="dialog = false">ثبت
-          نظر</v-btn></v-card-actions>
+
 
     </v-card>
   </v-dialog>
@@ -280,7 +279,7 @@ export default {
     const submitRating = (rate) => {
       dialog.value = false
       console.log(rate)
-      fetch('http://185.128.40.150:8080/api/movie/rating/add/' + route.params.id, {
+      fetch('http://185.128.40.150:8080/api/cinema/rating/add/' + route.params.id, {
         method: 'POST',
         body: JSON.stringify({ score: rate }),
         headers: {
@@ -332,7 +331,7 @@ export default {
     const router = useRouter();
 
     const comments = ref([])
-    fetch('http://185.128.40.150:8080/api/cinema/comments/id' + route.params.id)
+    fetch('http://185.128.40.150:8080/api/cinema/comments/' + route.params.id)
       .then(response => response.json())
       .then(data => { comments.value = data.comments })
 
