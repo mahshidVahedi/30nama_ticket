@@ -418,9 +418,7 @@ export default {
         actors.value = data.actors
       })
 
-    console.log(director)
-
-    fetch('http://185.128.40.150:8080/api/movie/comments/' + route.params.id)
+    fetch('http://185.128.40.150:8080/api/movie/comments/' + route.params.id + '?offset=0&limit=100')
       .then(response => response.json())
       .then(data => { comments.value = data.comments })
 
@@ -502,6 +500,7 @@ export default {
           const data = JSON.parse(text); // Try parsing the response as JSON
           console.log('Comment submitted:', data);
           comment.value = '';
+          window.location.reload();
         })
         .catch(error => {
           console.error('Error submitting comment:', error);
@@ -523,10 +522,10 @@ export default {
           if (!response.ok) {
             throw new Error('Error submitting score');
           }
-          return response.text(); 
+          return response.text();
         })
         .then(text => {
-          console.log('Response:', text); 
+          console.log('Response:', text);
         })
         .catch(error => {
           console.error('Error submitting rate:', error);
