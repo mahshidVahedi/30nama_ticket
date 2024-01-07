@@ -26,13 +26,14 @@
                 </v-chip>
               </div>
               <div class="d-flex flex-row mt-5">
-                <div v-for="actor in actors" :key="actor.id" class="mr-5 ml-5">
-                  <div class="d-flex align-items-center mt-5">
-                    <!-- <v-img :src="actor.photo" width="50px" height="50px" class="mr-2 rounded-lg"
-                      style="object-fit: cover;"></v-img> -->
-                    <h4>
+                <h4>
                       بازیگران {{ film && film.name }} :
                     </h4>
+                <div v-for="actor in actors" :key="actor.id" class="mr-5 ml-5">
+                  <div class="d-flex align-items-center">
+                    <!-- <v-img :src="actor.photo" width="50px" height="50px" class="mr-2 rounded-lg"
+                      style="object-fit: cover;"></v-img> -->
+                   
                     <span class="mr-5">{{ actor.cast.name }}</span>
                   </div>
                 </div>
