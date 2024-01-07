@@ -339,25 +339,6 @@ export default {
       }
     ]
 
-    // const scenes = [
-    //   {
-    //     id: 1,
-    //     movie_id: 1,
-    //   },
-    //   {
-    //     id: 4,
-    //     movie_id: 2,
-    //   },
-    //   {
-    //     id: 2,
-    //     movie_id: 2,
-    //   },
-    //   {
-    //     id: 3,
-    //     movie_id: 3,
-    //   }
-
-    // ]
 
     const openItems = ref([]);
     const currentHour = ref('');

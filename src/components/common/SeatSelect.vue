@@ -70,7 +70,7 @@
 }
 
 .scene {
-  width: 90%;
+  width: 80%;
   background-color: #807e7e;
   margin: auto;
   border-radius: 10px;

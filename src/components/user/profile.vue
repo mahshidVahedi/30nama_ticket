@@ -5,32 +5,24 @@
       <v-card-text>
         <v-container>
           <v-row v-if="!isEditing" dir="rtl">
-            <v-col cols="12" sm="6" >
-              <div class="info">شماره تلفن: {{ userData.phone }}</div>
+            <v-col cols="12" sm="6">
+              <div class="info">شماره تلفن: {{ userData.user_phone }}</div>
             </v-col>
             <v-col cols="12" sm="6">
-              <div class="info">ایمیل: {{ userData.email }}</div>
+              <div class="info">ایمیل: {{ userData.user_email }}</div>
             </v-col>
             <v-col cols="12" sm="6">
-              <div class="info">نام : {{ userData.phone }}</div>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <div class="info"> نام خانوادگی: {{ userData.phone }}</div>
+              <div class="info">نام : {{ userData.user_name }}</div>
             </v-col>
           </v-row>
           <v-row v-else dir="rtl">
             <v-col cols="12" sm="6">
-              <v-text-field v-model="updatedUser.email" label="ایمیل"></v-text-field>
+              <v-text-field :model-value="fjdsnjkbavjs" v-model="updatedUser.email" ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
-              <v-text-field v-model="updatedUser.phone" label="شماره تلفن"></v-text-field>
+              <v-text-field :model-value="userData.user_name" v-model="updatedUser.name"></v-text-field>
             </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field v-model="updatedUser.phone" label="نام"></v-text-field>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-text-field v-model="updatedUser.phone" label="نام خانوادگی"></v-text-field>
-            </v-col>
+
           </v-row>
         </v-container>
       </v-card-text>
@@ -66,6 +58,7 @@ export default {
         }
         const data = await response.json();
         userData.value = data;
+        console.log(userData);
       } catch (error) {
         console.error(error);
       }
@@ -82,12 +75,12 @@ export default {
           },
           body: JSON.stringify(updatedUser.value)
         });
+        console.log(response);
+        console.log(updatedUser);
         if (!response.ok) {
           throw new Error('Failed to update user information');
         }
-
         isEditing.value = false;
-        getUserData(); // Refresh user data after saving changes
       } catch (error) {
         console.error(error);
       }
@@ -104,10 +97,11 @@ export default {
 </script>
 
 <style>
-#container{
-  direction:rtl;
+#container {
+  direction: rtl;
 }
-.but{
-  float:left;
+
+.but {
+  float: left;
 }
 </style>

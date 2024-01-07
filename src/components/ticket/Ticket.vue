@@ -92,8 +92,6 @@
 }
 </style>
 
-
-
 <script lang="js">
 import image1 from '@/assets/images/hotel.jpeg'
 import { ref, watch } from 'vue'
@@ -114,8 +112,9 @@ export default {
     const cinema = ref({});
     const salon = ref({});
     const count = ref();
+    const route = useRoute();
     const reserveCode = ref()
-      fetch('http://185.128.40.150:8080/api/ticket/token/rea/abc124')
+      fetch('http://185.128.40.150:8080/api/ticket/token/rea/' + route.params.token)
         .then(response => response.json())
         .then(data => {
           count.value = data.count
@@ -128,7 +127,7 @@ export default {
         });
 
 
-      
+
 
       const info = ref({
         image: image1,

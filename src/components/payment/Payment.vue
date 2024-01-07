@@ -7,7 +7,7 @@
 
         <v-col>
           <v-container>
-            <v-card :rounded="4" variant="flat" class=" mt-10" >
+            <v-card :rounded="4" variant="flat" class=" mt-10">
               <v-row dir="rtl" class="flex-column flex-md-row justify-content-start justify-sm-center align-start">
                 <v-col cols="4">
 
@@ -89,7 +89,7 @@
               <v-card-title class="font-weight-bold mt-5" dir="rtl">جزئیات پرداخت</v-card-title>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mt-8">
                 <p>بلیت به ارزش 60,000 تومان</p>
-                <p>{{ count}} عدد</p>
+                <p>{{ count }} عدد</p>
                 <p>{{ count * 60000 }} تومان</p>
               </v-card-text>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
@@ -100,7 +100,7 @@
               <hr class="ms-3 me-3 mt-3" style="color: beige;">
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
                 <p class="ms-0">مبلغ قابل پرداخت</p>
-                <p class="ms-7">{{ count * 60000 * 0.04 +count* 60000 }} تومان</p>
+                <p class="ms-7">{{ count * 60000 * 0.04 + count * 60000 }} تومان</p>
               </v-card-text>
             </v-card>
           </v-container>
@@ -124,6 +124,16 @@
             </v-container>
           </div>
           <v-btn @click="goToTicket()" class="mt-10 ms-2" color="red">پرداخت و دریافت بلیت </v-btn>
+          <!-- <v-alert :value="alert" prominent type="error">
+            <v-row align="center">
+              <v-col class="grow">
+                شوخیه مگ بذاری بری بعد بیای؟؟؟؟ برگرد صفحه اصلی
+              </v-col>
+              <v-col class="shrink">
+                <v-btn @click="goToHome()">صفحه اصلی</v-btn>
+              </v-col>
+            </v-row>
+          </v-alert> -->
         </v-col>
 
       </v-row>
@@ -149,71 +159,73 @@ export default {
   // },
   setup() {
 
-    // const info = ref({
-    //   image: image1,
-    //   filmName: 'هتل',
-    //   number: 3,
-    //   cinema: 'پردیس سینمایی کورش',
-    //   selectedDate: {
-    //     day: 30,
-    //     month: 'دی'
-    //   },
-    //   scene: {
-    //     hour: 23,
-    //     minute: 50,
-    //     saloonId: 4
-    //   },
-    //   selectedSeats: [
-    //     {
-    //       seat: 8,
-    //       row: 9,
-    //     },
-    //     {
-    //       seat: 9,
-    //       row: 9
-    //     }
-    //   ]
-    // })
+
     const preTicket = ref([]);
     const scene = ref({});
     const movie = ref({});
     const cinema = ref({});
     const salon = ref({});
+    const route = useRoute();
+    let alert = ref(false);
+    const tokenUrl = route.params.token;
     const count = ref()
-      fetch('http://185.128.40.150:8080/api/ticket/token/pre/abc123')
-        .then(response => response.json())
-        .then(data => {
-          count.value = data.count
-          preTicket.value = data.tickets;
-          scene.value = data.tickets[0].scene;
-          movie.value = data.tickets[0].scene.movie;
-          cinema.value = data.tickets[0].scene.cinema;
-          salon.value = data.tickets[0].scene.saloon;
+    fetch('http://185.128.40.150:8080/api/ticket/token/pre/' + tokenUrl)
+      .then(response => response.json())
+      .then(data => {
+        count.value = data.count;
+        preTicket.value = data.tickets;
+        scene.value = data.tickets[0].scene;
+        movie.value = data.tickets[0].scene.movie;
+        cinema.value = data.tickets[0].scene.cinema;
+        salon.value = data.tickets[0].scene.saloon;
 
-        });
-
-      const checkbox1 = ref(true);
-      const checkbox2 = ref(false);
-
-      watch(checkbox1, (newValue) => {
-        checkbox2.value = !newValue;
       });
 
-      watch(checkbox2, (newValue) => {
-        checkbox1.value = !newValue;
-      });
+    const checkbox1 = ref(true);
+    const checkbox2 = ref(false);
 
+    watch(checkbox1, (newValue) => {
+      checkbox2.value = !newValue;
+    });
 
+    watch(checkbox2, (newValue) => {
+      checkbox1.value = !newValue;
+    });
 
-      const goToTicket = () => {
-        router.push({ name: 'Ticket' })
-      }
-      const getSrc = (id) => {
-        const src = `/src/assets/images/${id}.jpeg`
-        return src;
-      }
+    const goToTicket = () => {
+      fetch('http://185.128.40.150:8080/api/preticket/confirm/' + tokenUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            showError();
+            throw new Error();
+          }
+          return response.text();
+        })
+        .then(text => {
+          console.log('Response:', text);
+          const data = JSON.parse(text);
+          console.log(data);
+          router.push('/ticket/token/rea/' + data.token);
+        })
+    };
+    const getSrc = (id) => {
+      const src = `/src/assets/images/${id}.jpeg`
+      return src;
+    }
+    const showError = () => {
+      alert = false;
+      console.log(alert);
+    }
+    const goToHome = () => {
+      router.push('/');
+    }
 
-      return { image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc,count };
+    return { image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc, count, showError, alert, goToHome };
 
   }
 }

@@ -70,12 +70,12 @@ const routes = [
         props: true
       },
       {
-        path:'/:id/payment',
+        path:'/ticket/token/pre/:token',
         name:'Payment',
         component: Payment,
         props:true
       },{
-      path:'/ticket',
+      path:'/ticket/token/rea/:token',
       name:'Ticket',
       component:Ticket
       },

@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-10">
-    <h3 style="margin-right: 200px;">
-      Films
+  <div class="mt-10" dir="rtl">
+    <h3 style="margin-right: 200px; direction: rtl; margin-bottom: 10px;">
+      فیلم های به روز
     </h3>
     <section class="ma-auto mb-16 " style="width: 80%; height: 900px;">
       <v-list>
