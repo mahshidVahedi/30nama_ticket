@@ -85,42 +85,42 @@ export default {
         backgraoundPhoto: image3,
         background: image3,
         mainPhoto: image3,
-        title: "The Dark Knight",
+        title: "شوالیه تاریکی",
         director: "c2",
-        genre: "Action",
+        genre: "اکشن",
         score: 5,
-        description:"When the menace known as the Joker wreaks..."
-        
+        description:"جوکر با نقشه هایش می کوشد تا آرامش شهر را بهم زده و در دل مردم رعب و وحشت بیاندازد تا با اینکار..."
+
       },
       {
         id: 2,
         image: image2,
-        caption: 'The Godfather',
+        caption: 'پدرخوانده ',
         duration: 175,
         photo: image2,
         background: image2,
         mainPhoto: image2,
         backgraoundPhoto: image2,
-        title: 'The Godfather',
+        title: 'پدرخوانده ',
         director: 'c2',
-        genre: 'Crime',
+        genre: 'جنایی',
         score: 4,
-        description: "An organized crime..." 
+        description: "یک جنایت سازمان یافته..."
       },
       {
         id: 1,
         image: image1,
-        caption: 'The Shawshank Redemption',
+        caption: 'رستگاری در شاوشنگ',
         duration: 142,
         photo: image1,
         background: image1,
         mainPhoto: image1,
         backgraoundPhoto: image1,
-        title: 'The Shawshank Redemption',
+        title: 'رستگاری در شاوشنگ',
         director: 'c1',
-        genre: 'Drama',
+        genre: 'درام',
         score: 4,
-        description: "Two imprisoned men bond over a number of years..",    
+        description: "دو مرد زندانی طی چند سال با هم پیوند می خورند...",
       }
     ]
     const router = useRouter();

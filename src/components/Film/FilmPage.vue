@@ -33,7 +33,7 @@
                   <div class="d-flex align-items-center">
                     <!-- <v-img :src="actor.photo" width="50px" height="50px" class="mr-2 rounded-lg"
                       style="object-fit: cover;"></v-img> -->
-                   
+
                     <span class="mr-5">{{ actor.cast.name }}</span>
                   </div>
                 </div>
@@ -94,9 +94,9 @@
       <p class="ma-4">
         {{ film && film.description }}
       </p>
-      <p class="ma-4">
+      <!-- <p class="ma-4">
         خلاصه داستان: {{ film && film.summery }}
-      </p>
+      </p> -->
 
       <v-row>
         <v-col cols="12" sm="6" md="2" v-for="(actor, index) in film && film.cast" :key="index">
