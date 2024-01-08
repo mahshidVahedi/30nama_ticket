@@ -145,7 +145,7 @@ export default {
     };
 
     const restartTimer = (event) => {
-      // event.preventDefault();
+      event.preventDefault();
       console.log("in functionn")
       clearInterval(intervalId);
       startTimer();

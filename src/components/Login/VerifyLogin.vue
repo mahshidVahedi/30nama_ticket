@@ -93,14 +93,14 @@ export default {
     const data = ref('');
     const errorMessage = ref('');
     const otp = ref('')
+    const isLoggedIn = ref(false)
     receivedData.value = route.params.uuid;
-
 
     const goToHome = (event) => {
       event.preventDefault();
       if (otp.value) {
         console.log(otp.value)
-        fetch('http://185.128.40.150:8080/api/verify_login/'+receivedData.value, {
+        fetch('http://185.128.40.150:8080/api/verify_login/' + receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
           headers: {
@@ -115,8 +115,10 @@ export default {
           })
           .then(text => {
             console.log('Response:', text); // Log the response text
-
-            router.push({ name: 'Home' });
+            console.log(isLoggedIn.value)
+            isLoggedIn.value = true
+            console.log(isLoggedIn.value)
+            router.push({ name: 'Home' ,params:{isLoggedIn:isLoggedIn.value}});
           })
           .catch(error => {
             console.error('Error verify login:', error);
@@ -131,41 +133,40 @@ export default {
     const seconds = ref(5);
     let intervalId;
 
-    const updateNumber = () => {
-      seconds.value -= 1;
-      if (seconds.value === 59) {
-        clearInterval(intervalId);
-        startTimer();
-      }
-    };
-
     const startTimer = () => {
       intervalId = setInterval(updateNumber, 1000);
     };
 
+    const updateNumber = () => {
+      if (seconds.value === 0) {
+        clearInterval(intervalId);
+      } else {
+        seconds.value -= 1;
+      }
+    };
+
     const restartTimer = (event) => {
-      event.preventDefault();
       console.log("in functionn")
       clearInterval(intervalId);
       startTimer();
-
-      fetch('http://185.128.40.150:8080/api/resend_otp/'+receivedData.value, {
-          method: 'POST',
-          body: JSON.stringify(),
-          headers: {
-            'Content-Type': 'application/json'
+      event.preventDefault();
+      fetch('http://185.128.40.150:8080/api/resend_otp/' + receivedData.value, {
+        method: 'POST',
+        body: JSON.stringify(),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error resend verify login');
           }
+          return response.json(); // Parse the response as JSON
         })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Error resend verify login');
-            }
-            return response.json(); // Parse the response as JSON
-          })
-          .then(text => {
-            console.log('Response:', text); // Log the response text
-          })
-      
+        .then(text => {
+          console.log('Response:', text); // Log the response text
+        })
+
     };
 
     onMounted(startTimer);
@@ -174,7 +175,7 @@ export default {
       clearInterval(intervalId);
     });
 
-    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage ,otp};
+    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage, otp };
   },
 };
 </script>

@@ -3,7 +3,7 @@
     <v-content>
       <router-view>
         <Navbar></Navbar>
-        <CinemaList></CinemaList>
+        <Profile></Profile>
         <div style="height: 300px;"></div>
         <Footer></Footer>
       </router-view>
@@ -36,7 +36,7 @@
 </style>
 
 <script setup>
-import CinemaList from '@/components/user/Profile.vue';
+import Profile from '@/components/user/Profile.vue';
 import Navbar from '@/components/common/Navbar.vue';
 import Footer from '@/components/common/Footer.vue';
 

@@ -1,5 +1,5 @@
 <template>
-  <Navbar></Navbar>
+  <Navbar :isLoggedIn = isLoggedIn ></Navbar>
   <Slidershow></Slidershow>
   <FilmSection></FilmSection>
   <Footer></Footer>
@@ -15,4 +15,11 @@ import Navbar from '../common/Navbar.vue'
 import Login from '../Login/Login.vue'
 import Register from '../Login/Register.vue'
 import Cinema from '../cinemas/Cinema.vue';
+import {ref} from 'vue';
+import { useRoute } from 'vue-router'
+
+const isLoggedIn = ref(false)
+const route = useRoute()
+isLoggedIn.value = route.params.isLoggedIn
+// return {isLoggedIn}
 </script>
