@@ -137,19 +137,6 @@
                         <div style="max-width: 100%;" class="d-flex flex-column mr-0 mt-5">
                           <v-card-title class="text-h6 font-weight-bold text-wrap" dir="rtl">{{ scene.CinemaName
                           }}</v-card-title>
-                          <!-- <v-card-text dir="rtl">
-                            <div class="mt-3 mb-3">
-                              {{ scene.cinema.location }}
-                            </div>
-                            <div class="d-flex flex-row mt-3 ">
-                              <div color="red" class="d-flex flex-row border-white mt-3 me-3">
-                                <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-                                <div class="text-red ms-1">
-                                  {{ scene.cinema.score }}
-                                </div>
-                              </div>
-                            </div>
-                          </v-card-text> -->
                         </div>
                       </v-col>
                     </v-row>
@@ -196,6 +183,8 @@
       <h2 dir="rtl" class="mt-5 mb-8 mr-3 pt-5 text-grey font-weight-bold">دیدگاه کاربران درباره {{ film.name }}
       </h2>
       <v-container dir="rtl" class="text-right text-black mb-10 ml-10">
+        <v-text-field v-model="name" dir="rtl" placeholder="نام شما" class="mb-4">
+        </v-text-field>
         <v-textarea v-model="comment" bg-color="rgb(221, 221, 221)" color="black" dir="rtl" class="text-right"
           placeholder="دیدگاه شما..."></v-textarea>
         <v-btn @click="submitComment" min-width="150px" text="ثبت دیدگاه" color="red" class="mt-5 ml-10 pr-0 pl-0"
@@ -462,11 +451,15 @@ export default {
 
     const router = useRouter();
     const comment = ref('');
+    const name = ref('');
     const submitComment = () => {
+      if(name.value==null){
+        name.value='ناشناس';
+      }
       // Make the POST request to the backend
       fetch('http://185.128.40.150:8080/api/movie/comment/add/' + route.params.id, {
         method: 'POST',
-        body: JSON.stringify({ comment: comment.value, name: 'ناشناس', }),
+        body: JSON.stringify({ comment: comment.value, name: name.value, }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -545,7 +538,7 @@ export default {
     return {
       scenes, cinemas, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons,dialog,
-      isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors,gotoSeat
+      isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors,gotoSeat, name
     }
   }
 }
