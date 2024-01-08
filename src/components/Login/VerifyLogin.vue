@@ -95,7 +95,6 @@ export default {
     const data = ref('');
     const errorMessage = ref('');
     const otp = ref('')
-    // const isLoggedIn = ref(false)
     const show = ref(false);
     receivedData.value = route.params.uuid;
 
@@ -114,7 +113,9 @@ export default {
 
     const storageType = cookieStorage;
     const consentPropertyName = 'token';
-    const saveToStorage = () => storageType.setItem(consentPropertyName, true);
+    const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
+    const tokenValue = ref()
+
 
 
     const goToHome = (event) => {
@@ -136,6 +137,8 @@ export default {
           })
           .then(text => {
             console.log('Response:', text); // Log the response text
+            tokenValue.value = text.token
+            console.log(tokenValue.value)
             saveToStorage(storageType);
             router.push({ name: 'Home' });
           })
@@ -151,25 +154,28 @@ export default {
     };
 
     const seconds = ref(5);
-    let intervalId;
+    let timeoutId;
 
     const startTimer = () => {
-      intervalId = setInterval(updateNumber, 1000);
+      timeoutId = setTimeout(updateNumber, 1000);
     };
 
     const updateNumber = () => {
       if (seconds.value === 0) {
-        clearInterval(intervalId);
+        clearTimeout(timeoutId);
       } else {
         seconds.value -= 1;
+        timeoutId = setTimeout(updateNumber, 1000);
       }
     };
 
     const restartTimer = (event) => {
-      console.log("in functionn")
-      clearInterval(intervalId);
-      startTimer();
-      event.preventDefault();
+      event.preventDefault(); // Prevent default form submission behavior
+
+      clearTimeout(timeoutId);
+      seconds.value = 5; // Reset the countdown to its initial value
+      startTimer(); // Start the timer immediately
+
 
       fetch('http://185.128.40.150:8080/api/resend_otp/' + receivedData.value, {
         method: 'POST',
@@ -185,16 +191,16 @@ export default {
           return response.json(); // Parse the response as JSON
         })
         .then(text => {
+
           console.log('Response:', text); // Log the response text
         })
+
 
     };
 
     onMounted(startTimer);
 
-    onBeforeUnmount(() => {
-      clearInterval(intervalId);
-    });
+
 
     return { seconds, restartTimer, goToHome, receivedData, data, errorMessage, otp };
   },

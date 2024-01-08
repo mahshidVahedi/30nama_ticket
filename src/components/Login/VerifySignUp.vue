@@ -7,8 +7,8 @@
         <v-icon color="red" class="mb-2 pa-2" style="margin-top: 6rem;" icon="mdi-film"></v-icon>
       </div>
       <v-dialog v-model="show" max-width="600px">
-      <v-alert closable icon="$warning" text="کد تایید خود را وارد کنید." type="warning" dir="rtl"></v-alert>
-    </v-dialog>
+        <v-alert closable icon="$warning" text="کد تایید خود را وارد کنید." type="warning" dir="rtl"></v-alert>
+      </v-dialog>
 
       <v-col xs="12">
         <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
@@ -99,18 +99,19 @@ export default {
     const show = ref(false);
     receivedData.value = route.params.uuid;
 
-    
+
     const storageType = cookieStorage;
     const consentPropertyName = 'token';
-    const saveToStorage = () => storageType.setItem(consentPropertyName, true);
-    
+    const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
+    const tokenValue = ref()
+
 
 
     const goToHome = (event) => {
       event.preventDefault();
       if (otp.value) {
         console.log(otp.value)
-        fetch('http://185.128.40.150:8080/api/verify_signup/'+receivedData.value, {
+        fetch('http://185.128.40.150:8080/api/verify_signup/' + receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
           headers: {
@@ -125,6 +126,8 @@ export default {
           })
           .then(text => {
             console.log('Response:', text); // Log the response text
+            tokenValue.value = text.token
+            console.log(tokenValue.value)
             saveToStorage(storageType);
             router.push({ name: 'Home' });
           })
@@ -134,50 +137,52 @@ export default {
       } else {
         // errorMessage.value = 'کد ارسال شده را وارد کنید.';
         // window.alert(errorMessage.value);
-        show.value=true;
+        show.value = true;
       }
 
     };
 
     const seconds = ref(5);
-    let intervalId;
+    let timeoutId;
+
+    const startTimer = () => {
+      timeoutId = setTimeout(updateNumber, 1000);
+    };
 
     const updateNumber = () => {
-      seconds.value -= 1;
-      if (seconds.value === 59) {
-        clearInterval(intervalId);
-        startTimer();
+      if (seconds.value === 0) {
+        clearTimeout(timeoutId);
+      } else {
+        seconds.value -= 1;
+        timeoutId = setTimeout(updateNumber, 1000);
       }
     };
 
-    const startTimer = () => {
-      console.log('in start timer')
-      intervalId = setInterval(updateNumber, 1000);
-    };
-
     const restartTimer = (event) => {
-      event.preventDefault();
-      console.log("in functionn")
-      clearInterval(intervalId);
-      startTimer();
+      event.preventDefault(); // Prevent default form submission behavior
 
-      fetch('http://185.128.40.150:8080/api/resend_otp/'+receivedData.value, {
-          method: 'POST',
-          body: JSON.stringify(),
-          headers: {
-            'Content-Type': 'application/json'
+      clearTimeout(timeoutId);
+      seconds.value = 5; // Reset the countdown to its initial value
+      startTimer(); // Start the timer immediately
+
+
+      fetch('http://185.128.40.150:8080/api/resend_otp/' + receivedData.value, {
+        method: 'POST',
+        body: JSON.stringify(),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error resend verify login');
           }
+          return response.json(); // Parse the response as JSON
         })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Error resend verify login');
-            }
-            return response.json(); // Parse the response as JSON
-          })
-          .then(text => {
-            console.log('Response:', text); // Log the response text
+        .then(text => {
+          console.log('Response:', text); // Log the response text
 
-          })
+        })
 
     };
 
@@ -187,7 +192,7 @@ export default {
       clearInterval(intervalId);
     });
 
-    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage ,otp, show};
+    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage, otp, show };
   },
 };
 </script>
