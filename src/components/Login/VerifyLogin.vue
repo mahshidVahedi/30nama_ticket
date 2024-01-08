@@ -94,13 +94,9 @@ export default {
     const receivedData = ref('');
     const data = ref('');
     const errorMessage = ref('');
-<<<<<<< HEAD
     const otp = ref('')
-    const isLoggedIn = ref(false)
-=======
-    const otp = ref('');
+    // const isLoggedIn = ref(false)
     const show = ref(false);
->>>>>>> 329c6cb864f5ea9c45beeca6bd62019c6d5ff3f2
     receivedData.value = route.params.uuid;
 
     const goToHome = (event) => {
@@ -122,10 +118,10 @@ export default {
           })
           .then(text => {
             console.log('Response:', text); // Log the response text
-            console.log(isLoggedIn.value)
-            isLoggedIn.value = true
-            console.log(isLoggedIn.value)
-            router.push({ name: 'Home' ,params:{isLoggedIn:isLoggedIn.value}});
+            // console.log(isLoggedIn.value)
+            // isLoggedIn.value = true
+            // console.log(isLoggedIn.value)
+            router.push({ name: 'Home' });
           })
           .catch(error => {
             console.error('Error verify login:', error);
@@ -157,11 +153,8 @@ export default {
       console.log("in functionn")
       clearInterval(intervalId);
       startTimer();
-<<<<<<< HEAD
       event.preventDefault();
-=======
 
->>>>>>> 329c6cb864f5ea9c45beeca6bd62019c6d5ff3f2
       fetch('http://185.128.40.150:8080/api/resend_otp/' + receivedData.value, {
         method: 'POST',
         body: JSON.stringify(),

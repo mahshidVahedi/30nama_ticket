@@ -1,12 +1,12 @@
 <template>
   <div id="nav" dark color="white darken-1" class="ma-1 dense fixed d-none d-md-flex flex-row justify-space-between">
     <div class="d-flex flex-row ma-2 pa-2">
-      <v-btn v-if="!isLoggedIn" @click="goToLogin" color="black" variant="text" append-icon="mdi-account" class="pa-2 ma-2 no-border">
+      <v-btn @click="goToLogin" color="black" variant="text" append-icon="mdi-account" class="pa-2 ma-2 no-border">
         <template v-slot:append>
           <v-icon color="#616161"></v-icon>
         </template>
         ورود یا ثبت نام</v-btn>
-        <v-btn v-if="isLoggedIn" @click="goToProfile">پروفایل</v-btn>
+        <!-- <v-btn v-if="isLoggedIn" @click="goToProfile">پروفایل</v-btn> -->
     </div>
     <div class="d-flex flex-row ma-2 pa-2">
       <!-- <input :value="searchQuery" @input="updateSearchQuery" dir="rtl" placeholder="جستجو فیلم ..." id=""
@@ -140,9 +140,7 @@ import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
 export default {
-  props:['isLoggedIn'],
-  setup(props) {
-    const isLoggedIn = ref(props.isLoggedIn);
+  setup() {
     const router = useRouter();
     const drawer = ref(false);
     const dialogVisible = ref(false);
@@ -228,7 +226,6 @@ export default {
       movies,
       getSrc,
       goToFilmDetails,
-      isLoggedIn,
       goToProfile
     };
   },
