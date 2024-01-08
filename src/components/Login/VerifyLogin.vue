@@ -6,7 +6,9 @@
         </h2>
         <v-icon color="red" class="mb-2 pa-2" style="margin-top: 6rem;" icon="mdi-film"></v-icon>
       </div>
-
+      <v-dialog v-model="show" max-width="600px">
+        <v-alert closable icon="$warning" text="کد تایید خود را وارد کنید." type="warning" dir="rtl"></v-alert>
+      </v-dialog>
       <v-col xs="12">
         <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
           <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
@@ -92,8 +94,13 @@ export default {
     const receivedData = ref('');
     const data = ref('');
     const errorMessage = ref('');
+<<<<<<< HEAD
     const otp = ref('')
     const isLoggedIn = ref(false)
+=======
+    const otp = ref('');
+    const show = ref(false);
+>>>>>>> 329c6cb864f5ea9c45beeca6bd62019c6d5ff3f2
     receivedData.value = route.params.uuid;
 
     const goToHome = (event) => {
@@ -124,8 +131,9 @@ export default {
             console.error('Error verify login:', error);
           });
       } else {
-        errorMessage.value = 'کد ارسال شده را وارد کنید.';
-        window.alert(errorMessage.value);
+        // errorMessage.value = 'کد ارسال شده را وارد کنید.';
+        // window.alert(errorMessage.value);
+        show.value=true;
       }
 
     };
@@ -149,7 +157,11 @@ export default {
       console.log("in functionn")
       clearInterval(intervalId);
       startTimer();
+<<<<<<< HEAD
       event.preventDefault();
+=======
+
+>>>>>>> 329c6cb864f5ea9c45beeca6bd62019c6d5ff3f2
       fetch('http://185.128.40.150:8080/api/resend_otp/' + receivedData.value, {
         method: 'POST',
         body: JSON.stringify(),
