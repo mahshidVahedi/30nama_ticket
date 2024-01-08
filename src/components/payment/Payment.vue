@@ -28,12 +28,6 @@
                           <div class="ms-1">
                             سانس {{ scene.startTime }}
                           </div>
-                          <!-- <div class="d-flex flex-row border-white">
-                            <v-icon class="ms-5" icon="mdi-clock"></v-icon>
-                            <div class="ms-1">
-                              {{ preTicket.date }}
-                            </div>
-                          </div> -->
 
                         </div>
 
@@ -56,6 +50,18 @@
                 </div>
               </div>
             </v-card>
+            <v-dialog v-model="alert" max-width="600px" max-height="400px" min-width="300px">
+              <v-alert  prominent type="error" dir="rtl">
+                <v-row align="center">
+                  <v-col class="grow">
+                    شوخیه مگ بذاری بری بعد بیای؟؟؟؟ برگرد صفحه اصلی
+                  </v-col>
+                  <v-col class="shrink">
+                    <v-btn @click="goToHome()">صفحه اصلی</v-btn>
+                  </v-col>
+                </v-row>
+              </v-alert>
+            </v-dialog>
           </v-container>
           <v-container>
             <v-card dir="rtl" variant="flat" :rounded="4" class="mt-7">
@@ -124,16 +130,6 @@
             </v-container>
           </div>
           <v-btn @click="goToTicket()" class="mt-10 ms-2" color="red">پرداخت و دریافت بلیت </v-btn>
-          <!-- <v-alert :value="alert" prominent type="error">
-            <v-row align="center">
-              <v-col class="grow">
-                شوخیه مگ بذاری بری بعد بیای؟؟؟؟ برگرد صفحه اصلی
-              </v-col>
-              <v-col class="shrink">
-                <v-btn @click="goToHome()">صفحه اصلی</v-btn>
-              </v-col>
-            </v-row>
-          </v-alert> -->
         </v-col>
 
       </v-row>
@@ -166,7 +162,7 @@ export default {
     const cinema = ref({});
     const salon = ref({});
     const route = useRoute();
-    let alert = ref(false);
+    const alert = ref(false);
     const tokenUrl = route.params.token;
     const count = ref()
     fetch('http://185.128.40.150:8080/api/ticket/token/pre/' + tokenUrl)
@@ -218,11 +214,12 @@ export default {
       return src;
     }
     const showError = () => {
-      alert = false;
+      alert.value = true;
       console.log(alert);
     }
     const goToHome = () => {
       router.push('/');
+      alert.value = false;
     }
 
     return { image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc, count, showError, alert, goToHome };
@@ -230,3 +227,9 @@ export default {
   }
 }
 </script>
+<style>
+.error{
+  width: 40%;
+  height: 40%;
+}
+</style>
