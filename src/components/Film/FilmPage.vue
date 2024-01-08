@@ -27,8 +27,8 @@
               </div>
               <div class="d-flex flex-row mt-5">
                 <h4>
-                      بازیگران {{ film && film.name }} :
-                    </h4>
+                  بازیگران {{ film && film.name }} :
+                </h4>
                 <div v-for="actor in actors" :key="actor.id" class="mr-5 ml-5">
                   <div class="d-flex align-items-center">
                     <!-- <v-img :src="actor.photo" width="50px" height="50px" class="mr-2 rounded-lg"
@@ -165,8 +165,8 @@
                           </v-card-subtitle>
                         </v-card-item>
                       </div>
-                      <v-btn @click="gotoSeat(saloon.SceneId)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
-                        color="red">
+                      <v-btn @click="gotoSeat(saloon.SceneId)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket"
+                        variant="flat" color="red">
                         خرید بلیت
                       </v-btn>
                     </div>
@@ -276,11 +276,11 @@ export default {
     const rate3 = 3
     const rate4 = 4
     const rate5 = 5
-    const dialog =ref(false)
+    const dialog = ref(false)
 
     const gotoSeat = (index) => {
       console.log(index)
-      router.push({ name: 'SeatSelect',params: { id: index }})
+      router.push({ name: 'SeatSelect', params: { id: index } })
     };
 
 
@@ -398,8 +398,9 @@ export default {
 
     fetch(firstApi)
       .then(response => response.json())
-      .then(data => {scenes.value = data.scene
- })
+      .then(data => {
+        scenes.value = data.scene
+      })
     const handleTab = (tabValue) => {
       fetchSearchResults(tabValue)
     }
@@ -453,8 +454,8 @@ export default {
     const comment = ref('');
     const name = ref('');
     const submitComment = () => {
-      if(name.value==null){
-        name.value='ناشناس';
+      if (name.value == null || name.value == undefined || name.value.trim() === '') {
+        name.value = 'ناشناس';
       }
       // Make the POST request to the backend
       fetch('http://185.128.40.150:8080/api/movie/comment/add/' + route.params.id, {
@@ -488,7 +489,7 @@ export default {
       console.log(rate)
       fetch('http://185.128.40.150:8080/api/movie/rating/add/' + route.params.id, {
         method: 'POST',
-        body: JSON.stringify({ score: rate}),
+        body: JSON.stringify({ score: rate }),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -537,8 +538,8 @@ export default {
     }
     return {
       scenes, cinemas, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
-      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons,dialog,
-      isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors,gotoSeat, name
+      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
+      isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors, gotoSeat, name
     }
   }
 }
