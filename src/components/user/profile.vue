@@ -17,10 +17,12 @@
           </v-row>
           <v-row v-else dir="rtl">
             <v-col cols="12" sm="6">
-              <v-text-field :model-value="fjdsnjkbavjs" v-model="updatedUser.email" ></v-text-field>
+              ایمیل
+              <v-text-field v-model="updatedUser.user_email" ></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
-              <v-text-field :model-value="userData.user_name" v-model="updatedUser.name"></v-text-field>
+              نام
+              <v-text-field v-model="updatedUser.user_name"></v-text-field>
             </v-col>
 
           </v-row>
@@ -43,12 +45,14 @@ export default {
     userId: {
       type: String,
       required: true
-    }
+    },
+
   },
   setup(props) {
     const isEditing = ref(false);
     const userData = ref({});
     const updatedUser = ref({});
+    const userName = ref('')
 
     const getUserData = async () => {
       try {
@@ -58,10 +62,12 @@ export default {
         }
         const data = await response.json();
         userData.value = data;
-        console.log(userData);
+        updatedUser.value = data
       } catch (error) {
         console.error(error);
       }
+
+      console.log(userName.value)
     };
 
     onMounted(getUserData);
@@ -90,7 +96,8 @@ export default {
       isEditing,
       userData,
       updatedUser,
-      saveChanges
+      saveChanges,
+      userName
     };
   }
 }

@@ -20,7 +20,7 @@ const routes = [
     component: DefaultLayout,
     children: [
       {
-        path: '',
+        path: '/:isLoggedIn',
         name: 'Home',
         component: Home,
       },
