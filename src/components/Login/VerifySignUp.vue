@@ -99,6 +99,12 @@ export default {
     const show = ref(false);
     receivedData.value = route.params.uuid;
 
+    
+    const storageType = cookieStorage;
+    const consentPropertyName = 'token';
+    const saveToStorage = () => storageType.setItem(consentPropertyName, true);
+    
+
 
     const goToHome = (event) => {
       event.preventDefault();
@@ -113,13 +119,13 @@ export default {
         })
           .then(response => {
             if (!response.ok) {
-              throw new Error('Error verify sign up comment');
+              throw new Error('Error verify sign up ');
             }
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
             console.log('Response:', text); // Log the response text
-
+            saveToStorage(storageType);
             router.push({ name: 'Home' });
           })
           .catch(error => {

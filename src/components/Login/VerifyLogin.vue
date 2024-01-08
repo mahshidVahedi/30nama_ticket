@@ -99,6 +99,24 @@ export default {
     const show = ref(false);
     receivedData.value = route.params.uuid;
 
+    const cookieStorage = {
+      getItem: (item) => {
+        const cookies = document.cookie
+          .split(';')
+          .map(cookie => cookie.split('='))
+          .reduce((acc, [key, value]) => ({ ...acc, [key.trim()]: value }), {});
+        return cookies[item];
+      },
+      setItem: (item, value) => {
+        document.cookie = `${item}=${value};`
+      }
+    }
+
+    const storageType = cookieStorage;
+    const consentPropertyName = 'token';
+    const saveToStorage = () => storageType.setItem(consentPropertyName, true);
+
+
     const goToHome = (event) => {
       event.preventDefault();
       if (otp.value) {
@@ -118,9 +136,7 @@ export default {
           })
           .then(text => {
             console.log('Response:', text); // Log the response text
-            // console.log(isLoggedIn.value)
-            // isLoggedIn.value = true
-            // console.log(isLoggedIn.value)
+            saveToStorage(storageType);
             router.push({ name: 'Home' });
           })
           .catch(error => {
@@ -129,7 +145,7 @@ export default {
       } else {
         // errorMessage.value = 'کد ارسال شده را وارد کنید.';
         // window.alert(errorMessage.value);
-        show.value=true;
+        show.value = true;
       }
 
     };

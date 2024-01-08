@@ -1,12 +1,19 @@
 <template>
   <div id="nav" dark color="white darken-1" class="ma-1 dense fixed d-none d-md-flex flex-row justify-space-between">
     <div class="d-flex flex-row ma-2 pa-2">
-      <v-btn @click="goToLogin" color="black" variant="text" append-icon="mdi-account" class="pa-2 ma-2 no-border">
+      <v-btn v-if="!isLoggedIn" @click="goToLogin" color="black" variant="text" append-icon="mdi-account"
+        class="pa-2 ma-2 no-border">
         <template v-slot:append>
           <v-icon color="#616161"></v-icon>
         </template>
         ورود یا ثبت نام</v-btn>
-        <!-- <v-btn v-if="isLoggedIn" @click="goToProfile">پروفایل</v-btn> -->
+      <div v-if="isLoggedIn" @click="goToProfile" class="d-flex flex-row ma-2" id="prof">
+        <p class="mr-2">پروفایل</p>
+        <v-avatar color="grey" size="x-small">
+          <v-icon icon="mdi-account-circle" color="white"></v-icon>
+        </v-avatar>
+      </div>
+
     </div>
     <div class="d-flex flex-row ma-2 pa-2">
       <!-- <input :value="searchQuery" @input="updateSearchQuery" dir="rtl" placeholder="جستجو فیلم ..." id=""
@@ -132,12 +139,17 @@
 .kooft {
   width: 300px;
 }
+
+#prof:hover{
+  cursor: pointer;
+}
 </style>
 
 <script>
 
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+
 
 export default {
   setup() {
@@ -168,7 +180,7 @@ export default {
       router.push({ name: 'Film', params: { id: film.id } });
     };
 
-    const goToProfile = ()=>{
+    const goToProfile = () => {
       router.push({ name: 'dashboard' });
     }
 
@@ -176,6 +188,30 @@ export default {
       const src = `/src/assets/images/${id}.jpeg`
       return src;
     }
+
+    const cookieStorage = {
+      getItem: (item) => {
+        const cookies = document.cookie
+          .split(';')
+          .map(cookie => cookie.split('='))
+          .reduce((acc, [key, value]) => ({ ...acc, [key.trim()]: value }), {});
+        return cookies[item];
+      },
+      setItem: (item, value) => {
+        document.cookie = `${item}=${value};`
+      }
+    }
+    const isLoggedIn = ref(false)
+
+    const storageType = cookieStorage;
+    const consentPropertyName = 'token';
+    const getCookie = () => storageType.getItem(consentPropertyName);
+
+    onMounted(() => {
+      isLoggedIn.value = getCookie()
+      console.log(isLoggedIn.value)
+    })
+
 
 
     const fetchSearchResults = async () => {
@@ -226,7 +262,8 @@ export default {
       movies,
       getSrc,
       goToFilmDetails,
-      goToProfile
+      goToProfile,
+      isLoggedIn
     };
   },
 };
