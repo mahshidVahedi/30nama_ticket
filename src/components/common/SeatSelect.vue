@@ -188,5 +188,4 @@ export default {
   },
   inheritAttrs: false
 }
-
 </script>

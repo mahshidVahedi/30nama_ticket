@@ -6,7 +6,9 @@
         </h2>
         <v-icon color="red" class="mb-2 pa-2" style="margin-top: 6rem;" icon="mdi-film"></v-icon>
       </div>
-
+      <v-dialog v-model="show" max-width="600px">
+        <v-alert closable icon="$warning" text="کد تایید خود را وارد کنید." type="warning" dir="rtl"></v-alert>
+      </v-dialog>
       <v-col xs="12">
         <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
           <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
@@ -92,7 +94,8 @@ export default {
     const receivedData = ref('');
     const data = ref('');
     const errorMessage = ref('');
-    const otp = ref('')
+    const otp = ref('');
+    const show = ref(false);
     receivedData.value = route.params.uuid;
 
 
@@ -100,7 +103,7 @@ export default {
       event.preventDefault();
       if (otp.value) {
         console.log(otp.value)
-        fetch('http://185.128.40.150:8080/api/verify_login/'+receivedData.value, {
+        fetch('http://185.128.40.150:8080/api/verify_login/' + receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
           headers: {
@@ -122,8 +125,9 @@ export default {
             console.error('Error verify login:', error);
           });
       } else {
-        errorMessage.value = 'کد ارسال شده را وارد کنید.';
-        window.alert(errorMessage.value);
+        // errorMessage.value = 'کد ارسال شده را وارد کنید.';
+        // window.alert(errorMessage.value);
+        show.value=true;
       }
 
     };
@@ -149,23 +153,23 @@ export default {
       clearInterval(intervalId);
       startTimer();
 
-      fetch('http://185.128.40.150:8080/api/resend_otp/'+receivedData.value, {
-          method: 'POST',
-          body: JSON.stringify(),
-          headers: {
-            'Content-Type': 'application/json'
+      fetch('http://185.128.40.150:8080/api/resend_otp/' + receivedData.value, {
+        method: 'POST',
+        body: JSON.stringify(),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error resend verify login');
           }
+          return response.json(); // Parse the response as JSON
         })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Error resend verify login');
-            }
-            return response.json(); // Parse the response as JSON
-          })
-          .then(text => {
-            console.log('Response:', text); // Log the response text
-          })
-      
+        .then(text => {
+          console.log('Response:', text); // Log the response text
+        })
+
     };
 
     onMounted(startTimer);
@@ -174,7 +178,7 @@ export default {
       clearInterval(intervalId);
     });
 
-    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage ,otp};
+    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage, otp };
   },
 };
 </script>
