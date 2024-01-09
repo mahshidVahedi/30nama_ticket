@@ -290,10 +290,10 @@ export default {
           if (!response.ok) {
             throw new Error('Error submitting score');
           }
-          return response.text(); 
+          return response.text();
         })
         .then(text => {
-          console.log('Response:', text); 
+          console.log('Response:', text);
         })
         .catch(error => {
           console.error('Error submitting rate:', error);
@@ -347,105 +347,7 @@ export default {
     const calculateHour = (time) => {
       return Math.floor(time / 60)
     }
-    // const films = [
-    //   {
-    //     id: 1,
-    //     title: 'فسیل',
-    //     director: 'کریم امینی',
-    //     photo: photoM1,
-    //     score: '4.5/5',
-    //     duration: '85',
-    //     genre: 'کمدی',
-    //     description: "فیلم فسیل به کارگردانی کریم امینی و تهیه‌کنندگی ابراهیم عامریان است. بهرام افشاری، هادی کاظمی، الناز حبیبی، الهه حصاری، ایمان صفا، بابک کریمی، سیدجواد هاشمی و ... در این فیلم کمدی ایفای نقش کرده‌اند.",
-    //     casts: [
-    //       ' بهرام افشاری',
-    //       'هادی کاظمی',
 
-    //     ],
-    //     condition: false,
-    //   },
-    //   {
-    //     id: 2,
-    //     title: 'جنگل پرتقال',
-    //     director: ' آرمان خوانساریان',
-    //     photo: photoM2,
-    //     score: '4/5',
-    //     duration: '90',
-    //     genre: 'درام',
-    //     description: "فیلم جنگل پرتقال نویسندگی و کارگردانی آرمان خوانساریان و محصول سال 1401 است. سارا بهرامی، میرسعید مولویان، رضا بهبودی، رضا عموزاد، فراز سرابی، داوود فتحعلی بیگی، فرشته مرعشی، ارشیا نیک‌بین، حمیدرضا عباسی، زینب شعبانی و حسام نورانی بازیگران این فیلم هستند.",
-    //     casts: [
-    //       'سارا بهرامی ',
-    //       'میرسعید مولویان',
-
-    //     ],
-    //     condition: false,
-    //   },
-    //   {
-    //     id: 3,
-    //     title: 'گیجگاه',
-    //     director: ' عادل تبریزی',
-    //     photo: photoM3,
-    //     score: '2.9/5',
-    //     duration: '105',
-    //     genre: 'عاشقانه',
-    //     description: "فیلم گیج‌گاه نخستین فیلم عادل تبریزی محصول سال 1399 است که در آن بازیگرانی همچون جمشید هاشم‌پور، حامد بهداد، باران کوثری، سروش صحت، فرهاد آییش ایفای نقش می‌کنند. این فیلم در سی‌و‌نهمین جنشواره‌ی فیلم فجر نیز حضور داشت و در دو بخش بهترین تدوین و بهترین کارگردان فیلم اولی، نامزد دریافت سیمرغ شد. ",
-    //     casts: [
-    //       'حامد بهداد ',
-    //       'باران کوثری',
-
-    //     ],
-    //     condition: false,
-    //   }
-    // ]
-
-
-    // const saloons = [
-    //   {
-    //     id: 1,
-    //     name: 'خورشیدنو',
-    //     cinema_id: 1,
-
-    //   },
-    //   {
-    //     id: 2,
-    //     name: 'گراند سینما',
-    //     cinema_id: 1,
-
-    //   },
-    //   {
-    //     id: 2,
-    //     name: 'سالن 1',
-    //     cinema_id: 2,
-
-    //   }
-    // ]
-
-    // const scenes = [
-    //   {
-    //     id: 1,
-    //     saloon_id: 1,
-    //     movie_id: 1,
-
-    //   },
-    //   {
-    //     id: 4,
-    //     saloon_id: 2,
-    //     movie_id: 2,
-    //   },
-    //   {
-    //     id: 2,
-    //     saloon_id: 2,
-    //     movie_id: 2,
-
-    //   },
-    //   {
-    //     id: 3,
-    //     saloon_id: 1,
-    //     movie_id: 3,
-
-    //   }
-
-    // ]
 
 
     const scenes = ref([]);
@@ -572,7 +474,7 @@ export default {
     const cinemaSaloons = ref([])
 
     const getSrc = (id) => {
-      const src = `/src/assets/cinema1/${id}.jpg`
+      const src = `/src/assets/cinema1/${id}.jpeg`
       return src;
     }
 
