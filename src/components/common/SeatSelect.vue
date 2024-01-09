@@ -7,15 +7,11 @@
       <v-responsive id="salon">
         <v-row v-for="row in   salon.aliasY  " :key="row" class="seat-row">
           <v-col v-for="seat in   salon.aliasX  " :key="seat" class="seat-column">
-            <v-icon
-              icon="mdi-seat"
-              @click="toggleSeat(row, seat)"
-              :class="{
-                'mdi-seat': isSelectedSeat(row, seat),
-                'mdi-seat-occupied': !isSelectedSeat(row, seat),
-                'mdi-seat-disabled': seat.disabled
-              }"
-            ></v-icon>
+            <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)" :class="{
+              'mdi-seat': isSelectedSeat(row, seat),
+              'mdi-seat-occupied': !isSelectedSeat(row, seat),
+              'mdi-seat-disabled': seat.disabled
+            }"></v-icon>
           </v-col>
         </v-row>
       </v-responsive>
@@ -41,7 +37,7 @@
         </p>
       </span>
     </div>
-    <v-btn @click="saveAndCloseDialog" :disabled="!canSave" color="red">
+    <v-btn @click="saveSelectedSeats" :disabled="!canSave" color="red">
       ثبت صندلی و نمایش جزئیات
     </v-btn>
   </div>
@@ -81,7 +77,7 @@
 }
 
 #salon {
-  width: 90%;
+  width: 80%;
   margin: auto;
   display: flex;
   flex-wrap: nowrap;
@@ -114,8 +110,6 @@ span {
 <script>
 import { mdiPackageVariantClosedMinus, mdiWifi } from '@mdi/js';
 import { ref, onMounted, computed } from 'vue';
-import router from '@/router';
-import image from '@/assets/images/4.jpeg'
 import { useRouter, useRoute } from 'vue-router';
 export default {
   data: () => ({
@@ -130,8 +124,8 @@ export default {
     const selectedSeats = ref([]);
     const movie = ref({});
     const cinema = ref({});
-    console.log(route.params.id)
-    fetch('http://185.128.40.150:8080/api/seats/'+ route.params.id)
+    const scene_id=route.params.id;
+    fetch('http://185.128.40.150:8080/api/seats/' + route.params.id)
       .then(response => response.json())
       .then(data => {
         scene_details.value = data.scene_details;
@@ -144,7 +138,7 @@ export default {
         }));
         disableSoldSeats(soldSeats);
       });
-      const toggleSeat = (row, seat) => {
+    const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
       if (isSelectedSeat(row, seat)) {
         selectedSeats.value = selectedSeats.value.filter(s => s !== seatId);
@@ -172,7 +166,39 @@ export default {
     const getSrc = (id) => {
       const src = `/src/assets/images/${id}.jpeg`
       return src;
+    };
+    const saveSelectedSeats = async () => {
+  try {
+    const seats = selectedSeats.value.map(seat => {
+      const [seatx, seatNumber] = seat.split('-');
+      return { seatx, seaty: seatNumber };
+    });
+
+    const jsonData = JSON.stringify({
+      scene_id,
+      scene: scene_details.value,
+      seats: seats,
+    });
+    console.log(jsonData);
+    const response = await fetch('YOUR_API_ENDPOINT', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonData,
+    });
+
+    if (response.ok) {
+      console.log('Seats saved successfully');
+      const data = await response.json();
+      router.push('/ticket/token/pre/' + data.token);
+    } else {
+      console.log('Failed to save seats');
     }
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+};
     return {
       selectedSeats,
       toggleSeat,
@@ -183,7 +209,8 @@ export default {
       getSrc,
       movie,
       cinema,
-      scene_details
+      scene_details,
+      saveSelectedSeats
     };
   },
   inheritAttrs: false

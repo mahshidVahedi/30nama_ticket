@@ -1,6 +1,6 @@
 <template>
-  <v-container>
-    <v-card>
+  <v-container >
+    <v-card class="pa-8">
       <v-card-title>
         <h2 class="text-right mb-6">سینماها</h2>
       </v-card-title>

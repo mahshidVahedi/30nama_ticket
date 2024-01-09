@@ -24,22 +24,17 @@
                 <v-chip @click="dialog = true" class="ms-3" color="white" prepend-icon="mdi-star">
                   امتیاز شما
                 </v-chip>
-
               </div>
               <div class="d-flex flex-row mt-5">
-
                 <div v-for="feature in features" :key="feature.id" class="mr-5 ml-5">
-
                   <v-tooltip location="bottom">
                     <template v-slot:activator="{ on, props }">
-
                       <v-icon v-bind="props" v-on="on" color="grey-lighten-1">
                         {{ findFeatureicon(feature.featureName) }}
                       </v-icon>
                     </template>
                     <span>{{ findFeatureValue(feature.featureName) }}</span>
                   </v-tooltip>
-
                 </div>
 
               </div>
@@ -67,26 +62,26 @@
         <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text @click="submitRating(rate2)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>{{rate2}}/5:</span> ضعیف
+            <span>{{ rate2 }}/5:</span> ضعیف
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text @click="submitRating(rate3)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>{{rate3}}/5:</span> متوسط
+            <span>{{ rate3 }}/5:</span> متوسط
           </v-card-text>
         </v-card>
         <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text @click="submitRating(rate4)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>{{rate4}}/5:</span> خوب
+            <span>{{ rate4 }}/5:</span> خوب
           </v-card-text>
         </v-card>
 
         <v-card dir="rtl" variant="outlined" class="mt-2">
           <v-card-text @click="submitRating(rate5)">
             <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
-            <span>{{rate5}}/5:</span> خیلی خوب
+            <span>{{ rate5 }}/5:</span> خیلی خوب
           </v-card-text>
         </v-card>
       </v-card-text>
@@ -178,8 +173,8 @@
                           </v-card-subtitle>
                         </v-card-item>
                       </div>
-                      <v-btn @click="gotoSeat(saloon.SceneId)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket" variant="flat"
-                        color="red">
+                      <v-btn @click="gotoSeat(saloon.SceneId)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket"
+                        variant="flat" color="red">
                         خرید بلیت
                       </v-btn>
                     </div>
@@ -302,7 +297,7 @@ export default {
 
     const gotoSeat = (index) => {
       console.log(index)
-      router.push({ name: 'SeatSelect',params: { id: index }})
+      router.push({ name: 'SeatSelect', params: { id: index } })
     };
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
@@ -485,9 +480,9 @@ export default {
 
     const findFeatureicon = (value) => {
       console.log(value)
-      if(value==='ghaza'){
+      if (value === 'ghaza') {
         return 'mdi-food'
-      }else{
+      } else {
         return `mdi-${value}`
 
       }
@@ -505,42 +500,11 @@ export default {
         return 'پارکینگ'
       }
     }
-
-
     return {
       cinema, comments, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
-      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons,dialog,
-      isItemOpen, gotoSeat, getSrc, conditions, getSrcMovie, features, findFeatureicon, findFeatureValue, handleTab,submitRating,rate1,rate2,rate3,rate4,rate5
+      jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
+      isItemOpen, gotoSeat, getSrc, conditions, getSrcMovie, features, findFeatureicon, findFeatureValue, handleTab, submitRating, rate1, rate2, rate3, rate4, rate5
     }
   }
 }
-
-
 </script>
-
-
-{
-  "cinema": {
-  "id": 3,
-  "name": "Cinema C",
-  "location": "Location C",
-  "description": "Description C",
-  "city": {},
-  "contact": "345-678-9012",
-  "cinemaType": 1,
-  "score": 5
-  },
-  "features": [
-  {
-  "id": 4,
-  "cinemaid": 3,
-  "feature": 3,
-  "featureName": "food"
-  }
-  ],
-  "message": "found successfully",
-  "status": 1
-  }
-
-
-

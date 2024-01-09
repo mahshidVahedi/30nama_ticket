@@ -279,7 +279,6 @@ export default {
     const dialog = ref(false)
 
     const gotoSeat = (index) => {
-      console.log(index)
       router.push({ name: 'SeatSelect', params: { id: index } })
     };
 
@@ -378,9 +377,6 @@ export default {
     const director = ref({})
     const comments = ref([])
     const actors = ref([])
-
-    console.log(route.params.id)
-
     fetch('http://185.128.40.150:8080/api/movies/' + route.params.id)
       .then(response => response.json())
       .then(data => {
@@ -438,7 +434,6 @@ export default {
           const response = await fetch(apiUrl);
           const data = await response.json();
           // Process the API response data here
-          console.log(data);
           if (data.status == 0 || data.status == "0") {
 
           }
@@ -472,7 +467,6 @@ export default {
           return response.text(); // Get the response text
         })
         .then(text => {
-          console.log('Response:', text); // Log the response text
           const data = JSON.parse(text); // Try parsing the response as JSON
           console.log('Comment submitted:', data);
           comment.value = '';
@@ -486,7 +480,6 @@ export default {
 
     const submitRating = (rate) => {
       dialog.value = false
-      console.log(rate)
       fetch('http://185.128.40.150:8080/api/movie/rating/add/' + route.params.id, {
         method: 'POST',
         body: JSON.stringify({ score: rate }),
@@ -514,7 +507,7 @@ export default {
     }
 
     const getSrcCinema = (id) => {
-      const src = `/src/assets/cinema1/${id}.jpg`
+      const src = `/src/assets/cinema1/${id}.jpeg`
       return src;
     }
 

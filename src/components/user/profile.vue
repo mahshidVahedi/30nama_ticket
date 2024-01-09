@@ -22,17 +22,18 @@
             </v-col>
             <v-col cols="12" sm="6">
               ایمیل
-              <v-text-field :model-value="userName.value" v-model="updatedUser.user_name"></v-text-field>
+              <v-text-field :model-value="userName.value" v-model="updatedUser.user_name" dir="rtl "></v-text-field>
             </v-col>
 
           </v-row>
         </v-container>
       </v-card-text>
-      <v-card-actions>
-        <v-btn color="red" v-if="!isEditing" @click="isEditing = true" class="but">ویرایش</v-btn>
+      <v-card-actions class="float-left pa-2">
+        <v-btn color="red" v-if="!isEditing" @click="isEditing = true" >ویرایش</v-btn>
         <v-btn color="red" v-else @click="saveChanges">ذخیره</v-btn>
       </v-card-actions>
     </v-card>
+    <v-btn color="red" class="mt-6 float-left" >خروج از حساب کاربری</v-btn>
   </v-container>
 </template>
 
@@ -106,9 +107,5 @@ export default {
 <style>
 #container {
   direction: rtl;
-}
-
-.but {
-  float: left;
 }
 </style>
