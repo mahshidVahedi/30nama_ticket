@@ -1,31 +1,110 @@
-// Composables
-import { createRouter, createWebHistory } from 'vue-router'
-// import CinemaList from '@/components/CinemaList.vue';
+import { createRouter, createWebHistory } from 'vue-router';
+import DefaultLayout from '@/layouts/default/Default.vue';
+import Home from '@/views/Home.vue';
+import Cinemas from '@/views/Cinemas.vue'
+import Login from '@/components/Login/Login'
+import Register from '@/components/Login/Register'
+import Cinema from '@/views/Cinema.vue'
+import Film from '@/views/Film.vue'
+import Payment from '@/views/Payment.vue'
+import Ticket from '@/views/Ticket.vue'
+import SeatSelect from '@/components/common/SeatSelect.vue'
+import VerifyLogin from '@/components/Login/VerifyLogin'
+import VerifySignUp from '@/components/Login/VerifySignUp'
+import dashboard from '@/views/Profile.vue'
+
+
 const routes = [
   {
     path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: DefaultLayout,
     children: [
       {
         path: '',
         name: 'Home',
-        // route level code-splitting
-        // this generates a separate chunk (Home-[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import('@/views/Home.vue'),
+        component: Home,
       },
       {
-        path: '/cinemaList',
-        name: 'CinemaList',
-        component: ()=> import('@/components/cinemas/CinemaList.vue'),
+        path: '/cinema-list',
+        name: 'Cinemas',
+        component: Cinemas,
       },
+      {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+      },
+      {
+        path: '/register',
+        name: 'Register',
+        component: Register,
+      },
+      {
+        path: '/verify_login/:uuid',
+        name: 'VerifyLogin',
+        component: VerifyLogin,
+        props: true
+      },
+      {
+        path: '/verify_signUp/:uuid',
+        name: 'VerifySignUp',
+        component: VerifySignUp,
+        props: true
+      },
+      {
+        path: '/cinemas/:id',
+        name: 'Details',
+        component: Cinema,
+        props: true
+      },
+      {
+        path: '/cinemas/:id/payment',
+        name:'Payment',
+        component: Payment,
+        props:true
+      },
+      {
+        path: '/:id',
+        name: 'Film',
+        component: Film,
+        props: true
+      },
+      {
+        path:'/ticket/token/pre/:token',
+        name:'Payment',
+        component: Payment,
+        props:true
+      },{
+      path:'/ticket/token/rea/:token',
+      name:'Ticket',
+      component:Ticket
+      },
+      {
+        path: '/:id/seatSelect/:id',
+        name: 'SeatSelect',
+        component: SeatSelect,
+        props: true
+      },
+      {
+        path: '/cinemas/:id/SeatSelect',
+        name: 'SeatSelect',
+        component: SeatSelect,
+        props: true
+      },
+      {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: dashboard,
+        props: true
+      }
+
     ],
   },
-]
+];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(),
   routes,
-})
+});
 
-export default router
+export default router;

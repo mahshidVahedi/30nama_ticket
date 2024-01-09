@@ -1,8 +1,13 @@
 <template>
   <v-app>
+    <v-content>
       <router-view>
-        <HomePage></HomePage>
+        <Navbar></Navbar>
+        <Profile></Profile>
+        <div style="height: 300px;"></div>
+        <Footer></Footer>
       </router-view>
+    </v-content>
   </v-app>
 </template>
 
@@ -31,7 +36,8 @@
 </style>
 
 <script setup>
-import HomePage from '@/components/homePage/HomePage.vue'
-
+import Profile from '@/components/user/Profile.vue';
+import Navbar from '@/components/common/Navbar.vue';
+import Footer from '@/components/common/Footer.vue';
 
 </script>

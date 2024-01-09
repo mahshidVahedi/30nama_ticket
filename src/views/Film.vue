@@ -1,8 +1,12 @@
 <template>
   <v-app>
+    <v-content>
       <router-view>
-        <HomePage></HomePage>
+        <Navbar></Navbar>
+        <Film></Film>
+        <Footer></Footer>
       </router-view>
+    </v-content>
   </v-app>
 </template>
 
@@ -31,7 +35,8 @@
 </style>
 
 <script setup>
-import HomePage from '@/components/homePage/HomePage.vue'
-
+import Film from '@/components/Film/FilmPage.vue';
+import Navbar from '@/components/common/Navbar.vue';
+import Footer from '@/components/common/Footer.vue';
 
 </script>
