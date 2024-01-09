@@ -5,7 +5,16 @@
         صحنه نمایش
       </div>
       <v-responsive id="salon">
+          <v-row class="mr-3 nums">
+            <v-col v-for="seat in   salon.aliasX  " :key="seat">
+              <div class="num">
+              {{ seat }}</div>
+            </v-col>
+          </v-row>
         <v-row v-for="row in   salon.aliasY  " :key="row" class="seat-row">
+          <p class="mt-3 ml-3">
+            {{ row }}
+          </p>
           <v-col v-for="seat in   salon.aliasX  " :key="seat" class="seat-column">
             <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)" :class="{
               'mdi-seat': isSelectedSeat(row, seat),
@@ -18,7 +27,6 @@
     </v-responsive>
   </div>
   <div class="ticket">
-
     <div dir="rtl" class="ma-8">
       <v-img :src="getSrc(movie.id)" width="75px" class="img">
       </v-img>
@@ -55,6 +63,10 @@
   flex-wrap: nowrap;
 }
 
+.num{
+  padding: 6.5px;
+}
+
 .v-icon.mdi-seat {
   color: green;
   font-size: 24px;
@@ -84,6 +96,10 @@
   overflow-x: scroll;
   overflow-y: scroll;
   padding: 15px;
+}
+.nums{
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .seat-row {
@@ -124,14 +140,20 @@ export default {
     const selectedSeats = ref([]);
     const movie = ref({});
     const cinema = ref({});
-    const scene_id=route.params.id;
+    const movie_id = ref('');
+    const saloon_id = ref('');
+    const cinema_id = ref('');
+    const scene_id = route.params.id;
     fetch('http://185.128.40.150:8080/api/seats/' + route.params.id)
       .then(response => response.json())
       .then(data => {
         scene_details.value = data.scene_details;
-        salon.value = data.scene_details.saloon
+        salon.value = data.scene_details.saloon;
         movie.value = data.scene_details.movie;
         cinema.value = data.scene_details.cinema;
+        movie_id.value = movie.value.id;
+        saloon_id.value = salon.value.id;
+        cinema_id.value = cinema.value.id;
         const soldSeats = data.sold_tickets.map(salon => ({
           row: salon.seatX,
           column: salon.seatY
@@ -167,38 +189,40 @@ export default {
       const src = `/src/assets/images/${id}.jpeg`
       return src;
     };
+    console.log(movie_id);
     const saveSelectedSeats = async () => {
-  try {
-    const seats = selectedSeats.value.map(seat => {
-      const [seatx, seatNumber] = seat.split('-');
-      return { seatx, seaty: seatNumber };
-    });
+      try {
+        const seats = selectedSeats.value.map(seat => {
+          const [seatx, seatNumber] = seat.split('-');
+          return { seatx, seaty: seatNumber };
+        });
+        const jsonData = JSON.stringify({
+          scene_id,
+          saloon_id: saloon_id.value,
+          movie_id: movie_id.value,
+          cinema_id: cinema_id.value,
+          seats: seats,
+        });
+        console.log(jsonData);
+        const response = await fetch('YOUR_API_ENDPOINT', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: jsonData,
+        });
 
-    const jsonData = JSON.stringify({
-      scene_id,
-      scene: scene_details.value,
-      seats: seats,
-    });
-    console.log(jsonData);
-    const response = await fetch('YOUR_API_ENDPOINT', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonData,
-    });
-
-    if (response.ok) {
-      console.log('Seats saved successfully');
-      const data = await response.json();
-      router.push('/ticket/token/pre/' + data.token);
-    } else {
-      console.log('Failed to save seats');
-    }
-  } catch (error) {
-    console.error('An error occurred:', error);
-  }
-};
+        if (response.ok) {
+          console.log('Seats saved successfully');
+          const data = await response.json();
+          router.push('/ticket/token/pre/' + data.token);
+        } else {
+          console.log('Failed to save seats');
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    };
     return {
       selectedSeats,
       toggleSeat,
@@ -210,7 +234,7 @@ export default {
       movie,
       cinema,
       scene_details,
-      saveSelectedSeats
+      saveSelectedSeats,
     };
   },
   inheritAttrs: false
