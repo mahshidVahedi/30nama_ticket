@@ -93,7 +93,6 @@
 </style>
 
 <script lang="js">
-import image1 from '@/assets/images/hotel.jpeg'
 import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
 
@@ -128,42 +127,6 @@ export default {
 
 
 
-
-      const info = ref({
-        image: image1,
-        filmName: 'هتل',
-        number: 3,
-        cinema: 'پردیس سینمایی کورش',
-        selectedDate: {
-          day: 30,
-          month: 'دی'
-        },
-        scene: {
-          hour: 23,
-          minute: 50,
-          saloonId: 4
-        },
-        selectedSeats: [
-          {
-            seat: 8,
-            row: 9,
-          },
-          {
-            seat: 9,
-            row: 9
-          },
-          {
-            seat: 10,
-            row: 9
-          }
-        ],
-        reserveCode: 80025282
-
-
-
-      })
-
-
       // const handleCheckbox = ()=>{
       //     if(this.checkbox1){
       //         this.checkbox2=!this.checkbox2;
@@ -191,7 +154,7 @@ export default {
         return src;
       }
 
-      return { info, image1, checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode }
+      return { info, checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode }
     }
 }
 </script>
