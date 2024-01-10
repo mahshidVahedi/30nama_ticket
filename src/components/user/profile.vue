@@ -18,7 +18,7 @@
           <v-row v-else dir="rtl">
             <v-col cols="12" sm="6">
               نام
-              <v-text-field v-model="updatedUser.user_email" ></v-text-field>
+              <v-text-field v-model="updatedUser.user_email"></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
               ایمیل
@@ -29,16 +29,18 @@
         </v-container>
       </v-card-text>
       <v-card-actions class="float-left pa-2">
-        <v-btn color="red" v-if="!isEditing" @click="isEditing = true" >ویرایش</v-btn>
+        <v-btn color="red" v-if="!isEditing" @click="isEditing = true">ویرایش</v-btn>
         <v-btn color="red" v-else @click="saveChanges">ذخیره</v-btn>
       </v-card-actions>
     </v-card>
-    <v-btn color="red" class="mt-6 float-left" >خروج از حساب کاربری</v-btn>
+    <v-btn @click="logOut" color="red" class="mt-6 float-left">خروج از حساب کاربری</v-btn>
   </v-container>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
 
 export default {
   name: 'UserInformation',
@@ -73,6 +75,34 @@ export default {
 
     onMounted(getUserData);
 
+    const cookieStorage = {
+
+      getItem: (item) => {
+        const cookies = document.cookie
+          .split(';')
+          .map(cookie => cookie.split('='))
+          .reduce((acc, [key, value]) => ({ ...acc, [key.trim()]: value }), {});
+        return cookies[item];
+      },
+      setItem: (item, value) => {
+        document.cookie = `${item}=${value};`;
+      },
+
+      removeItem: (item) => {
+        document.cookie = `${item}=; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+      }
+    }
+
+    const router = useRouter();
+    const storageType = cookieStorage;
+    const consentPropertyName = 'token';
+    const deleteFromStorage = () => storageType.removeItem(consentPropertyName);
+
+    const logOut = () => {
+      deleteFromStorage(storageType);
+      router.push('/');
+    }
+
     const saveChanges = async () => {
       try {
         const response = await fetch('http://185.128.40.150:8080/api/dashboard/update/profile', {
@@ -98,7 +128,8 @@ export default {
       userData,
       updatedUser,
       saveChanges,
-      userName
+      userName,
+      logOut
     };
   }
 }

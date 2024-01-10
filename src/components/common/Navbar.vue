@@ -80,9 +80,15 @@
       <v-list-item @click="goToCinemaList">
         سینما
       </v-list-item>
-      <v-list-item @click="goToLogin">
+      <v-list-item v-if="!isLoggedIn" @click="goToLogin">
         ورود یا ثبت نام
       </v-list-item>
+      <div v-if="isLoggedIn" @click="goToProfile" class="d-flex flex-row ma-2" id="prof">
+        <p class="mr-2">پروفایل</p>
+        <v-avatar color="grey" size="x-small">
+          <v-icon icon="mdi-account-circle" color="white"></v-icon>
+        </v-avatar>
+      </div>
     </v-list>
   </v-navigation-drawer>
 </template>

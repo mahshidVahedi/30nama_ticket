@@ -99,12 +99,29 @@ export default {
     const show = ref(false);
     receivedData.value = route.params.uuid;
 
+    const cookieStorage = {
+
+      getItem: (item) => {
+        const cookies = document.cookie
+          .split(';')
+          .map(cookie => cookie.split('='))
+          .reduce((acc, [key, value]) => ({ ...acc, [key.trim()]: value }), {});
+        return cookies[item];
+      },
+      setItem: (item, value) => {
+        document.cookie = `${item}=${value};`;
+      },
+
+      removeItem: (item) => {
+        document.cookie = `${item}=; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+      }
+    }
+
 
     const storageType = cookieStorage;
     const consentPropertyName = 'token';
     const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
     const tokenValue = ref()
-
 
 
     const goToHome = (event) => {
@@ -180,19 +197,17 @@ export default {
           return response.json(); // Parse the response as JSON
         })
         .then(text => {
-          console.log('Response:', text); // Log the response text
 
+          console.log('Response:', text); // Log the response text
         })
+
 
     };
 
-    // onMounted(startTimer);
-
-    onBeforeUnmount(() => {
-      clearInterval(intervalId);
-    });
+    onMounted(startTimer);
 
     return { seconds, restartTimer, goToHome, receivedData, data, errorMessage, otp, show };
+    
   },
 };
 </script>
