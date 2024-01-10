@@ -8,10 +8,10 @@
 </template>
 
 <script setup>
-import Slidershow from './Slidershow'
-import Footer from '../common/Footer.vue'
-import FilmSection from './FilmsSection.vue'
-import Navbar from '../common/Navbar.vue'
+import Slidershow from '@/components/homePage/SliderShow.vue'
+import Footer from '@/components/common/Footer.vue'
+import FilmSection from '@/components/homePage/FilmsSection.vue'
+import Navbar from '@/components/common/Navbar.vue'
 import {ref} from 'vue';
 import { useRoute } from 'vue-router'
 
