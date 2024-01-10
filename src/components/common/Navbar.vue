@@ -16,19 +16,15 @@
 
     </div>
     <div class="d-flex flex-row ma-2 pa-2">
-      <!-- <input :value="searchQuery" @input="updateSearchQuery" dir="rtl" placeholder="جستجو فیلم ..." id=""
-        cols="20" rows="5"> -->
-      <v-text-field v-model="searchQuery" class="kooft" dir="rtl" placeholder="جستجو فیلم، بازیگر و ..."></v-text-field>
-      <v-btn @click="fetchSearchResults" color="black" append-icon="mdi-magnify" class="ma-2 pa-0"></v-btn>
+      <v-text-field v-model="searchQuery" class="kooft" dir="rtl" placeholder="جستجو فیلم، کارگردان و ..."
+        :loading="loading" density="compact" variant="solo" prepend-inner-icon="mdi-magnify" single-line hide-details
+        @click="fetchSearchResults"></v-text-field>
       <v-dialog style="width: 60%; height: 600px;" v-model="dialogVisible">
         <v-card>
           <v-card-title dir="rtl">نتایج جستجو</v-card-title>
           <v-card-text>
             <v-list dense>
-              <!-- <v-list-item v-for="item in movies">
-                <v-list-item-title>{{ item }}</v-list-item-title>
-              </v-list-item> -->
-              <v-list-item @click="goToFilmDetails(film)" v-for="film in movies" :key="film.id"
+              <v-list-item dir="rtl" @click="goToFilmDetails(film)" v-for="film in movies" :key="film.id"
                 style="display: inline-block;" class="item">
                 <v-list-item-avatar>
                   <v-img :src="getSrc(film.id)" :alt="film.name" width="200px" height="auto"></v-img>
@@ -89,28 +85,6 @@
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
-
-  <v-dialog v-model="dialog" max-width="600px">
-    <v-card dir="rtl">
-      <div class="d-flex flex-row mr-5  mb-5 mt-5">
-        <v-icon color="#616161" icon="mdi-crosshairs-gps mt-4"></v-icon>
-        <v-card-title class="text-black font-wight-bold">موقعیت مکانی</v-card-title>
-      </div>
-
-
-      <hr>
-      <v-row class="mb-4 mt-4">
-        <v-col v-for="(city, index) in cities" :key="index" cols="12" sm="6" md="4" lg="4">
-          <v-card variant="text" class="mr-5" @click="dialog = false">
-            <v-card-title>{{ city }}</v-card-title>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-card-actions>
-        <v-btn color="red" block @click="dialog = false" class="mt-5  font-weight-bold">بستن</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
 </template>
 
 <style>
@@ -126,21 +100,11 @@
   font-family: 'Cairo Play', sans-serif;
 }
 
-.input {
-  width: 450px;
-  height: 50px;
-  background: white url("assets/search-icon.svg") no-repeat 15px center;
-  background-size: 15px 15px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-}
-
 .kooft {
   width: 300px;
 }
 
-#prof:hover{
+#prof:hover {
   cursor: pointer;
 }
 </style>
@@ -159,7 +123,8 @@ export default {
     const searchQuery = ref('');
     const searchResults = ref({});
     let movie = ref({});
-    const movies = [];
+    let movies = [];
+    let allMovies = [];
     let i = 0;
     // const name= '';
     //const name = ref('');
@@ -212,15 +177,14 @@ export default {
       console.log(isLoggedIn.value)
     })
 
-
-
     const fetchSearchResults = async () => {
       console.log(searchQuery.value);
-
       try {
         const response = await fetch(`http://185.128.40.150:8080/api/movie/search/${searchQuery.value}`);
         const data = await response.json();
-        const allMovies = data.movies;
+        console.log(allMovies);
+        console.log(movies);
+        allMovies = data.movies;
         const allDirectors = data.directorMovies;
         const cinemas = data.cinemas;
         allMovies.forEach(element => {
@@ -235,7 +199,6 @@ export default {
             i = i + 1;
           }
         });
-
         const f = data.movies[0];
         dialogVisible.value = true;
         searchResults.value = data.response;
@@ -243,10 +206,11 @@ export default {
         // movie.value = f.name;
         // console.log(movie);
         searchQuery.value = '';
+        allMovies.splice(0, allMovies.length);
+        // movies.length=0;
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
-
     };
 
     return {
