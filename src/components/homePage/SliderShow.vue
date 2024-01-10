@@ -61,18 +61,10 @@
 } */
 </style>
 <script lang="js">
-import photoBG1 from '@/assets/fosilBG.jpg'
-import photoM1 from '@/assets/fosilM.jfif'
-import photoBG2 from '@/assets/Jangale-Porteghal-8.jpg'
-import photoM2 from '@/assets/jangal.jfif'
-import photoBG3 from '@/assets/gijgahBG.jpeg'
-import photoM3 from '@/assets/gijgah.jfif'
+
 import image2 from '@/assets/images/2.jpeg'
 import image3 from '@/assets/images/3.jpeg'
 import image1 from '@/assets/images/1.jpeg'
-import photoA1 from '@/assets/Film1/ac1.jpg';
-import photoA2 from '@/assets/Film1/ac2.jpg';
-import photoA3 from '@/assets/Film1/ac3.jpg';
 import { useRouter } from 'vue-router'
 export default {
   setup() {

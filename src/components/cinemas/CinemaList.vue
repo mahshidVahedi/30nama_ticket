@@ -24,14 +24,6 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import image1 from '@/assets/cinema1/1.jpg'
-import image2 from '@/assets/cinema1/2.jpg'
-import image3 from '@/assets/cinema1/3.jpg'
-import image4 from '@/assets/cinema1/4.jpg'
-import image5 from '@/assets/cinema1/5.jpg'
-import image6 from '@/assets/cinema1/6.jpg'
-import image7 from '@/assets/cinema1/7.jpg'
-import image8 from '@/assets/cinema1/8.jpg'
 import '@mdi/font/css/materialdesignicons.css'
 import { useRouter } from 'vue-router';
 

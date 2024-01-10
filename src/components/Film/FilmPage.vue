@@ -247,14 +247,6 @@
 </style>
 
 <script lang="js">
-import backPhoto from '@/assets/Film1/back.jpeg';
-import filmPhoto from '@/assets/images/fosil.jpeg';
-import photoA1 from '@/assets/Film1/ac1.jpg';
-import photoA2 from '@/assets/Film1/ac2.jpg';
-import photoA3 from '@/assets/Film1/ac3.jpg';
-import photoC1 from '@/assets/cinema1/1.jpg';
-import photoC2 from '@/assets/cinema1/2.jpg';
-import photoC3 from '@/assets/cinema1/3.jpg';
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
 import { ref, onMounted, computed } from 'vue';
@@ -301,32 +293,6 @@ export default {
     const calculateHour = (time) => {
       return Math.floor(time / 60)
     }
-    const cinemas = [
-      {
-        id: 1,
-        name: ' پردیس سینمایی کوروش',
-        location: 'اتوبان همت غرب، ستاری شمال',
-        score: '3.6',
-        image: photoC1,
-        condition: false,
-      },
-      {
-        id: 2,
-        name: 'پردیس سینمایی ایران مال',
-        location: 'اتوبان همت غرب، اتوبان خرازی',
-        score: '4.0',
-        image: photoC2,
-        condition: false,
-      },
-      {
-        id: 3,
-        name: 'پردیس سینمایی آزادی',
-        location: 'خیابان بهشتی',
-        score: '3.3',
-        image: photoC3,
-        condition: false,
-      }
-    ]
 
 
     const openItems = ref([]);
@@ -530,7 +496,7 @@ export default {
       }
     }
     return {
-      scenes, cinemas, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
+      scenes, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
       isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors, gotoSeat, name
     }

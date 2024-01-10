@@ -140,7 +140,6 @@
 
 
 <script lang="js">
-import image1 from '@/assets/images/hotel.jpeg'
 import { ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
 import router from '@/router';
@@ -222,7 +221,7 @@ export default {
       alert.value = false;
     }
 
-    return { image1, checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc, count, showError, alert, goToHome };
+    return { checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc, count, showError, alert, goToHome };
 
   }
 }

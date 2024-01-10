@@ -243,9 +243,6 @@ label {
 </style>
 
 <script lang="js">
-import photoM1 from '@/assets/fosilM.jfif'
-import photoM2 from '@/assets/jangal.jfif'
-import photoM3 from '@/assets/gijgah.jfif';
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
 import { ref, onMounted, computed } from 'vue';

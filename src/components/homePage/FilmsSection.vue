@@ -23,23 +23,6 @@
 
 <script>
 import { ref } from 'vue';
-import image1 from '@/assets/images/hotel.jpeg'
-import image2 from '@/assets/images/jangal.jpeg'
-import image3 from '@/assets/images/fosil.jpeg'
-import image4 from '@/assets/images/gijgah.jpeg'
-import image5 from '@/assets/images/zerang.jpeg'
-import image6 from '@/assets/images/hert.jpeg'
-import image7 from '@/assets/images/aame.jpeg'
-import image8 from '@/assets/images/8sobh.jpeg'
-import image9 from '@/assets/images/jooje.jpeg'
-import photoA1 from '@/assets/Film1/ac1.jpg';
-import photoA2 from '@/assets/Film1/ac2.jpg';
-import photoA3 from '@/assets/Film1/ac3.jpg';
-import backPhoto from '@/assets/Film1/back.jpeg';
-import filmPhoto from '@/assets/images/fosil.jpeg';
-import photoC1 from '@/assets/cinema1/1.jpg';
-import photoC2 from '@/assets/cinema1/2.jpg';
-import photoC3 from '@/assets/cinema1/3.jpg';
 import { useRouter } from 'vue-router';
 export default {
   setup() {
