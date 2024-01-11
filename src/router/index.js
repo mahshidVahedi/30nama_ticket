@@ -13,7 +13,7 @@ import VerifyLogin from '@/components/Login/VerifyLogin'
 import VerifySignUp from '@/components/Login/VerifySignUp'
 import dashboard from '@/views/Profile.vue'
 import BoxOffice from '@/views/BoxOffice.vue'
-
+import tickets from '@/views/Tickets.vue'
 
 const routes = [
   {
@@ -102,6 +102,12 @@ const routes = [
         path: '/BoxOffice',
         name: 'BoxOffice',
         component: BoxOffice,
+        props: true
+      },
+      {
+        path: '/dashboard/tickets',
+        name: 'tickets',
+        component: tickets,
         props: true
       }
     ],

@@ -12,11 +12,11 @@
         <v-avatar color="grey" size="x-small">
           <v-icon icon="mdi-account-circle" color="white"></v-icon>
         </v-avatar>
-        <!-- <v-btn @click="goToTickets" color="black" append-icon="mdi-movie" variant="text" class="ma-2 pa-2">
-        <template v-slot:append>
-          <v-icon color="#616161"></v-icon>
-        </template>
-        بلیت های من</v-btn> -->
+      </div>
+      <div v-if="isLoggedIn" >
+        <v-btn @click="goToTickets" append-icon="mdi-ticket" variant="text">بلیت های من<template v-slot:append>
+          <v-icon color="#616161" style="margin-top: 4px;"></v-icon>
+        </template></v-btn>
       </div>
 
     </div>
@@ -95,11 +95,10 @@
         ورود یا ثبت نام
       </v-list-item>
       <div v-if="isLoggedIn" @click="goToProfile" class="d-flex flex-row ma-2" id="prof">
-        <v-avatar color="grey" size="x-small">
-          <v-icon icon="mdi-account-circle" color="white"></v-icon>
-        </v-avatar>
         <p class="mr-2">پروفایل</p>
-
+      </div>
+      <div v-if="isLoggedIn" @click="goToTickets" class="d-flex flex-row ma-2 mt-4" id="prof">
+        <p class="mr-2">بلیت های من</p>
       </div>
       <v-list-item>
         <v-text-field v-model="searchQuery" dir="rtl" placeholder="جستجو فیلم، سینما " :loading="loading"
@@ -124,6 +123,8 @@
 
 .kooft {
   width: 400px;
+  height: 40px;
+  margin: auto;
 }
 
 #prof:hover {
@@ -251,6 +252,9 @@ export default {
         console.error('Error fetching search results:', error);
       }
     };
+    const goToTickets = () => {
+      router.push('/dashboard/tickets');
+    }
 
     return {
       drawer,
@@ -270,7 +274,8 @@ export default {
       cinemas,
       getSrcCinema,
       goToCinemaDetails,
-      close
+      close,
+      goToTickets
     };
   },
 };

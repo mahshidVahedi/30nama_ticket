@@ -124,9 +124,7 @@ export default {
         console.error(error);
       }
     };
-    const goToTickets = () => {
-      router.push('/dashboard/tickets');
-    }
+
 
     return {
       isEditing,
@@ -135,7 +133,6 @@ export default {
       saveChanges,
       userName,
       logOut,
-      goToTickets
     };
   }
 }
