@@ -6,7 +6,7 @@
       <v-btn color="white" variant="plain" icon="mdi-twitter"></v-btn>
     </div>
     <div class="d-flex flex-row">
-      <v-btn color="white" variant="text" class="ma-2 pa-2 d-none d-sm-flex"> آرشیو فیلم ها </v-btn>
+      <!-- <v-btn color="white" variant="text" class="ma-2 pa-2 d-none d-sm-flex"> آرشیو فیلم ها </v-btn> -->
       <v-btn color="white" variant="text" class="ma-2 pa-2">جدول فروش </v-btn>
     </div>
   </v-footer>
