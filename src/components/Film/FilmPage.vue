@@ -616,7 +616,6 @@ export default {
 
     onMounted(() => {
       isLoggedIn.value = getCookie()
-      console.log(isLoggedIn.value)
     })
 
     const show = ref(false);
@@ -708,11 +707,11 @@ export default {
 
     const otp = ref('')
     const otpSign = ref('')
-    const receivedData = ref('')
 
     const goToScenelogin = (event) => {
       event.preventDefault();
-      if (otp.value && !clickedSignUp) {
+
+      if (otp.value) {
         fetch('http://185.128.40.150:8080/api/verify_login/' + uidL.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
@@ -795,41 +794,60 @@ export default {
       }
     };
 
-  //   const url = uidS.value === undefined
-  // ? 'http://185.128.40.150:8080/api/resend_otp/' + uidL.value
-  const url = 'http://185.128.40.150:8080/api/resend_otp/' + uidL.value;
+    //   const url = uidS.value === undefined
+    // ? 'http://185.128.40.150:8080/api/resend_otp/' + uidL.value
+    const url = 'http://185.128.40.150:8080/api/resend_otp/' + uidL.value;
 
     const restartTimer = (event) => {
       event.preventDefault(); // Prevent default form submission behavior
-      console.log(uidL.value,uidS.value)
+      console.log(uidL.value, uidS.value)
       clearTimeout(timeoutId);
       seconds.value = 5; // Reset the countdown to its initial value
       startTimer(); // Start the timer immediately
 
-      fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error resend verify login');
+      if (uidL.value) {
+        fetch('http://185.128.40.150:8080/api/resend_otp/' + uidL.value, {
+          method: 'POST',
+          body: JSON.stringify(),
+          headers: {
+            'Content-Type': 'application/json'
           }
-          return response.json(); // Parse the response as JSON
         })
-        .then(text => {
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error resend verify login');
+            }
+            return response.json(); // Parse the response as JSON
+          })
+          .then(text => {
+            console.log('Response:', text); // Log the response text
+          })
 
-          console.log('Response:', text); // Log the response text
+      } else if (uidS.value) {
+        fetch('http://185.128.40.150:8080/api/resend_otp/' + uidS.value, {
+          method: 'POST',
+          body: JSON.stringify(),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error resend verify login');
+            }
+            return response.json(); // Parse the response as JSON
+          })
+          .then(text => {
+            console.log('Response:', text); // Log the response text
+          })
+
+      }
+
 
 
     };
 
-    watch(show, (newValue) => {
-      startTimer()
-    });
+    onMounted(startTimer)
 
 
 
