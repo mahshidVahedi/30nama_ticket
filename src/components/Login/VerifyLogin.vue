@@ -126,9 +126,6 @@ export default {
       event.preventDefault();
       if (otp.value) {
         console.log(otp.value);
-        // if(otp.value != receivedData.value){
-        //   showAlert.value=true;
-        // }
         fetch('http://185.128.40.150:8080/api/verify_login/' + receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
@@ -150,6 +147,7 @@ export default {
             router.push({ name: 'Home' });
           })
           .catch(error => {
+            showAlert.value = true;
             console.error('Error verify login:', error);
           });
       } else {

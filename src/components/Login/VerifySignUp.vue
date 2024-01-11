@@ -9,7 +9,9 @@
       <v-dialog v-model="show" max-width="600px">
         <v-alert closable icon="$warning" text="کد تایید خود را وارد کنید." type="warning" dir="rtl"></v-alert>
       </v-dialog>
-
+      <v-dialog v-model="showAlert" max-width="600px">
+        <v-alert closable icon="$error" text="کد تایید اشتباه است." type="error" dir="rtl"></v-alert>
+      </v-dialog>
       <v-col xs="12">
         <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
           <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
@@ -97,6 +99,7 @@ export default {
     const errorMessage = ref('');
     const otp = ref('');
     const show = ref(false);
+    const showAlert = ref(false);
     receivedData.value = route.params.uuid;
 
     const cookieStorage = {
@@ -150,6 +153,7 @@ export default {
           })
           .catch(error => {
             console.error('Error verify sign up:', error);
+            showAlert.value = true;
           });
       } else {
         // errorMessage.value = 'کد ارسال شده را وارد کنید.';
@@ -206,8 +210,8 @@ export default {
 
     onMounted(startTimer);
 
-    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage, otp, show };
-    
+    return { seconds, restartTimer, goToHome, receivedData, data, errorMessage, otp, show, showAlert };
+
   },
 };
 </script>
