@@ -36,7 +36,7 @@
 </style>
 
 <script setup>
-import Profile from '@/components/user/Profile.vue';
+import Profile from '@/components/user/profile.vue';
 import Navbar from '@/components/common/Navbar.vue';
 import Footer from '@/components/common/Footer.vue';
 
