@@ -216,7 +216,22 @@
             rounded="lg">ایجاد حساب
             کاربری </v-btn></v-col>
 
+        <v-dialog v-model="showAlert" max-width="600px">
+          <v-alert closable icon="$warning" text="شماره تلفن خود را وارد کنید." type="warning" dir="rtl"></v-alert>
 
+        </v-dialog>
+        <v-dialog v-model="noAcc" max-width="600px" max-height="400px" min-width="300px">
+          <v-alert prominent type="error" dir="rtl">
+            <v-row align="center">
+              <v-col class="grow">
+                گرفتی ما رو؟؟ برو حساب باز کن
+              </v-col>
+              <v-col class="shrink">
+                <v-btn @click="goToSign()"> ایجاد حساب کاربری</v-btn>
+              </v-col>
+            </v-row>
+          </v-alert>
+        </v-dialog>
 
       </v-row>
 
@@ -261,7 +276,9 @@
       <v-col xs="12">
         <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="300">
           <h2 style="margin-top: 2rem;font-weight:bolder;" class="mb-5 mr-5 display-2">ایجاد حساب کاربری</h2>
-
+          <v-dialog v-model="showAlertRegister" max-width="600px">
+            <v-alert closable icon="$warning" text="شماره تلفن خود را وارد کنید." type="warning" dir="rtl"></v-alert>
+          </v-dialog>
           <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
             <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
             <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
@@ -367,6 +384,8 @@ export default {
     const rate4 = 4
     const rate5 = 5
     const dialog = ref(false)
+    const showAlert = ref(false)
+    const showAlertRegister=ref(false)
 
 
 
@@ -601,6 +620,9 @@ export default {
       },
       setItem: (item, value) => {
         document.cookie = `${item}=${value};`
+      },
+      removeItem: (item) => {
+        document.cookie = `${item}=; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
       }
     }
 
@@ -659,9 +681,8 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log(data)
+
             uidL.value = data.uuid; // Get the uid from the response
-            console.log('UID L :', uidL.value);
 
           })
           .catch(error => {
@@ -700,8 +721,10 @@ export default {
         clickedToVerify.value = true
 
 
-      } else {
-        show.value = true;
+      } else if(!number.value) {
+        showAlert.value = true
+      }else if(!numberSign.value) {
+        showAlertRegister.value = true
       }
     };
 
@@ -855,7 +878,7 @@ export default {
       scenes, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
       isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors, gotoSeat, name, isLoggedIn, showError, show, noAcc,
-      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign
+      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert,showAlertRegister
     }
   }
 }

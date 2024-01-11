@@ -89,7 +89,7 @@ export default {
       },
 
       removeItem: (item) => {
-        document.cookie = `${item}=; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+        document.cookie = `${item}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
       }
     }
 
@@ -99,6 +99,7 @@ export default {
     const deleteFromStorage = () => storageType.removeItem(consentPropertyName);
 
     const logOut = () => {
+      console.log(consentPropertyName)
       deleteFromStorage(storageType);
       router.push('/');
     }
