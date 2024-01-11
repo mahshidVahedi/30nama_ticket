@@ -9,7 +9,6 @@
     </div>
     <v-dialog v-model="show" max-width="600px">
       <v-alert closable icon="$warning" text="شماره تلفن خود را وارد کنید." type="warning" dir="rtl"></v-alert>
-
     </v-dialog>
     <v-dialog v-model="noAcc" max-width="600px" max-height="400px" min-width="300px">
       <v-alert prominent type="error" dir="rtl">
