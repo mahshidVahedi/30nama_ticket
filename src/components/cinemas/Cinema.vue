@@ -114,8 +114,7 @@
                     <v-row class="flex-lg-row flex-s-column justify-content-start">
                       <v-col>
                         <v-responsive :aspect-ratio="16 / 9">
-                          <v-img rounded="4"
-                            style="max-height: 300px;max-width: 200px; min-height: 100px; min-width: 100px;"
+                          <v-img style="max-height: 200px;max-width: 300px; min-height: 150; min-width:210px ;" rounded="lg"
                             :src="getSrcMovie(scene.MovieId)"></v-img>
                         </v-responsive>
                       </v-col>
@@ -123,16 +122,17 @@
                         <div style="max-width: 100%;" class="d-flex flex-column mr-0 mt-5">
                           <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ scene.MovieName }}</v-card-title>
                           <v-card-text dir="rtl">
-                            <v-chip>{{ film.genre }}</v-chip>
+                            <v-chip>{{ scene.MovieGenre }}</v-chip>
                             <div class="d-flex flex-row mt-3 ">
                               <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
                                 <v-icon class="me-1 " icon="mdi-clock"></v-icon>
-                                {{ film.duration }}
+                                {{ scene.MovieDuration }}
                               </div>
                               <div color="red" class="d-flex flex-row border-white mt-3 me-3">
                                 <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
                                 <div class="text-red ms-1">
-                                  {{ film.score }}
+                                  {{ scene.MovieScore
+                                  }}
                                 </div>
                               </div>
 
@@ -154,20 +154,19 @@
 
               </v-card>
 
-              <v-row class="d-flex flex-row flex-wrap mt-5 mb-10">
-                <div v-if="conditions[index]">
-                  <v-card v-for="saloon in scene.SceneSaloon" class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5"
-                    variant="text" style="min-width: 100px ;">
+              <v-row class="mt-5 mb-10">>
+                  <v-card v-if="conditions[index]"  v-for="saloon in scene.SceneSaloon" cols="12" sm="6" md="4" lg="3" class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text" style=" max-width: 280px;min-width: 100px ;">
 
                     <div class="d-flex flex-column">
                       <div class="ml-3 mr-3">
-                        <v-card-title>{{ saloon.SaloonName }}</v-card-title>
+                        <v-card-title class="text-wrap">{{ saloon.SaloonName }}</v-card-title>
                         <v-card-item>
 
                           <p class="mt-3 mb-3 mr-0">
                             <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-                            سانس {{ saloon.StartTime }}
+                            سانس :
                           </p>
+                          <span class="mb-2" dir="ltr">{{ saloon.StartTime }}</span>
                           <v-card-subtitle>
                             60000 تومان
                           </v-card-subtitle>
@@ -179,7 +178,6 @@
                       </v-btn>
                     </div>
                   </v-card>
-                </div>
               </v-row>
 
 
@@ -343,12 +341,16 @@ export default {
 
 
     const scenes = ref([]);
-    const firstApi = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=2024-01-02`;
+    const todayF = new Date();
+    const currentDateF = todayF.toISOString().split('T')[0];
+    const firstApi = `http://185.128.40.150:8080/api/cinema/movies/${route.params.id}?time=${currentDateF}`;
 
     fetch(firstApi)
       .then(response => response.json())
-      .then(data => { scenes.value = data.scene })
-
+      .then(data => {
+        scenes.value = data.scene
+        console.log(scenes.value)
+      })
     const handleTab = (tabValue) => {
       fetchSearchResults(tabValue)
     }
@@ -479,6 +481,8 @@ export default {
       console.log(value)
       if (value === 'ghaza') {
         return 'mdi-food'
+      } else if (value === 'asansor') {
+        return 'mdi-elevator'
       } else {
         return `mdi-${value}`
 
@@ -495,6 +499,8 @@ export default {
       }
       else if (value === 'parking') {
         return 'پارکینگ'
+      } else if (value === 'elevator' || value === 'asansor') {
+        return 'آسانسور'
       }
     }
     return {
