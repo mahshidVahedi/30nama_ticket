@@ -7,7 +7,7 @@
     </div>
     <div class="d-flex flex-row">
       <!-- <v-btn color="white" variant="text" class="ma-2 pa-2 d-none d-sm-flex"> آرشیو فیلم ها </v-btn> -->
-      <v-btn color="white" variant="text" class="ma-2 pa-2">جدول فروش </v-btn>
+      <v-btn @click="goToBoxOffice" color="white" variant="text" class="ma-2 pa-2">جدول فروش </v-btn>
     </div>
   </v-footer>
 </template>
@@ -21,6 +21,8 @@
 }
 </style>
 <script lang="js">
+import router from '@/router'
+
 export default {
   name: 'Footer',
   setup() {
@@ -30,12 +32,15 @@ export default {
       'mdi-telegram',
       'mdi-instagram',
     ]
+    const goToBoxOffice = () =>{
+      router.push('/BoxOffice');
+    }
 
     const items = [
       'جدول فروش'
     ]
 
-    return { items, icons }
+    return { items, icons, goToBoxOffice }
   }
 }
 </script>

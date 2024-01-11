@@ -12,6 +12,11 @@
         <v-avatar color="grey" size="x-small">
           <v-icon icon="mdi-account-circle" color="white"></v-icon>
         </v-avatar>
+        <!-- <v-btn @click="goToTickets" color="black" append-icon="mdi-movie" variant="text" class="ma-2 pa-2">
+        <template v-slot:append>
+          <v-icon color="#616161"></v-icon>
+        </template>
+        بلیت های من</v-btn> -->
       </div>
 
     </div>
@@ -90,15 +95,16 @@
         ورود یا ثبت نام
       </v-list-item>
       <div v-if="isLoggedIn" @click="goToProfile" class="d-flex flex-row ma-2" id="prof">
-        <p class="mr-2">پروفایل</p>
         <v-avatar color="grey" size="x-small">
           <v-icon icon="mdi-account-circle" color="white"></v-icon>
         </v-avatar>
+        <p class="mr-2">پروفایل</p>
+
       </div>
       <v-list-item>
-      <v-text-field v-model="searchQuery" dir="rtl" placeholder="جستجو فیلم، سینما " :loading="loading"
-        density="compact" variant="solo" prepend-inner-icon="mdi-magnify" single-line hide-details
-        @click="fetchSearchResults"></v-text-field></v-list-item>
+        <v-text-field v-model="searchQuery" dir="rtl" placeholder="جستجو فیلم، سینما " :loading="loading"
+          density="compact" variant="solo" prepend-inner-icon="mdi-magnify" single-line hide-details
+          @click="fetchSearchResults"></v-text-field></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>

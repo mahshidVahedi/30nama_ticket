@@ -32,8 +32,9 @@
         <v-btn color="red" v-if="!isEditing" @click="isEditing = true">ویرایش</v-btn>
         <v-btn color="red" v-else @click="saveChanges">ذخیره</v-btn>
       </v-card-actions>
+
     </v-card>
-    <v-btn @click="logOut" color="red" class="mt-6 float-left">خروج از حساب کاربری</v-btn>
+    <v-btn @click="logOut" color="red" class="mt-6 float-left d-block">خروج از حساب کاربری</v-btn>
   </v-container>
 </template>
 
@@ -123,6 +124,9 @@ export default {
         console.error(error);
       }
     };
+    const goToTickets = () => {
+      router.push('/dashboard/tickets');
+    }
 
     return {
       isEditing,
@@ -130,7 +134,8 @@ export default {
       updatedUser,
       saveChanges,
       userName,
-      logOut
+      logOut,
+      goToTickets
     };
   }
 }
