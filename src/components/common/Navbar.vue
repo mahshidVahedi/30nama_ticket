@@ -12,31 +12,45 @@
         <v-avatar color="grey" size="x-small">
           <v-icon icon="mdi-account-circle" color="white"></v-icon>
         </v-avatar>
+        <!-- <v-btn @click="goToTickets" color="black" append-icon="mdi-movie" variant="text" class="ma-2 pa-2">
+        <template v-slot:append>
+          <v-icon color="#616161"></v-icon>
+        </template>
+        بلیت های من</v-btn> -->
       </div>
 
     </div>
     <div class="d-flex flex-row ma-2 pa-2">
-      <v-text-field v-model="searchQuery" class="kooft" dir="rtl" placeholder="جستجو فیلم، کارگردان و ..."
-        :loading="loading" density="compact" variant="solo" prepend-inner-icon="mdi-magnify" single-line hide-details
+      <v-text-field v-model="searchQuery" class="kooft" dir="rtl" placeholder="جستجو فیلم، سینما و ..." :loading="loading"
+        density="compact" variant="solo" prepend-inner-icon="mdi-magnify" single-line hide-details
         @click="fetchSearchResults"></v-text-field>
-      <v-dialog style="width: 60%; height: 600px;" v-model="dialogVisible">
+      <v-dialog min-width="200px" max-width="700px" v-model="dialogVisible">
         <v-card>
           <v-card-title dir="rtl">نتایج جستجو</v-card-title>
           <v-card-text>
-            <v-list dense>
-              <v-list-item dir="rtl" @click="goToFilmDetails(film)" v-for="film in movies" :key="film.id"
-                style="display: inline-block;" class="item">
+            <v-list dense dir="rtl">
+              <v-list-item dir="rtl" @click="goToFilmDetails(film)" v-for="film in movies" style="display: inline-block;"
+                class="item">
                 <v-list-item-avatar>
-                  <v-img :src="getSrc(film.id)" :alt="film.name" width="200px" height="auto"></v-img>
+                  <v-img :src="getSrcFilm(film.id)" :alt="film.name" width="200px" height="auto"></v-img>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title style="color: black;">{{ film.name }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
+              <v-list-item dir="rtl" @click="goToCinemaDetails(cinema)" v-for="cinema in cinemas"
+                style="display: inline-block;" class="item">
+                <v-list-item-avatar>
+                  <v-img :src="getSrcCinema(cinema.id)" :alt="cinema.name" width="200px" height="auto"></v-img>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title style="color: black;">{{ cinema.name }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
             </v-list>
           </v-card-text>
           <v-card-actions>
-            <v-btn color="primary" @click="dialogVisible = false">بستن</v-btn>
+            <v-btn color="primary" @click="close()">بستن</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -58,9 +72,6 @@
 
     <v-spacer></v-spacer>
     <div class="d-flex flex-row">
-      <v-btn append-icon="mdi-magnify" class="ma-2 d-none d-sm-flex">
-        <input dir="rtl" placeholder="جستجو فیلم، بازیگر و ..." id="" cols="20" rows="5">
-      </v-btn>
       <v-toolbar-title><v-btn @click="goToHome" color="black" append-icon="mdi-film" variant="text"
           class="font-weight-bold">
           <template v-slot:append>
@@ -76,13 +87,24 @@
   </v-toolbar>
 
   <v-navigation-drawer v-model="drawer" location="top" class="d-flex d-md-none">
-    <v-list>
+    <v-list dir="rtl">
       <v-list-item @click="goToCinemaList">
         سینما
       </v-list-item>
-      <v-list-item @click="goToLogin">
+      <v-list-item v-if="!isLoggedIn" @click="goToLogin">
         ورود یا ثبت نام
       </v-list-item>
+      <div v-if="isLoggedIn" @click="goToProfile" class="d-flex flex-row ma-2" id="prof">
+        <v-avatar color="grey" size="x-small">
+          <v-icon icon="mdi-account-circle" color="white"></v-icon>
+        </v-avatar>
+        <p class="mr-2">پروفایل</p>
+
+      </div>
+      <v-list-item>
+        <v-text-field v-model="searchQuery" dir="rtl" placeholder="جستجو فیلم، سینما " :loading="loading"
+          density="compact" variant="solo" prepend-inner-icon="mdi-magnify" single-line hide-details
+          @click="fetchSearchResults"></v-text-field></v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -101,7 +123,7 @@
 }
 
 .kooft {
-  width: 300px;
+  width: 400px;
 }
 
 #prof:hover {
@@ -123,11 +145,13 @@ export default {
     const searchQuery = ref('');
     const searchResults = ref({});
     let movie = ref({});
+    const cinema = ref({});
     let movies = [];
+    let cinemas = [];
     let allMovies = [];
+    let allCinemas = [];
     let i = 0;
-    // const name= '';
-    //const name = ref('');
+    let w = 0;
 
     const goToHome = () => {
       router.push('/');
@@ -149,10 +173,27 @@ export default {
       router.push({ name: 'dashboard' });
     }
 
-    const getSrc = (id) => {
+    const close = () => {
+      dialogVisible.value = false;
+      movies.splice(0, movies.length);
+      cinemas.splice(0, cinemas.length);
+      allMovies.splice(0, allMovies.length);
+      allCinemas.splice(0, allCinemas.length);
+    }
+
+    const getSrcFilm = (id) => {
       const src = `/src/assets/images/${id}.jpeg`
       return src;
     }
+
+    const getSrcCinema = (id) => {
+      const src = `/src/assets/cinema1/${id}.jpeg`
+      return src;
+    }
+
+    const goToCinemaDetails = (cinema) => {
+      router.push({ name: 'Details', params: { id: cinema.id } });
+    };
 
     const cookieStorage = {
       getItem: (item) => {
@@ -176,38 +217,36 @@ export default {
       isLoggedIn.value = getCookie()
       console.log(isLoggedIn.value)
     })
-
     const fetchSearchResults = async () => {
-      console.log(searchQuery.value);
       try {
         const response = await fetch(`http://185.128.40.150:8080/api/movie/search/${searchQuery.value}`);
         const data = await response.json();
-        console.log(allMovies);
-        console.log(movies);
         allMovies = data.movies;
-        const allDirectors = data.directorMovies;
-        const cinemas = data.cinemas;
-        allMovies.forEach(element => {
-          if (element != null && element != undefined) {
-            // console.log(movies);
-            movie = element;
-            // console.log(movie);
-            // if (movie !== '') {
-            movies[i] = movie;
-            // }
-            //console.log(movies[i]);
-            i = i + 1;
-          }
-        });
-        const f = data.movies[0];
+        allCinemas = data.cinemas;
+        if (allMovies != null) {
+          allMovies.forEach(element => {
+            if (element != null && element != undefined) {
+              movie = element;
+              movies[i] = movie;
+              i = i + 1;
+            }
+          });
+        }
+        if (allCinemas != null) {
+
+          allCinemas.forEach(element => {
+            if (element != null && element != undefined) {
+              cinemas[w] = element;
+              w = w + 1;
+            }
+          });
+        }
         dialogVisible.value = true;
         searchResults.value = data.response;
-        // movies.value = data.movies;
-        // movie.value = f.name;
-        // console.log(movie);
         searchQuery.value = '';
-        allMovies.splice(0, allMovies.length);
-        // movies.length=0;
+
+        i = 0;
+        w = 0;
       } catch (error) {
         console.error('Error fetching search results:', error);
       }
@@ -224,10 +263,14 @@ export default {
       goToLogin,
       fetchSearchResults,
       movies,
-      getSrc,
+      getSrcFilm,
       goToFilmDetails,
       goToProfile,
-      isLoggedIn
+      isLoggedIn,
+      cinemas,
+      getSrcCinema,
+      goToCinemaDetails,
+      close
     };
   },
 };

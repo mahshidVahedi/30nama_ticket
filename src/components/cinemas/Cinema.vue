@@ -114,25 +114,25 @@
                     <v-row class="flex-lg-row flex-s-column justify-content-start">
                       <v-col>
                         <v-responsive :aspect-ratio="16 / 9">
-                          <v-img rounded="4"
-                            style="max-height: 300px;max-width: 200px; min-height: 100px; min-width: 100px;"
-                            :src="getSrcMovie(scene.MovieId)"></v-img>
+                          <v-img style="max-height: 200px;max-width: 300px; min-height: 150; min-width:210px ;"
+                            rounded="lg" :src="getSrcMovie(scene.MovieId)"></v-img>
                         </v-responsive>
                       </v-col>
                       <v-col>
                         <div style="max-width: 100%;" class="d-flex flex-column mr-0 mt-5">
                           <v-card-title class="text-h6 font-weight-bold" dir="rtl">{{ scene.MovieName }}</v-card-title>
                           <v-card-text dir="rtl">
-                            <v-chip>{{ film.genre }}</v-chip>
+                            <v-chip>{{ scene.MovieGenre }}</v-chip>
                             <div class="d-flex flex-row mt-3 ">
                               <div class="d-flex flex-row mt-3 me-3 rounded-pill border-white">
                                 <v-icon class="me-1 " icon="mdi-clock"></v-icon>
-                                {{ film.duration }}
+                                {{ scene.MovieDuration }}
                               </div>
                               <div color="red" class="d-flex flex-row border-white mt-3 me-3">
                                 <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
                                 <div class="text-red ms-1">
-                                  {{ film.score }}
+                                  {{ scene.MovieScore
+                                  }}
                                 </div>
                               </div>
 
@@ -154,32 +154,32 @@
 
               </v-card>
 
-              <v-row class="d-flex flex-row flex-wrap mt-5 mb-10">
-                <div v-if="conditions[index]">
-                  <v-card v-for="saloon in scene.SceneSaloon" class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5"
-                    variant="text" style="min-width: 100px ;">
+              <v-row class="mt-5 mb-10">>
+                <v-card v-if="conditions[index]" v-for="saloon in scene.SceneSaloon" cols="12" sm="6" md="4" lg="3"
+                  class="ml-10 mt-5 mr-10 elevation-8 pl-5 pr-5" variant="text"
+                  style=" max-width: 280px;min-width: 100px ;">
 
-                    <div class="d-flex flex-column">
-                      <div class="ml-3 mr-3">
-                        <v-card-title>{{ saloon.SaloonName }}</v-card-title>
-                        <v-card-item>
+                  <div class="d-flex flex-column">
+                    <div class="ml-3 mr-3">
+                      <v-card-title class="text-wrap">{{ saloon.SaloonName }}</v-card-title>
+                      <v-card-item>
 
-                          <p class="mt-3 mb-3 mr-0">
-                            <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-                            سانس {{ saloon.StartTime }}
-                          </p>
-                          <v-card-subtitle>
-                            60000 تومان
-                          </v-card-subtitle>
-                        </v-card-item>
-                      </div>
-                      <v-btn @click="gotoSeat(saloon.SceneId)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket"
-                        variant="flat" color="red">
-                        خرید بلیت
-                      </v-btn>
+                        <p class="mt-3 mb-3 mr-0">
+                          <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
+                          سانس :
+                        </p>
+                        <span class="mb-2" dir="ltr">{{ saloon.StartTime }}</span>
+                        <v-card-subtitle>
+                          60000 تومان
+                        </v-card-subtitle>
+                      </v-card-item>
                     </div>
-                  </v-card>
-                </div>
+                    <v-btn @click="gotoSeat(saloon.SceneId)" class="mt-2 mr-5 mb-3" prepend-icon="mdi-ticket"
+                      variant="flat" color="red">
+                      خرید بلیت
+                    </v-btn>
+                  </div>
+                </v-card>
               </v-row>
 
 
@@ -224,6 +224,108 @@
       </v-card>
     </div> -->
   </div>
+
+  <v-dialog v-model="show">
+
+    <v-card v-if="!clickedToVerify && !clickedSignUp && !isLoggedIn" class="mx-auto mt-5" rounded="lg" min-height="300">
+      <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
+      <v-row dir="rtl" class="mt-10 mb-5 mr-4 ml-2">
+
+        <v-col cols="12" sm="8">
+          <p class="mt-5">اگر در سینماتیکت حساب کاربری ندارید ثبت نام کنید.</p>
+        </v-col>
+        <v-col cols="12" sm="4"><v-btn @click="goToRegister" variant="elevated" color="red" class="ml-0 mt-5"
+            rounded="lg">ایجاد حساب
+            کاربری </v-btn></v-col>
+
+
+
+      </v-row>
+
+      <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
+        <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
+        <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
+          <v-text-field v-model="number" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
+            placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+
+          <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit"
+            class="mt-2 ml-5" text="ورود"></v-btn>
+        </v-form>
+      </div>
+      <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
+    </v-card>
+
+    <v-card v-if="clickedToVerify && !clickedSignUp && !isLoggedIn" class="mx-auto mt-5" rounded="lg" min-height="300">
+      <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
+      <v-col xs="12">
+        <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
+          <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
+            <p class="mr-4">کد وارد شده را وارد کنید</p>
+            <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
+              <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
+
+                <input v-model="otp" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
+                <p class="box-p" v-if="seconds > 0">{{ seconds }}</p>
+                <button class="box" v-if="seconds <= 0" @click="restartTimer">ارسال مجدد</button>
+              </div>
+              <v-btn @click="goToScenelogin" min-width="100px" variant="elevated" rounded="lg" color="red" type="submit"
+                class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
+            </v-form>
+          </div>
+          <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
+        </v-card>
+      </v-col>
+      <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
+    </v-card>
+
+    <v-card v-if="clickedSignUp && !clickedToVerify && !isLoggedIn" class="mx-auto mt-5" rounded="lg">
+      <v-card-title dir="rtl" class="d-3 mt-10 pa-3">برای خرید بلیت باید وارد شوید.</v-card-title>
+      <v-col xs="12">
+        <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="300">
+          <h2 style="margin-top: 2rem;font-weight:bolder;" class="mb-5 mr-5 display-2">ایجاد حساب کاربری</h2>
+
+          <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
+            <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
+            <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
+              <v-text-field v-model="numberSign" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
+                placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+
+              <v-btn @click="goToVerify" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8"
+                text="ادامه"></v-btn>
+            </v-form>
+          </div>
+
+        </v-card>
+      </v-col>
+    </v-card>
+
+    <v-card v-if="clickedToVerify && clickedSignUp && !isLoggedIn" class="mx-auto mt-5" rounded="lg" min-height="300">
+      <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
+      <v-col xs="12">
+        <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
+          <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
+            <p class="mr-4">کد وارد شده را وارد کنید</p>
+            <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
+              <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
+
+                <input v-model="otpSign" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
+                <p class="box-p" v-if="seconds > 0">{{ seconds }}</p>
+                <button class="box" v-if="seconds <= 0" @click="restartTimer">ارسال مجدد</button>
+              </div>
+              <v-btn @click="goToScenelogin" min-width="100px" variant="elevated" rounded="lg" color="red" type="submit"
+                class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
+            </v-form>
+          </div>
+          <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
+        </v-card>
+      </v-col>
+      <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
+    </v-card>
+
+
+
+
+  </v-dialog>
 </template>
 
 <style>
@@ -245,7 +347,7 @@ label {
 <script lang="js">
 import { mdiWifi } from '@mdi/js';
 import moment from 'jalali-moment';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import router from '@/router';
 
@@ -290,11 +392,6 @@ export default {
         .catch(error => {
           console.error('Error submitting rate:', error);
         });
-    };
-
-    const gotoSeat = (index) => {
-      console.log(index)
-      router.push({ name: 'SeatSelect', params: { id: index } })
     };
     const jalaliDay = ref('');
     const jalaliMonth = ref('');
@@ -343,12 +440,16 @@ export default {
 
 
     const scenes = ref([]);
-    const firstApi = `http://185.128.40.150:8080/api/movie/cinemas/${route.params.id}?time=2024-01-02`;
+    const todayF = new Date();
+    const currentDateF = todayF.toISOString().split('T')[0];
+    const firstApi = `http://185.128.40.150:8080/api/cinema/movies/${route.params.id}?time=${currentDateF}`;
 
     fetch(firstApi)
       .then(response => response.json())
-      .then(data => { scenes.value = data.scene })
-
+      .then(data => {
+        scenes.value = data.scene
+        console.log(scenes.value)
+      })
     const handleTab = (tabValue) => {
       fetchSearchResults(tabValue)
     }
@@ -479,6 +580,8 @@ export default {
       console.log(value)
       if (value === 'ghaza') {
         return 'mdi-food'
+      } else if (value === 'asansor') {
+        return 'mdi-elevator'
       } else {
         return `mdi-${value}`
 
@@ -495,12 +598,282 @@ export default {
       }
       else if (value === 'parking') {
         return 'پارکینگ'
+      } else if (value === 'elevator' || value === 'asansor') {
+        return 'آسانسور'
       }
     }
+
+
+
+    const cookieStorage = {
+      getItem: (item) => {
+        const cookies = document.cookie
+          .split(';')
+          .map(cookie => cookie.split('='))
+          .reduce((acc, [key, value]) => ({ ...acc, [key.trim()]: value }), {});
+        return cookies[item];
+      },
+      setItem: (item, value) => {
+        document.cookie = `${item}=${value};`
+      },
+      removeItem: (item) => {
+        document.cookie = `${item}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      }
+    }
+
+    const number = ref('');
+    const uidS = ref();
+    const uidL = ref()
+    const isLoggedIn = ref(false)
+    const storageType = cookieStorage;
+    const consentPropertyName = 'token';
+    const getCookie = () => storageType.getItem(consentPropertyName);
+    const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
+    const tokenValue = ref()
+
+    onMounted(() => {
+      isLoggedIn.value = getCookie()
+    })
+
+    const show = ref(false);
+    const noAcc = ref(false);
+    const gotoSeat = (index) => {
+      console.log(isLoggedIn)
+      clickedSignUp.value = false
+      clickedToVerify.value = false
+      if (isLoggedIn.value) {
+        router.push({ name: 'SeatSelect', params: { id: index } })
+      }
+      else {
+        show.value = true
+      }
+    };
+
+    const showError = () => {
+      noAcc.value = true;
+    }
+
+    const clickedToVerify = ref(false)
+    const numberSign = ref()
+
+    const clickedSignUp = ref(false)
+    const goToVerify = (event) => {
+      event.preventDefault();
+      if (number.value) {
+        fetch('http://185.128.40.150:8080/api/login', {
+          method: 'POST',
+          body: JSON.stringify({ PhoneNumber: number.value }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              showError();
+              throw new Error();
+            }
+            console.log(response)
+            return response.json(); // Parse the response as JSON
+          })
+          .then(data => {
+            console.log(data)
+            uidL.value = data.uuid; // Get the uid from the response
+            console.log('UID L :', uidL.value);
+
+          })
+          .catch(error => {
+            console.error(error);
+          });
+
+        clickedToVerify.value = true
+        console.log(clickedToVerify.value)
+
+      } else if (numberSign.value) {
+        // errorMessage.value = 'شماره تلفن خود را وارد کنید.';
+        // window.alert(errorMessage.value);
+        fetch('http://185.128.40.150:8080/api/signup', {
+          method: 'POST',
+          body: JSON.stringify({ PhoneNumber: numberSign.value }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error number sign up');
+            }
+            console.log(response)
+            return response.json(); // Parse the response as JSON
+          })
+          .then(data => {
+            console.log(data)
+            uidS.value = data.uuid; // Get the uid from the response
+            console.log('UID:', uidS.value);
+          })
+          .catch(error => {
+            console.error('Error sign up :', error);
+          });
+
+        clickedToVerify.value = true
+
+
+      } else {
+        show.value = true;
+      }
+    };
+
+    const otp = ref('')
+    const otpSign = ref('')
+
+    const goToScenelogin = (event) => {
+      event.preventDefault();
+
+      if (otp.value) {
+        fetch('http://185.128.40.150:8080/api/verify_login/' + uidL.value, {
+          method: 'POST',
+          body: JSON.stringify({ OTP: otp.value }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error verify login');
+            }
+            return response.json(); // Parse the response as JSON
+          })
+          .then(text => {
+            console.log('Response:', text); // Log the response text
+            tokenValue.value = text.token
+            saveToStorage(storageType);
+            show.value = false
+            location.reload()
+          })
+          .catch(error => {
+            console.error('Error verify login:', error);
+          });
+      } else if (otpSign.value && clickedSignUp) {
+
+        console.log(otpSign.value)
+        fetch('http://185.128.40.150:8080/api/verify_signup/' + uidS.value, {
+          method: 'POST',
+          body: JSON.stringify({ OTP: otpSign.value }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error verify login');
+            }
+            return response.json(); // Parse the response as JSON
+          })
+          .then(text => {
+            console.log('Response:', text); // Log the response text
+            tokenValue.value = text.token
+            console.log(tokenValue.value)
+            saveToStorage(storageType);
+            show.value = false
+            location.reload()
+          })
+          .catch(error => {
+            console.error('Error verify login:', error);
+          });
+      } else {
+        show.value = false;
+
+      }
+      clickedSignUp.value = false
+      clickedToVerify.value = false
+
+
+    };
+
+
+    const goToRegister = () => {
+      clickedSignUp.value = true;
+    }
+
+
+    const seconds = ref(5);
+    let timeoutId;
+
+    const startTimer = () => {
+      timeoutId = setTimeout(updateNumber, 1000);
+    };
+
+    const updateNumber = () => {
+      if (seconds.value === 0) {
+        clearTimeout(timeoutId);
+      } else {
+        seconds.value -= 1;
+        timeoutId = setTimeout(updateNumber, 1000);
+      }
+    };
+
+    
+    const restartTimer = (event) => {
+      event.preventDefault(); // Prevent default form submission behavior
+      console.log(uidL.value, uidS.value)
+      clearTimeout(timeoutId);
+      seconds.value = 5; // Reset the countdown to its initial value
+      startTimer(); // Start the timer immediately
+
+      if (uidL.value) {
+        fetch('http://185.128.40.150:8080/api/resend_otp/' + uidL.value, {
+          method: 'POST',
+          body: JSON.stringify(),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error resend verify login');
+            }
+            return response.json(); // Parse the response as JSON
+          })
+          .then(text => {
+            console.log('Response:', text); // Log the response text
+          })
+
+      } else if (uidS.value) {
+        fetch('http://185.128.40.150:8080/api/resend_otp/' + uidS.value, {
+          method: 'POST',
+          body: JSON.stringify(),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error resend verify login');
+            }
+            return response.json(); // Parse the response as JSON
+          })
+          .then(text => {
+            console.log('Response:', text); // Log the response text
+          })
+
+      }
+
+
+
+    };
+
+    watch(show, (newVal) => {
+      if (newVal) {
+        // Dialog is visible, start the counter timer
+        startTimer()
+      }
+    })
+
+
     return {
       cinema, comments, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
-      isItemOpen, gotoSeat, getSrc, conditions, getSrcMovie, features, findFeatureicon, findFeatureValue, handleTab, submitRating, rate1, rate2, rate3, rate4, rate5
+      isItemOpen, gotoSeat, getSrc, conditions, getSrcMovie, features, findFeatureicon, findFeatureValue, handleTab, submitRating, rate1, rate2, rate3, rate4, rate5, isLoggedIn, showError, show, noAcc,
+      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign
     }
   }
 }

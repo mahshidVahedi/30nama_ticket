@@ -1,5 +1,5 @@
 <template style="background-color: rgb(235, 235, 235);" dir="rtl" >
-  <div style="background-color: rgb(235, 235, 235);">
+  <div style="background-color: rgb(235, 235, 235); " class="pa-0 ml-0">
     <h2 dir="rtl" class="text-h6 ps-10 pl-0 pt-10 font-weight-bold"><b>اطلاعات بلیت و پرداخت</b></h2>
 
     <v-container>
@@ -43,11 +43,11 @@
               <hr class="ms-3 me-3 mt-5 mb-3" style="color: beige;">
               <div dir="rtl">
                 <h3 class="mr-5 mb-5">{{ count }} صندلی برای شما</h3>
-                <div class="d-flex flex-row">
-                  <div v-for="(ticket, i) in preTicket" :key="i" class="mr-5 mb-5 d-flex flex-row">
+                <v-row class="d-flex flex-row">
+                  <v-col v-for="(ticket, i) in preTicket" :key="i" cols="12" md="5" class="mr-5 mb-5 d-flex flex-row">
                     <v-chip class=""> ردیف {{ ticket.seatX }} صندلی {{ ticket.seatY }}</v-chip>
-                  </div>
-                </div>
+                  </v-col>
+                </v-row>
               </div>
             </v-card>
             <v-dialog v-model="alert" max-width="600px" max-height="400px" min-width="300px">
@@ -91,11 +91,10 @@
 
         <v-col>
           <v-container>
-            <v-card :rounded="4" variant="flat" class="d-flex flex-column justify-content-start ml-10  ms-2 mt-10">
+            <v-card :rounded="4" variant="flat" class="d-flex flex-column justify-content-start mt-10">
               <v-card-title class="font-weight-bold mt-5" dir="rtl">جزئیات پرداخت</v-card-title>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mt-8">
-                <p>بلیت به ارزش 60,000 تومان</p>
-                <p>{{ count }} عدد</p>
+                <p>{{ count }} عدد بلیت</p>
                 <p>{{ count * 60000 }} تومان</p>
               </v-card-text>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
@@ -134,6 +133,7 @@
 
       </v-row>
     </v-container>
+    <div style="height: 5rem; width: 100%;"></div>
 
   </div>
 </template>
