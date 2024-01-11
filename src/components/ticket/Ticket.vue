@@ -154,7 +154,7 @@ export default {
         return src;
       }
 
-      return { info, checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode }
+      return { checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode }
     }
 }
 </script>

@@ -5,12 +5,12 @@
         صحنه نمایش
       </div>
       <v-responsive id="salon">
-          <v-row class="mr-3 nums">
-            <v-col v-for="seat in   salon.aliasX  " :key="seat">
-              <div class="num">
+        <v-row class="mr-3 nums">
+          <v-col v-for="seat in   salon.aliasX  " :key="seat">
+            <div class="num">
               {{ seat }}</div>
-            </v-col>
-          </v-row>
+          </v-col>
+        </v-row>
         <v-row v-for="row in   salon.aliasY  " :key="row" class="seat-row">
           <p class="mt-3 ml-3">
             {{ row }}
@@ -63,7 +63,7 @@
   flex-wrap: nowrap;
 }
 
-.num{
+.num {
   padding: 6.5px;
 }
 
@@ -97,7 +97,8 @@
   overflow-y: scroll;
   padding: 15px;
 }
-.nums{
+
+.nums {
   display: flex;
   flex-wrap: nowrap;
 }
@@ -143,7 +144,8 @@ export default {
     const movie_id = ref('');
     const saloon_id = ref('');
     const cinema_id = ref('');
-    const scene_id = route.params.id;
+    const scene_route = route.params.id;
+    let scene_id = parseInt(scene_route, 10);
     fetch('http://185.128.40.150:8080/api/seats/' + route.params.id)
       .then(response => response.json())
       .then(data => {
@@ -194,7 +196,9 @@ export default {
       try {
         const seats = selectedSeats.value.map(seat => {
           const [seatx, seatNumber] = seat.split('-');
-          return { seatx, seaty: seatNumber };
+          let seatX=parseInt(seatx, 10);
+          let seatY=parseInt(seatNumber, 10);
+          return { seatX , seatY };
         });
         const jsonData = JSON.stringify({
           scene_id,
@@ -204,7 +208,7 @@ export default {
           seats: seats,
         });
         console.log(jsonData);
-        const response = await fetch('YOUR_API_ENDPOINT', {
+        const response = await fetch('http://185.128.40.150:8080/api/buy_tickets', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
