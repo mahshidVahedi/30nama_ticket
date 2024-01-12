@@ -30,7 +30,7 @@ export default {
 
 
     const films = ref([])
-      fetch('https://185.128.40.150/api/movies')
+      fetch('https://nramezon.shop/api/movies')
         .then(response => response.json())
         .then(data => films.value = data.movies)
     const router = useRouter();
