@@ -102,7 +102,8 @@ export default {
     const logOut = () => {
       console.log(consentPropertyName)
       deleteFromStorage(storageType);
-      router.push('/');
+      router.push({name:'Home'});
+
     }
 
     const saveChanges = async () => {

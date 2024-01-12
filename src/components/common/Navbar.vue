@@ -13,11 +13,11 @@
           <v-icon icon="mdi-account-circle" color="white"></v-icon>
         </v-avatar>
       </div>
-      <div v-if="isLoggedIn" >
+      <!-- <div v-if="isLoggedIn" >
         <v-btn @click="goToTickets" append-icon="mdi-ticket" variant="text">بلیت های من<template v-slot:append>
           <v-icon color="#616161" style="margin-top: 4px;"></v-icon>
         </template></v-btn>
-      </div>
+      </div> -->
 
     </div>
     <div class="d-flex flex-row ma-2 pa-2">
@@ -97,9 +97,9 @@
       <div v-if="isLoggedIn" @click="goToProfile" class="d-flex flex-row ma-2" id="prof">
         <p class="mr-2">پروفایل</p>
       </div>
-      <div v-if="isLoggedIn" @click="goToTickets" class="d-flex flex-row ma-2 mt-4" id="prof">
+      <!-- <div v-if="isLoggedIn" @click="goToTickets" class="d-flex flex-row ma-2 mt-4" id="prof">
         <p class="mr-2">بلیت های من</p>
-      </div>
+      </div> -->
       <v-list-item>
         <v-text-field v-model="searchQuery" dir="rtl" placeholder="جستجو فیلم، سینما " :loading="loading"
           density="compact" variant="solo" prepend-inner-icon="mdi-magnify" single-line hide-details
