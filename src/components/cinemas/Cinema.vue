@@ -623,12 +623,14 @@ export default {
     const cinemaSaloons = ref([])
 
     const getSrc = (id) => {
-      const src = `/src/assets/cinema1/${id}.jpeg`
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/cinema1/${id}.jpeg`;
       return src;
-    }
+    };
 
     const getSrcMovie = (id) => {
-      const src = `/src/assets/images/${id}.jpeg`
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/images/${id}.jpeg`;
       return src;
     }
 

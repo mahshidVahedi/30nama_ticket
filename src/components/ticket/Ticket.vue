@@ -150,8 +150,9 @@ export default {
         checkbox1.value = !newValue;
       });
       const getSrc = (id) => {
-        const src = `/src/assets/images/${id}.jpeg`
-        return src;
+        const baseUrl = "/";
+      const src = `${baseUrl}assets/images/${id}.jpeg`;
+      return src;
       }
 
       return { checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode }

@@ -41,7 +41,8 @@ export default {
     };
 
     const getSrc = (id) => {
-      const src = `/src/assets/cinema1/${id}.jpeg`
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/cinema1/${id}.jpeg`;
       return src;
     }
 

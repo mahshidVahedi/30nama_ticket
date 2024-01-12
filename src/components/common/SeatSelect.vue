@@ -188,7 +188,8 @@ export default {
 
     };
     const getSrc = (id) => {
-      const src = `/src/assets/images/${id}.jpeg`
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/images/${id}.jpeg`;
       return src;
     };
     console.log(movie_id);
