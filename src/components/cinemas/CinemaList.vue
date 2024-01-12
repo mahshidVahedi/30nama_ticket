@@ -32,7 +32,7 @@ export default {
   setup() {
 
     const cinemas = ref([])
-    fetch('http://185.128.40.150:8080/api/cinemas')
+    fetch('https://nramezon.shop/api/cinemas')
       .then(response => response.json())
       .then(data => cinemas.value = data.cinemas)
     const router = useRouter();
@@ -41,27 +41,12 @@ export default {
     };
 
     const getSrc = (id) => {
-      const src = `/src/assets/cinema1/${id}.jpeg`
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/cinema1/${id}.jpeg`;
       return src;
     }
 
-    // Fetch data using an asynchronous function
 
-    // const fetchData = async () => {
-    //   try {
-    //     const response = await fetch('http://localhost:8080/api/cinemas');
-    //     const data = await response.json();
-    //     cinemas.value = data;
-    //     console.log(cinemas)
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-
-    // // Fetch data when the component is mounted
-    // onMounted(() => {
-    //   fetchData();
-    // });
 
 
     console.log(cinemas)

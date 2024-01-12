@@ -113,7 +113,7 @@ export default {
     const count = ref();
     const route = useRoute();
     const reserveCode = ref()
-      fetch('http://185.128.40.150:8080/api/ticket/token/rea/' + route.params.token)
+      fetch('https://nramezon.shop/api/ticket/token/rea/' + route.params.token)
         .then(response => response.json())
         .then(data => {
           count.value = data.count
@@ -150,8 +150,9 @@ export default {
         checkbox1.value = !newValue;
       });
       const getSrc = (id) => {
-        const src = `/src/assets/images/${id}.jpeg`
-        return src;
+        const baseUrl = "/";
+      const src = `${baseUrl}assets/images/${id}.jpeg`;
+      return src;
       }
 
       return { checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode }

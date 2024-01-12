@@ -164,7 +164,7 @@ export default {
     const alert = ref(false);
     const tokenUrl = route.params.token;
     const count = ref()
-    fetch('http://185.128.40.150:8080/api/ticket/token/pre/' + tokenUrl)
+    fetch('https://nramezon.shop/api/ticket/token/pre/' + tokenUrl)
       .then(response => response.json())
       .then(data => {
         count.value = data.count;
@@ -188,7 +188,7 @@ export default {
     });
 
     const goToTicket = () => {
-      fetch('http://185.128.40.150:8080/api/preticket/confirm/' + tokenUrl, {
+      fetch('https://nramezon.shop/api/preticket/confirm/' + tokenUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -209,7 +209,8 @@ export default {
         })
     };
     const getSrc = (id) => {
-      const src = `/src/assets/images/${id}.jpeg`
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/images/${id}.jpeg`;
       return src;
     }
     const showError = () => {

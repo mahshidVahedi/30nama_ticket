@@ -6,8 +6,8 @@
     <section class="ma-auto" style="width: 80%; height: 900px;">
       <v-list>
 
-        <v-list-item @click="goToFilmDetails(film)" v-for="film in films" :key="film.id"
-          style="display: inline-block;" class="item">
+        <v-list-item @click="goToFilmDetails(film)" v-for="film in films" :key="film.id" style="display: inline-block;"
+          class="item">
           <v-list-item-avatar>
             <v-img :src="getSrc(film.id)" :alt="film.name" width="200px" height="auto"></v-img>
           </v-list-item-avatar>
@@ -19,7 +19,6 @@
     </section>
 
   </div>
-
 </template>
 
 <script>
@@ -30,22 +29,23 @@ export default {
 
 
     const films = ref([])
-      fetch('https://nramezon.shop/api/movies')
-        .then(response => response.json())
-        .then(data => films.value = data.movies)
+    fetch('https://nramezon.shop/api/movies')
+      .then(response => response.json())
+      .then(data => films.value = data.movies)
     const router = useRouter();
 
     const goToFilmDetails = (film) => {
       router.push({ name: 'Film', params: { id: film.id } });
     };
 
-      const getSrc = (id) => {
-          const src = `/src/assets/images/${id}.jpeg`
-          return src;
-      }
+    const getSrc = (id) => {
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/images/${id}.jpeg`;
+      return src;
+    };
 
     return {
-      films, goToFilmDetails,getSrc
+      films, goToFilmDetails, getSrc
     };
   }
 };

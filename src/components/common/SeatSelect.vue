@@ -19,7 +19,7 @@
             <v-icon icon="mdi-seat" @click="toggleSeat(row, seat)" :class="{
               'mdi-seat': isSelectedSeat(row, seat),
               'mdi-seat-occupied': !isSelectedSeat(row, seat),
-              'mdi-seat-disabled': seat.disabled
+              'mdi-seat-disabled': disableSoldSeats(row, seat)
             }"></v-icon>
           </v-col>
         </v-row>
@@ -75,6 +75,9 @@
 .v-icon.mdi-seat-occupied {
   color: rgb(84, 66, 66);
   font-size: 24px;
+}
+.v-icon.mdi-seat-disabled{
+  display: none;
 }
 
 .scene {
@@ -139,6 +142,7 @@ export default {
     const salon = ref({});
     const scene_details = ref({})
     const selectedSeats = ref([]);
+    const sold_tickets = ref([]);
     const movie = ref({});
     const cinema = ref({});
     const movie_id = ref('');
@@ -146,7 +150,7 @@ export default {
     const cinema_id = ref('');
     const scene_route = route.params.id;
     let scene_id = parseInt(scene_route, 10);
-    fetch('http://185.128.40.150:8080/api/seats/' + route.params.id)
+    fetch('https://nramezon.shop/api/seats/' + route.params.id)
       .then(response => response.json())
       .then(data => {
         scene_details.value = data.scene_details;
@@ -156,11 +160,10 @@ export default {
         movie_id.value = movie.value.id;
         saloon_id.value = salon.value.id;
         cinema_id.value = cinema.value.id;
-        const soldSeats = data.sold_tickets.map(salon => ({
+        sold_tickets.value = data.sold_tickets.map(salon => ({
           row: salon.seatX,
           column: salon.seatY
         }));
-        disableSoldSeats(soldSeats);
       });
     const toggleSeat = (row, seat) => {
       const seatId = `${row}-${seat}`;
@@ -180,15 +183,13 @@ export default {
     const canSave = computed(() => {
       return selectedSeats.value.length > 0;
     });
-    const disableSoldSeats = (soldSeats) => {
-      salon.value.seats.forEach(seat => {
-        const isSold = soldSeats.some(soldSeat => soldSeat.row === seat.row && soldSeat.column === seat.column);
-        seat.disabled = isSold;
-      });
-
-    };
+    const disableSoldSeats = (row, seat) => {
+  const isSold = sold_tickets.value.some(ticket => ticket.row === row && ticket.column === seat);
+  return isSold;
+};
     const getSrc = (id) => {
-      const src = `/src/assets/images/${id}.jpeg`
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/images/${id}.jpeg`;
       return src;
     };
     console.log(movie_id);
@@ -208,7 +209,7 @@ export default {
           seats: seats,
         });
         console.log(jsonData);
-        const response = await fetch('http://185.128.40.150:8080/api/buy_tickets', {
+        const response = await fetch('https://nramezon.shop/api/buy_tickets', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -239,6 +240,7 @@ export default {
       cinema,
       scene_details,
       saveSelectedSeats,
+      disableSoldSeats
     };
   },
   inheritAttrs: false

@@ -89,7 +89,7 @@ export default {
       console.log(number)
       if (number.value) {
         console.log(number.value)
-        fetch('http://185.128.40.150:8080/api/login', {
+        fetch('https://nramezon.shop/api/login', {
           method: 'POST',
           body: JSON.stringify({ PhoneNumber: number.value }),
           headers: {

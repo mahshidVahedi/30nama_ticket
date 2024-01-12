@@ -183,12 +183,14 @@ export default {
     }
 
     const getSrcFilm = (id) => {
-      const src = `/src/assets/images/${id}.jpeg`
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/images/${id}.jpeg`;
       return src;
     }
 
     const getSrcCinema = (id) => {
-      const src = `/src/assets/cinema1/${id}.jpeg`
+      const baseUrl = "/";
+      const src = `${baseUrl}assets/cinema1/${id}.jpeg`;
       return src;
     }
 
@@ -220,7 +222,7 @@ export default {
     })
     const fetchSearchResults = async () => {
       try {
-        const response = await fetch(`http://185.128.40.150:8080/api/movie/search/${searchQuery.value}`);
+        const response = await fetch(`https://nramezon.shop/api/movie/search/${searchQuery.value}`);
         const data = await response.json();
         allMovies = data.movies;
         allCinemas = data.cinemas;
