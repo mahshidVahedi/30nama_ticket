@@ -40,7 +40,7 @@ export default {
     };
 
       const getSrc = (id) => {
-          const src = `/src/assets/images/${id}.jpeg`
+          const src = `../assets/images/${id}.jpeg`
           return src;
       }
 
