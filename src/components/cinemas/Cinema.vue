@@ -736,6 +736,7 @@ export default {
           .then(data => {
             console.log(data)
             uidL.value = data.uuid; // Get the uid from the response
+            console.log('UID L :', uidL.value);
 
           })
           .catch(error => {
