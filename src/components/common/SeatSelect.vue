@@ -146,7 +146,7 @@ export default {
     const cinema_id = ref('');
     const scene_route = route.params.id;
     let scene_id = parseInt(scene_route, 10);
-    fetch('http://185.128.40.150:8080/api/seats/' + route.params.id)
+    fetch('https://nramezon.shop/api/seats/' + route.params.id)
       .then(response => response.json())
       .then(data => {
         scene_details.value = data.scene_details;
@@ -208,7 +208,7 @@ export default {
           seats: seats,
         });
         console.log(jsonData);
-        const response = await fetch('http://185.128.40.150:8080/api/buy_tickets', {
+        const response = await fetch('https://nramezon.shop/api/buy_tickets', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

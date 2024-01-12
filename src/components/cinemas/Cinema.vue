@@ -429,7 +429,7 @@ export default {
     const submitRating = (rate) => {
       dialog.value = false
       console.log(rate)
-      fetch('http://185.128.40.150:8080/api/cinema/rating/add/' + route.params.id, {
+      fetch('https://nramezon.shop/api/cinema/rating/add/' + route.params.id, {
         method: 'POST',
         body: JSON.stringify({ score: rate }),
         headers: {
@@ -464,7 +464,7 @@ export default {
     console.log(route.params.id)
     const features = ref([])
 
-    fetch('http://185.128.40.150:8080/api/cinemas/' + route.params.id)
+    fetch('https://nramezon.shop/api/cinemas/' + route.params.id)
       .then(response => response.json())
       .then(data => {
         cinema.value = data.cinema
@@ -476,7 +476,7 @@ export default {
     const router = useRouter();
 
     const comments = ref([])
-    fetch('http://185.128.40.150:8080/api/cinema/comments/' + route.params.id)
+    fetch('https://nramezon.shop/api/cinema/comments/' + route.params.id)
       .then(response => response.json())
       .then(data => { comments.value = data.comments })
 
@@ -498,7 +498,7 @@ export default {
     const scenes = ref([]);
     const todayF = new Date();
     const currentDateF = todayF.toISOString().split('T')[0];
-    const firstApi = `http://185.128.40.150:8080/api/cinema/movies/${route.params.id}?time=${currentDateF}`;
+    const firstApi = `https://nramezon.shop/api/cinema/movies/${route.params.id}?time=${currentDateF}`;
 
     fetch(firstApi)
       .then(response => response.json())
@@ -527,13 +527,13 @@ export default {
 
         switch (tabValue) {
           case 1:
-            apiUrl = `http://185.128.40.150:8080/api/cinema/movies/${route.params.id}?time=${currentDate}`;
+            apiUrl = `https://nramezon.shop/api/cinema/movies/${route.params.id}?time=${currentDate}`;
             break;
           case 2:
-            apiUrl = `http://185.128.40.150:8080/api/cinema/movies/${route.params.id}?time=${tomorrowDate}`;
+            apiUrl = `https://nramezon.shop/api/cinema/movies/${route.params.id}?time=${tomorrowDate}`;
             break;
           case 3:
-            apiUrl = `http://185.128.40.150:8080/api/cinema/movies/${route.params.id}?time=${dayAfterTomorrowDate}`;
+            apiUrl = `https://nramezon.shop/api/cinema/movies/${route.params.id}?time=${dayAfterTomorrowDate}`;
             break;
           default:
             apiUrl = '';
@@ -718,7 +718,7 @@ export default {
       showAlert.value = false
 
       if (number.value) {
-        fetch('http://185.128.40.150:8080/api/login', {
+        fetch('https://nramezon.shop/api/login', {
           method: 'POST',
           body: JSON.stringify({ PhoneNumber: number.value }),
           headers: {
@@ -748,7 +748,7 @@ export default {
       } else if (numberSign.value) {
         // errorMessage.value = 'شماره تلفن خود را وارد کنید.';
         // window.alert(errorMessage.value);
-        fetch('http://185.128.40.150:8080/api/signup', {
+        fetch('https://nramezon.shop/api/signup', {
           method: 'POST',
           body: JSON.stringify({ PhoneNumber: numberSign.value }),
           headers: {
@@ -789,7 +789,7 @@ export default {
       event.preventDefault();
 
       if (otp.value) {
-        fetch('http://185.128.40.150:8080/api/verify_login/' + uidL.value, {
+        fetch('https://nramezon.shop/api/verify_login/' + uidL.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
           headers: {
@@ -815,7 +815,7 @@ export default {
       } else if (otpSign.value && clickedSignUp) {
 
         console.log(otpSign.value)
-        fetch('http://185.128.40.150:8080/api/verify_signup/' + uidS.value, {
+        fetch('https://nramezon.shop/api/verify_signup/' + uidS.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otpSign.value }),
           headers: {
@@ -880,7 +880,7 @@ export default {
       startTimer(); // Start the timer immediately
 
       if (uidL.value) {
-        fetch('http://185.128.40.150:8080/api/resend_otp/' + uidL.value, {
+        fetch('https://nramezon.shop/api/resend_otp/' + uidL.value, {
           method: 'POST',
           body: JSON.stringify(),
           headers: {
@@ -898,7 +898,7 @@ export default {
           })
 
       } else if (uidS.value) {
-        fetch('http://185.128.40.150:8080/api/resend_otp/' + uidS.value, {
+        fetch('https://nramezon.shop/api/resend_otp/' + uidS.value, {
           method: 'POST',
           body: JSON.stringify(),
           headers: {
