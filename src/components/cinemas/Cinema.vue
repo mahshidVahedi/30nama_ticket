@@ -428,7 +428,6 @@ export default {
 
     const submitRating = (rate) => {
       dialog.value = false
-      console.log(rate)
       fetch('https://nramezon.shop/api/cinema/rating/add/' + route.params.id, {
         method: 'POST',
         body: JSON.stringify({ score: rate }),
@@ -443,7 +442,7 @@ export default {
           return response.text();
         })
         .then(text => {
-          console.log('Response:', text);
+          // console.log('Response:', text);
         })
         .catch(error => {
           console.error('Error submitting rate:', error);
@@ -460,8 +459,6 @@ export default {
 
     const route = useRoute();
     const cinema = ref({});
-
-    console.log(route.params.id)
     const features = ref([])
 
     fetch('https://nramezon.shop/api/cinemas/' + route.params.id)
@@ -471,8 +468,6 @@ export default {
         features.value = data.features
       })
 
-    console.log(cinema)
-    console.log(features)
     const router = useRouter();
 
     const comments = ref([])
@@ -480,7 +475,6 @@ export default {
       .then(response => response.json())
       .then(data => { comments.value = data.comments })
 
-    console.log('The comments are : ' + comments.value)
 
     const calculateMinute = (time) => {
       const number = time % 60
@@ -504,7 +498,6 @@ export default {
       .then(response => response.json())
       .then(data => {
         scenes.value = data.scene
-        console.log(scenes.value)
       })
     const handleTab = (tabValue) => {
       fetchSearchResults(tabValue)
@@ -563,8 +556,6 @@ export default {
     }
 
     function handleClick(itemId) {
-      console.log(itemId);
-      console.log(scenes.value[itemId].SceneSaloon);
       conditions.value[itemId] = !conditions.value[itemId];
     }
 
@@ -635,7 +626,6 @@ export default {
     }
 
     const findFeatureicon = (value) => {
-      console.log(value)
       if (value === 'ghaza') {
         return 'mdi-food'
       } else if (value === 'asansor') {
@@ -647,7 +637,6 @@ export default {
     }
 
     const findFeatureValue = (value) => {
-      console.log(value)
       if (value === 'food' || value === 'ghaza') {
         return 'فود کورت'
       }
@@ -684,7 +673,7 @@ export default {
     const uidL = ref()
     const isLoggedIn = ref(false)
     const storageType = cookieStorage;
-    const consentPropertyName = 'token';
+    const consentPropertyName = 'Set-Cookie';
     const getCookie = () => storageType.getItem(consentPropertyName);
     const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
     const tokenValue = ref()
@@ -696,7 +685,6 @@ export default {
     const show = ref(false);
     const noAcc = ref(false);
     const gotoSeat = (index) => {
-      console.log(isLoggedIn)
       clickedSignUp.value = false
       clickedToVerify.value = false
       if (isLoggedIn.value) {
@@ -732,13 +720,11 @@ export default {
               showError();
               throw new Error();
             }
-            console.log(response)
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log(data)
+            console.log('otp:'+data.otp)
             uidL.value = data.uuid; // Get the uid from the response
-            console.log('UID L :', uidL.value);
 
           })
           .catch(error => {
@@ -746,7 +732,6 @@ export default {
           });
 
         clickedToVerify.value = true
-        console.log(clickedToVerify.value)
 
       } else if (numberSign.value) {
         // errorMessage.value = 'شماره تلفن خود را وارد کنید.';
@@ -762,13 +747,11 @@ export default {
             if (!response.ok) {
               throw new Error('Error number sign up');
             }
-            console.log(response)
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log(data)
+            console.log('otp:'+data.otp)
             uidS.value = data.uuid; // Get the uid from the response
-            console.log('UID:', uidS.value);
           })
           .catch(error => {
             console.error('Error sign up :', error);
@@ -806,7 +789,6 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            console.log('Response:', text); // Log the response text
             tokenValue.value = text.token
             saveToStorage(storageType);
             show.value = false
@@ -817,7 +799,6 @@ export default {
           });
       } else if (otpSign.value && clickedSignUp) {
 
-        console.log(otpSign.value)
         fetch('https://nramezon.shop/api/verify_signup/' + uidS.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otpSign.value }),
@@ -832,9 +813,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            console.log('Response:', text); // Log the response text
             tokenValue.value = text.token
-            console.log(tokenValue.value)
             saveToStorage(storageType);
             show.value = false
             location.reload()
@@ -877,7 +856,6 @@ export default {
 
     const restartTimer = (event) => {
       event.preventDefault(); // Prevent default form submission behavior
-      console.log(uidL.value, uidS.value)
       clearTimeout(timeoutId);
       seconds.value = 59; // Reset the countdown to its initial value
       startTimer(); // Start the timer immediately
@@ -897,7 +875,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            console.log('Response:', text); // Log the response text
+            console.log('otp:', text.otp); // Log the response text
           })
 
       } else if (uidS.value) {
@@ -915,7 +893,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            console.log('Response:', text); // Log the response text
+            console.log('otp:', text.otp); // Log the response text
           })
 
       }

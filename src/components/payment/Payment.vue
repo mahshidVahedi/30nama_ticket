@@ -202,9 +202,7 @@ export default {
           return response.text();
         })
         .then(text => {
-          console.log('Response:', text);
           const data = JSON.parse(text);
-          console.log(data);
           router.push('/ticket/token/rea/' + data.token);
         })
     };
@@ -215,7 +213,6 @@ export default {
     }
     const showError = () => {
       alert.value = true;
-      console.log(alert);
     }
     const goToHome = () => {
       router.push('/');

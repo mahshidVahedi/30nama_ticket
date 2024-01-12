@@ -122,7 +122,7 @@ export default {
 
 
     const storageType = cookieStorage;
-    const consentPropertyName = 'token';
+    const consentPropertyName = 'Set-Cookie';
     const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
     const tokenValue = ref()
 
@@ -130,7 +130,6 @@ export default {
     const goToHome = (event) => {
       event.preventDefault();
       if (otp.value) {
-        console.log(otp.value)
         fetch('https://nramezon.shop/api/verify_signup/' + receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),

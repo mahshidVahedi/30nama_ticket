@@ -192,7 +192,6 @@ export default {
       const src = `${baseUrl}assets/images/${id}.jpeg`;
       return src;
     };
-    console.log(movie_id);
     const saveSelectedSeats = async () => {
       try {
         const seats = selectedSeats.value.map(seat => {
@@ -208,7 +207,6 @@ export default {
           cinema_id: cinema_id.value,
           seats: seats,
         });
-        console.log(jsonData);
         const response = await fetch('https://nramezon.shop/api/buy_tickets', {
           method: 'POST',
           headers: {
@@ -218,7 +216,6 @@ export default {
         });
 
         if (response.ok) {
-          console.log('Seats saved successfully');
           const data = await response.json();
           router.push('/ticket/token/pre/' + data.token);
         } else {

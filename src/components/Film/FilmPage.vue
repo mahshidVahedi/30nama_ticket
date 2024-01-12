@@ -583,7 +583,6 @@ export default {
         })
         .then(text => {
           const data = JSON.parse(text); // Try parsing the response as JSON
-          console.log('Comment submitted:', data);
           comment.value = '';
           window.location.reload();
         })
@@ -609,7 +608,6 @@ export default {
           return response.text();
         })
         .then(text => {
-          console.log('Response:', text);
         })
         .catch(error => {
           console.error('Error submitting rate:', error);
@@ -668,7 +666,7 @@ export default {
     const uidL = ref()
     const isLoggedIn = ref(false)
     const storageType = cookieStorage;
-    const consentPropertyName = 'token';
+    const consentPropertyName = 'Set-Cookie';
     const getCookie = () => storageType.getItem(consentPropertyName);
     const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
     const tokenValue = ref()
@@ -680,7 +678,6 @@ export default {
     const show = ref(false);
     const noAcc = ref(false);
     const gotoSeat = (index) => {
-      console.log(isLoggedIn)
       clickedSignUp.value = false
       clickedToVerify.value = false
       if (isLoggedIn.value) {
@@ -715,11 +712,10 @@ export default {
               showError();
               throw new Error();
             }
-            console.log(response)
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log(data)
+            console.log('otp:' + data.otp)
             uidL.value = data.uuid; // Get the uid from the response
 
           })
@@ -743,13 +739,11 @@ export default {
             if (!response.ok) {
               throw new Error('Error number sign up');
             }
-            console.log(response)
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log(data)
+            console.log('otp:' + data.otp)
             uidS.value = data.uuid; // Get the uid from the response
-            console.log('UID:', uidS.value);
           })
           .catch(error => {
             console.error('Error sign up :', error);
@@ -787,7 +781,6 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            console.log('Response:', text); // Log the response text
             tokenValue.value = text.token
             saveToStorage(storageType);
             show.value = false
@@ -802,7 +795,6 @@ export default {
           });
       } else if (otpSign.value) {
 
-        console.log(otpSign.value)
         fetch('https://nramezon.shop/api/verify_signup/' + uidS.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otpSign.value }),
@@ -817,9 +809,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            console.log('Response:', text); // Log the response text
             tokenValue.value = text.token
-            console.log(tokenValue.value)
             saveToStorage(storageType);
             show.value = false
             otp.value = null
@@ -872,8 +862,8 @@ export default {
       clearTimeout(timeoutId);
       seconds.value = 59; // Reset the countdown to its initial value
       startTimer(); // Start the timer immediately
-      otp.value=''
-      otpSign.value=''
+      otp.value = ''
+      otpSign.value = ''
 
       if (uidL.value) {
         fetch('https://nramezon.shop/api/resend_otp/' + uidL.value, {
@@ -890,7 +880,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            console.log('Response:', text); // Log the response text
+            console.log('otp:' + text.otp)
           })
 
       } else if (uidS.value) {
@@ -908,7 +898,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            console.log('Response:', text); // Log the response text
+            console.log('otp:' + text.otp)
           })
 
       }

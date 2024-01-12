@@ -27,7 +27,6 @@ export default {
       .then(response => response.json())
       .then(data => {
         movies.value = data.movies
-        console.log(movies.value)
       })
 
 

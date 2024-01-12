@@ -71,7 +71,6 @@ export default {
         console.error(error);
       }
 
-      console.log(userName.value)
     };
 
     onMounted(getUserData);
@@ -96,11 +95,10 @@ export default {
 
     const router = useRouter();
     const storageType = cookieStorage;
-    const consentPropertyName = 'token';
+    const consentPropertyName = 'Set-Cookie';
     const deleteFromStorage = () => storageType.removeItem(consentPropertyName);
 
     const logOut = () => {
-      console.log(consentPropertyName)
       deleteFromStorage(storageType);
       router.push({name:'Home'});
 
@@ -115,8 +113,6 @@ export default {
           },
           body: JSON.stringify(updatedUser.value)
         });
-        console.log(response);
-        console.log(updatedUser);
         if (!response.ok) {
           throw new Error('Failed to update user information');
         }

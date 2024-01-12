@@ -49,7 +49,6 @@ export default {
 
 
 
-    console.log(cinemas)
     return {
       cinemas, goToCinemaDetails, getSrc
     };

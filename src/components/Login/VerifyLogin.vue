@@ -116,7 +116,7 @@ export default {
     }
 
     const storageType = cookieStorage;
-    const consentPropertyName = 'token';
+    const consentPropertyName = 'Set-Cookie';
     const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
     const tokenValue = ref()
 
@@ -125,7 +125,6 @@ export default {
     const goToHome = (event) => {
       event.preventDefault();
       if (otp.value) {
-        console.log(otp.value);
         fetch('https://nramezon.shop/api/verify_login/' + receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
@@ -140,9 +139,8 @@ export default {
             return response.json();
           })
           .then(text => {
-            console.log('Response:', text);
+            // console.log('Response:', text);
             tokenValue.value = text.token
-            console.log(tokenValue.value)
             saveToStorage(storageType);
             router.push({ name: 'Home' });
           })
@@ -197,7 +195,7 @@ export default {
         })
         .then(text => {
 
-          console.log('Response:', text); // Log the response text
+          console.log('otp:', text.otp); // Log the response text
         })
 
 

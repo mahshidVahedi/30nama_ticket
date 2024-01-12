@@ -86,9 +86,7 @@ export default {
 
     const goToVerify = (event) => {
       event.preventDefault();
-      console.log(number)
       if (number.value) {
-        console.log(number.value)
         fetch('https://nramezon.shop/api/login', {
           method: 'POST',
           body: JSON.stringify({ PhoneNumber: number.value }),
@@ -101,13 +99,11 @@ export default {
               showError();
               throw new Error();
             }
-            console.log(response)
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log(data)
+            console.log('otp:'+data.otp)
             const uid = data.uuid; // Get the uid from the response
-            console.log('UID:', uid);
             router.push({ name: 'VerifyLogin', params: { uuid: uid } });
           })
           .catch(error => {
