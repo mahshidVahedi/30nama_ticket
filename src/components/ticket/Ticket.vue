@@ -48,11 +48,12 @@
 
               <div dir="rtl">
                 <h3 class="mr-5 mb-5 mt-8">موقعیت صندلی :</h3>
-                <div id="chairs" class="d-flex flex-row">
-                  <div v-for="(ticket, i) in tickets" :key="i" class="mr-5 mb-5 d-flex flex-row">
+                <v-row class="d-flex flex-row">
+                  <v-col v-for="(ticket, i) in tickets" :key="i" cols="12" md="5" class="mr-5 mb-5 d-flex flex-row">
                     <v-chip class=""> ردیف {{ ticket.seatX }} صندلی {{ ticket.seatY }}</v-chip>
-                  </div>
-                </div>
+                  </v-col>
+                </v-row>
+               
                 <div class="mr-5 mb-5 mt-5">کد رزرو : <span style="color:#3baea0;" class="font-weight-bold">
                 {{ reserveCode }}</span></div>
               </div>
