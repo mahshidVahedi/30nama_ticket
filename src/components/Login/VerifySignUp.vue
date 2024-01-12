@@ -163,7 +163,7 @@ export default {
 
     };
 
-    const seconds = ref(5);
+    const seconds = ref(59);
     let timeoutId;
 
     const startTimer = () => {
@@ -183,7 +183,7 @@ export default {
       event.preventDefault(); // Prevent default form submission behavior
 
       clearTimeout(timeoutId);
-      seconds.value = 5; // Reset the countdown to its initial value
+      seconds.value = 59; // Reset the countdown to its initial value
       startTimer(); // Start the timer immediately
 
 
