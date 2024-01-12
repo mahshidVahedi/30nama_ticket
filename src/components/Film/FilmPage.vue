@@ -505,7 +505,7 @@ export default {
     const scenes = ref([]);
     const todayF = new Date();
     const currentDateF = todayF.toISOString().split('T')[0];
-    const firstApi = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=time=${currentDateF}`;
+    const firstApi = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${currentDateF}`;
 
     fetch(firstApi)
       .then(response => response.json())
