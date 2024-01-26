@@ -5,7 +5,7 @@
         <template v-slot:item="{ item }">
           <tr>
             <td>{{ item.name }}</td>
-            <td>{{ item.salesAmount }}</td>
+            <td>{{separateWithCommas(item.salesAmount)  }}</td>
           </tr>
         </template>
       </v-data-table-virtual>
@@ -18,6 +18,9 @@ import { ref, onMounted } from 'vue';
 
 export default {
   setup() {
+    function separateWithCommas(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     const movies = ref([])
     const headers = [
       { title: 'نام فیلم', value: 'name' },
@@ -32,7 +35,8 @@ export default {
 
     return {
       movies,
-      headers
+      headers,
+      separateWithCommas
 
     };
   },

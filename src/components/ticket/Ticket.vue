@@ -68,13 +68,13 @@
               <v-card-text dir="rtl" id="dash" class="d-flex flex-row justify-space-between mt-5 pb-5 ">
 
                 <p class="ms-0">مجموع هزینه</p>
-                <p class="ms-7">{{  count* 60000 * 0.04 + count * 60000 }} تومان</p>
+                <p class="ms-7">{{separateWithCommas( count* 60000 * 0.04 + count * 60000)  }} تومان</p>
 
               </v-card-text>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mb-5">
                 <p class="ms-0">بلیت</p>
                 <p class="ms-7">{{ count }} عدد</p>
-                <p class="ms-7">{{ count * 60000 * 0.04 + count * 60000 }} تومان</p>
+                <p class="ms-7">{{separateWithCommas (count * 60000 * 0.04 + count * 60000 )}} تومان</p>
               </v-card-text>
             </v-card>
           </v-container>
@@ -156,7 +156,11 @@ export default {
       return src;
       }
 
-      return { checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode }
+      function separateWithCommas(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+      
+      return { checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode,separateWithCommas }
     }
 }
 </script>

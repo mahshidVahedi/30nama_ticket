@@ -95,17 +95,17 @@
               <v-card-title class="font-weight-bold mt-5" dir="rtl">جزئیات پرداخت</v-card-title>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mt-8">
                 <p>{{ count }} عدد بلیت</p>
-                <p>{{ count * 60000 }} تومان</p>
+                <p>{{separateWithCommas(count * 60000)  }} تومان</p>
               </v-card-text>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
                 <p class="ms-0">کارمزد خرید آنلاین</p>
                 <p class="ms-7">4%</p>
-                <p class="ms-7">{{ count * 60000 * 0.04 }} تومان</p>
+                <p class="ms-7">{{separateWithCommas(count * 60000 * 0.04 ) }} تومان</p>
               </v-card-text>
               <hr class="ms-3 me-3 mt-3" style="color: beige;">
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between">
                 <p class="ms-0">مبلغ قابل پرداخت</p>
-                <p class="ms-7">{{ count * 60000 * 0.04 + count * 60000 }} تومان</p>
+                <p class="ms-7">{{separateWithCommas( count * 60000 * 0.04 + count * 60000) }} تومان</p>
               </v-card-text>
             </v-card>
           </v-container>
@@ -154,7 +154,9 @@ export default {
   // },
   setup() {
 
-
+    function separateWithCommas(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
     const preTicket = ref([]);
     const scene = ref({});
     const movie = ref({});
@@ -219,7 +221,7 @@ export default {
       alert.value = false;
     }
 
-    return { checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc, count, showError, alert, goToHome };
+    return { checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc, count, showError, alert, goToHome,separateWithCommas };
 
   }
 }

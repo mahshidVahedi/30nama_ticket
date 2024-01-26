@@ -169,8 +169,8 @@
                           سانس :
                         </p>
                         <span class="mb-2" dir="ltr">{{ saloon.StartTime }}</span>
-                        <v-card-subtitle>
-                          60000 تومان
+                        <v-card-subtitle >
+                          {{separateWithCommas(60000)}} تومان
                         </v-card-subtitle>
                       </v-card-item>
                     </div>
@@ -424,6 +424,10 @@ export default {
     const showAlert = ref(false)
     const showAlertRegister = ref(false)
     const showAlertVerify = ref(false)
+
+    function separateWithCommas(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
 
     const submitRating = (rate) => {
@@ -918,7 +922,7 @@ export default {
       cinema, comments, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
       isItemOpen, gotoSeat, getSrc, conditions, getSrcMovie, features, findFeatureicon, findFeatureValue, handleTab, submitRating, rate1, rate2, rate3, rate4, rate5, isLoggedIn, showError, show, noAcc,
-      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify
+      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify,separateWithCommas
     }
   }
 }

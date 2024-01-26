@@ -156,8 +156,8 @@
                           سانس :
                         </p>
                         <span class="mb-2" dir="ltr">{{ saloon.StartTime }}</span>
-                        <v-card-subtitle>
-                          60000 تومان
+                        <v-card-subtitle >
+                          {{separateWithCommas(60000)}} تومان
                         </v-card-subtitle>
                       </v-card-item>
                     </div>
@@ -918,11 +918,15 @@ export default {
       show.value = false
     }
 
+    function separateWithCommas(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     return {
       scenes, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
       isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors, gotoSeat, name, isLoggedIn, showError, show, noAcc,
-      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify
+      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify,separateWithCommas
     }
   }
 }
