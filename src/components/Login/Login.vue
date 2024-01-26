@@ -37,11 +37,13 @@
         <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
           <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
           <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
-            <v-text-field v-model="number" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
-              placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+            <v-text-field v-model="number" @input="checkPhoneNumber" min-width="100px" class="ml-0 mb-3" dir="ltr"
+              rounded="lg" placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
 
-            <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit"
-              class="mt-2 ml-5" text="ورود"></v-btn>
+            <v-btn :disabled="!isButtonEnabled" :color="buttonColor" @click="goToVerify" min-width="50px"
+              variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
+
+
           </v-form>
         </div>
         <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
@@ -79,6 +81,18 @@ export default {
     const uid = ref();
     const show = ref(false);
     const noAcc = ref(false);
+    const isButtonEnabled = ref(false);
+    const buttonColor = ref('grey');
+
+    const checkPhoneNumber = () => {
+      if (number.value.length === 11) {
+        isButtonEnabled.value = true;
+        buttonColor.value = 'red';
+      } else {
+        isButtonEnabled.value = false;
+        buttonColor.value = 'grey';
+      }
+    };
 
     const goToRegister = () => {
       router.push({ name: 'Register' });
@@ -102,7 +116,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log('otp:'+data.otp)
+            console.log('otp:' + data.otp)
             const uid = data.uuid; // Get the uid from the response
             router.push({ name: 'VerifyLogin', params: { uuid: uid } });
           })
@@ -123,7 +137,7 @@ export default {
       noAcc.value = false;
     }
 
-    return { goToRegister, goToVerify, number, errorMessage, show, showError, goToSign, noAcc }
+    return { goToRegister, goToVerify, number, errorMessage, show, showError, goToSign, noAcc, checkPhoneNumber,isButtonEnabled,buttonColor }
   }
 }
 

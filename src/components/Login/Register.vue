@@ -18,11 +18,13 @@
         <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
           <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
           <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
-            <v-text-field v-model="number" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
-              placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+            <v-text-field v-model="number" @input="checkPhoneNumber" min-width="100px" class="ml-0 mb-3" dir="ltr"
+              rounded="lg" placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
 
-            <v-btn @click="goToVerify" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8"
-              text="ادامه"></v-btn>
+            <v-btn :disabled="!isButtonEnabled" :color="buttonColor" @click="goToVerify" variant="elevated" rounded="lg"
+              color="red" type="submit" class="mt-3 ml-8" text="ادامه"></v-btn>
+
+
           </v-form>
         </div>
 
@@ -54,6 +56,18 @@ export default {
     const router = useRouter();
     const number = ref('');
     const show = ref(false);
+    const isButtonEnabled = ref(false);
+    const buttonColor = ref('grey');
+
+    const checkPhoneNumber = () => {
+      if (number.value.length === 11) {
+        isButtonEnabled.value = true;
+        buttonColor.value = 'red';
+      } else {
+        isButtonEnabled.value = false;
+        buttonColor.value = 'grey';
+      }
+    };
 
     const goToVerify = (event) => {
       event.preventDefault();
@@ -72,7 +86,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log('otp:'+data.otp)
+            console.log('otp:' + data.otp)
             const uid = data.uuid; // Get the uid from the response
             router.push({ name: 'VerifySignUp', params: { uuid: uid } });
           })
@@ -85,7 +99,7 @@ export default {
         show.value = true;
       }
     };
-    return { goToVerify, number, show }
+    return { goToVerify, number, show, checkPhoneNumber, isButtonEnabled, buttonColor }
 
 
   }
