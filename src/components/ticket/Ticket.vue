@@ -26,7 +26,7 @@
                         <div dir="rtl" class="d-flex flex-row border-white mt-5">
                           <v-icon icon="mdi-clock"></v-icon>
                           <div class="ms-1">
-                            سانس {{ scene.startTime }}
+                            سانس :  {{separateDateTime(scene.startTime)  }}
                           </div>
                           <!-- <div class="d-flex flex-row border-white">
                             <v-icon class="ms-5" icon="mdi-clock"></v-icon>
@@ -53,9 +53,9 @@
                     <v-chip class=""> ردیف {{ ticket.seatX }} صندلی {{ ticket.seatY }}</v-chip>
                   </v-col>
                 </v-row>
-               
+
                 <div class="mr-5 mb-5 mt-5">کد رزرو : <span style="color:#3baea0;" class="font-weight-bold">
-                {{ reserveCode }}</span></div>
+                    {{ reserveCode }}</span></div>
               </div>
             </v-card>
           </v-container>
@@ -68,13 +68,13 @@
               <v-card-text dir="rtl" id="dash" class="d-flex flex-row justify-space-between mt-5 pb-5 ">
 
                 <p class="ms-0">مجموع هزینه</p>
-                <p class="ms-7">{{separateWithCommas( count* 60000 * 0.04 + count * 60000)  }} تومان</p>
+                <p class="ms-7">{{ separateWithCommas(count * 60000 * 0.04 + count * 60000) }} تومان</p>
 
               </v-card-text>
               <v-card-text dir="rtl" class="d-flex flex-row justify-space-between mb-5">
                 <p class="ms-0">بلیت</p>
                 <p class="ms-7">{{ count }} عدد</p>
-                <p class="ms-7">{{separateWithCommas (count * 60000 * 0.04 + count * 60000 )}} تومان</p>
+                <p class="ms-7">{{ separateWithCommas(count * 60000 * 0.04 + count * 60000) }} تومان</p>
               </v-card-text>
             </v-card>
           </v-container>
@@ -114,53 +114,99 @@ export default {
     const count = ref();
     const route = useRoute();
     const reserveCode = ref()
-      fetch('https://nramezon.shop/api/ticket/token/rea/' + route.params.token)
-        .then(response => response.json())
-        .then(data => {
-          count.value = data.count
-          tickets.value = data.tickets;
-          scene.value = data.tickets[0].scene;
-          movie.value = data.tickets[0].scene.movie;
-          cinema.value = data.tickets[0].scene.cinema;
-          salon.value = data.tickets[0].scene.saloon;
-          reserveCode.value = data.tickets[0].reserveCode
-        });
-
-
-
-      // const handleCheckbox = ()=>{
-      //     if(this.checkbox1){
-      //         this.checkbox2=!this.checkbox2;
-      //     }
-
-      //     else if(this.checkbox2){
-      //         this.checkbox1=!this.checkbox1;
-      //     }
-      // }
-
-      const checkbox1 = ref(true);
-      const checkbox2 = ref(false);
-
-      // Watch the value of checkbox1 and update checkbox2 accordingly
-      watch(checkbox1, (newValue) => {
-        checkbox2.value = !newValue;
+    fetch('https://nramezon.shop/api/ticket/token/rea/' + route.params.token)
+      .then(response => response.json())
+      .then(data => {
+        count.value = data.count
+        tickets.value = data.tickets;
+        scene.value = data.tickets[0].scene;
+        movie.value = data.tickets[0].scene.movie;
+        cinema.value = data.tickets[0].scene.cinema;
+        salon.value = data.tickets[0].scene.saloon;
+        reserveCode.value = data.tickets[0].reserveCode
       });
 
-      // Watch the value of checkbox2 and update checkbox1 accordingly
-      watch(checkbox2, (newValue) => {
-        checkbox1.value = !newValue;
-      });
-      const getSrc = (id) => {
-        const baseUrl = "/";
+
+
+    // const handleCheckbox = ()=>{
+    //     if(this.checkbox1){
+    //         this.checkbox2=!this.checkbox2;
+    //     }
+
+    //     else if(this.checkbox2){
+    //         this.checkbox1=!this.checkbox1;
+    //     }
+    // }
+
+    const checkbox1 = ref(true);
+    const checkbox2 = ref(false);
+
+    // Watch the value of checkbox1 and update checkbox2 accordingly
+    watch(checkbox1, (newValue) => {
+      checkbox2.value = !newValue;
+    });
+
+    // Watch the value of checkbox2 and update checkbox1 accordingly
+    watch(checkbox2, (newValue) => {
+      checkbox1.value = !newValue;
+    });
+    const getSrc = (id) => {
+      const baseUrl = "/";
       const src = `${baseUrl}assets/images/${id}.jpeg`;
       return src;
-      }
+    }
 
-      function separateWithCommas(number) {
+    function separateWithCommas(number) {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-      
-      return { checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc,count,reserveCode,separateWithCommas }
+
+    const getMonth = (month) => {
+      switch (month) {
+        case '1':
+          return 'فروردین';
+        case '2':
+          return 'اردیبهشت';
+        case '3':
+          return 'خرداد';
+        case '4':
+          return 'تیر';
+        case '5':
+          return 'مرداد';
+        case '6':
+          return 'شهریور';
+        case '7':
+          return 'مهر';
+        case '8':
+          return 'آبان';
+        case '9':
+          return 'آذر';
+        case '10':
+          return 'دی';
+        case '11':
+          return 'بهمن';
+        case '12':
+          return 'اسفند';
+        default:
+          return '';
+      }
     }
+
+    const separateDateTime = (input) => {
+      if (input) {
+        const [date, time] = input.split(' ');
+        const [year, month, day] = date.split('-');
+        const [hour, minute, second] = time.split(':')
+        const monthName = ref('');
+        monthName.value = getMonth(month)
+        const formattedDate = `${day} ${monthName.value}`;
+        const formattedTime = `${hour}:${minute}`;
+
+        return `${formattedDate} ساعت ${formattedTime}`;
+      }
+
+    };
+
+    return { checkbox1, checkbox2, goToHome, tickets, movie, salon, scene, cinema, getSrc, count, reserveCode, separateWithCommas,separateDateTime }
+  }
 }
 </script>

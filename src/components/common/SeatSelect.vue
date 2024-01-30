@@ -41,7 +41,7 @@
         </p>
         <p class="ma-4">
           <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-          {{ scene_details.startTime }}
+          {{ separateDateTime(scene_details.startTime) }}
         </p>
       </span>
     </div>
@@ -76,7 +76,8 @@
   color: rgb(84, 66, 66);
   font-size: 24px;
 }
-.v-icon.mdi-seat-disabled{
+
+.v-icon.mdi-seat-disabled {
   display: none;
 }
 
@@ -184,9 +185,9 @@ export default {
       return selectedSeats.value.length > 0;
     });
     const disableSoldSeats = (row, seat) => {
-  const isSold = sold_tickets.value.some(ticket => ticket.row === row && ticket.column === seat);
-  return isSold;
-};
+      const isSold = sold_tickets.value.some(ticket => ticket.row === row && ticket.column === seat);
+      return isSold;
+    };
     const getSrc = (id) => {
       const baseUrl = "/";
       const src = `${baseUrl}assets/images/${id}.jpeg`;
@@ -196,9 +197,9 @@ export default {
       try {
         const seats = selectedSeats.value.map(seat => {
           const [seatx, seatNumber] = seat.split('-');
-          let seatX=parseInt(seatx, 10);
-          let seatY=parseInt(seatNumber, 10);
-          return { seatX , seatY };
+          let seatX = parseInt(seatx, 10);
+          let seatY = parseInt(seatNumber, 10);
+          return { seatX, seatY };
         });
         const jsonData = JSON.stringify({
           scene_id,
@@ -225,6 +226,53 @@ export default {
         console.error('An error occurred:', error);
       }
     };
+
+    const getMonth = (month) => {
+      switch (month) {
+        case '1':
+          return 'فروردین';
+        case '2':
+          return 'اردیبهشت';
+        case '3':
+          return 'خرداد';
+        case '4':
+          return 'تیر';
+        case '5':
+          return 'مرداد';
+        case '6':
+          return 'شهریور';
+        case '7':
+          return 'مهر';
+        case '8':
+          return 'آبان';
+        case '9':
+          return 'آذر';
+        case '10':
+          return 'دی';
+        case '11':
+          return 'بهمن';
+        case '12':
+          return 'اسفند';
+        default:
+          return '';
+      }
+    }
+
+    const separateDateTime = (input) => {
+      if (input) {
+        const [date, time] = input.split(' ');
+        const [year, month, day] = date.split('-');
+        const [hour, minute, second] = time.split(':')
+        const monthName = ref('');
+        monthName.value = getMonth(month)
+        const formattedDate = `${day} ${monthName.value}`;
+        const formattedTime = `${hour}:${minute}`;
+
+        return `${formattedDate} ساعت ${formattedTime}`;
+      } 
+
+    };
+
     return {
       selectedSeats,
       toggleSeat,
@@ -237,7 +285,8 @@ export default {
       cinema,
       scene_details,
       saveSelectedSeats,
-      disableSoldSeats
+      disableSoldSeats,
+      separateDateTime
     };
   },
   inheritAttrs: false

@@ -26,7 +26,7 @@
                         <div dir="rtl" class="d-flex flex-row border-white mt-5">
                           <v-icon icon="mdi-clock"></v-icon>
                           <div class="ms-1">
-                            سانس {{ scene.startTime }}
+                            سانس :  {{separateDateTime( scene.startTime) }}
                           </div>
 
                         </div>
@@ -221,7 +221,54 @@ export default {
       alert.value = false;
     }
 
-    return { checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc, count, showError, alert, goToHome,separateWithCommas };
+    const getMonth = (month) => {
+      switch (month) {
+        case '1':
+          return 'فروردین';
+        case '2':
+          return 'اردیبهشت';
+        case '3':
+          return 'خرداد';
+        case '4':
+          return 'تیر';
+        case '5':
+          return 'مرداد';
+        case '6':
+          return 'شهریور';
+        case '7':
+          return 'مهر';
+        case '8':
+          return 'آبان';
+        case '9':
+          return 'آذر';
+        case '10':
+          return 'دی';
+        case '11':
+          return 'بهمن';
+        case '12':
+          return 'اسفند';
+        default:
+          return '';
+      }
+    }
+
+    const separateDateTime = (input) => {
+      if (input) {
+        const [date, time] = input.split(' ');
+        const [year, month, day] = date.split('-');
+        const [hour, minute, second] = time.split(':')
+        const monthName = ref('');
+        monthName.value = getMonth(month)
+        const formattedDate = `${day} ${monthName.value}`;
+        const formattedTime = `${hour}:${minute}`;
+
+        return `${formattedDate} ساعت ${formattedTime}`;
+      }
+
+    };
+
+
+    return { checkbox1, checkbox2, goToTicket, preTicket, movie, salon, scene, cinema, getSrc, count, showError, alert, goToHome,separateWithCommas,separateDateTime };
 
   }
 }

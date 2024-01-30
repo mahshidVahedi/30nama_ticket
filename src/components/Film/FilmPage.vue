@@ -113,12 +113,17 @@
     <div class="mt-16 ml-8 mr-8 mb-10 ml-0 pa-1 rounded" style="background-color: white;">
       <h2 class="ma-4 text-black font-weight-bold">برنامه اکران {{ film && film.name }}</h2>
       <v-card>
-        <v-tabs style="width: 100%;" id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start"
-          class=" mt-5 mb-5">
-          <v-tab :value="1" @click="handleTab(1)">{{ jalaliDay }} {{ jalaliMonth }} </v-tab>
+        <v-tabs style="width: 100%;" id="tabs" v-model="tab" color="deep-grey-accent-4 " align-tabs="start"
+        class="no-line-tabs flex-xs-column mt-3" slider-color="white">
+          <v-tab :value="1" @click="handleTab(1)">{{currentDayOfWeekFarsi}} </v-tab><br>
+          <v-tab :value="2" @click="handleTab(2)">{{tommarowDayOfWeekFarsi}}</v-tab>
+          <v-tab :value="3" @click="handleTab(3)">{{dayAfterTommarowtDayOfWeekFarsi}}</v-tab>
+        </v-tabs>
+        <v-tabs style="width: 100%;" id="tabs" v-model="tab" color="deep-grey-accent-4 " align-tabs="start"
+          class="mb-5 mt-0 flex-xs-column">
+          <v-tab :value="1" @click="handleTab(1)" class="mt-0">{{ jalaliDay }} {{ jalaliMonth }} </v-tab><br>
           <v-tab :value="2" @click="handleTab(2)">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
-          <v-tab :value="3" @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth
-          }}</v-tab>
+          <v-tab :value="3" @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth}}</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-window-item v-for="n in 3" :key="n" :value="n">
@@ -153,11 +158,11 @@
 
                         <p class="mt-3 mb-3 mr-0">
                           <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-                          سانس :
+                          سانس {{ separateDateTime(saloon.StartTime) }}
                         </p>
-                        <span class="mb-2" dir="ltr">{{ saloon.StartTime }}</span>
-                        <v-card-subtitle >
-                          {{separateWithCommas(60000)}} تومان
+
+                        <v-card-subtitle>
+                          {{ separateWithCommas(60000) }} تومان
                         </v-card-subtitle>
                       </v-card-item>
                     </div>
@@ -368,6 +373,10 @@
   max-height: 10%!important;
 } */
 
+.no-line-tabs .v-tabs-bar__content {
+  border-bottom: none !important;
+}
+
 .no-fill {
   background-color: transparent !important;
 }
@@ -505,7 +514,7 @@ export default {
     const scenes = ref([]);
     const todayF = new Date();
     const currentDateF = todayF.toISOString().split('T')[0];
-    const firstApi = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${currentDateF}`;
+    const firstApi = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=2024-01-02`;
 
     fetch(firstApi)
       .then(response => response.json())
@@ -533,7 +542,7 @@ export default {
 
         switch (tabValue) {
           case 1:
-            apiUrl = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${currentDate}`;
+            apiUrl = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=2024-01-02`;
             break;
           case 2:
             apiUrl = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${tomorrowDate}`;
@@ -666,7 +675,7 @@ export default {
     const uidL = ref()
     const isLoggedIn = ref(false)
     const storageType = cookieStorage;
-    const consentPropertyName = 'Set-Cookie';
+    const consentPropertyName = 'set-cookie';
     const getCookie = () => storageType.getItem(consentPropertyName);
     const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
     const tokenValue = ref()
@@ -770,6 +779,7 @@ export default {
         fetch('https://nramezon.shop/api/verify_login/' + uidL.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           }
@@ -781,8 +791,8 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            tokenValue.value = text.token
-            saveToStorage(storageType);
+            tokenValue.value=text.token
+            saveToStorage(consentPropertyName,tokenValue.value)
             show.value = false
             otp.value = null
             otpSign.value = null
@@ -798,6 +808,7 @@ export default {
         fetch('https://nramezon.shop/api/verify_signup/' + uidS.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otpSign.value }),
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           }
@@ -809,8 +820,6 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            tokenValue.value = text.token
-            saveToStorage(storageType);
             show.value = false
             otp.value = null
             otpSign.value = null
@@ -922,11 +931,85 @@ export default {
       return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
+    const separateDateTime = (input) => {
+      const [date, time] = input.split(' ');
+      const [year, month, day] = date.split('-');
+      const [hour, minute, second] = time.split(':')
+      const formattedDate = `${month}-${day}`;
+      const formattedTime = `${hour}:${minute}`;
+
+      return `${formattedTime}`;
+    };
+
+    const currentDayOfWeek = ref('');
+    const currentDayOfWeekFarsi = ref('');
+
+    const tommarowDayOfWeek = ref('');
+    const tommarowDayOfWeekFarsi = ref('');
+
+    const dayAfterTommarowtDayOfWeek = ref('');
+    const dayAfterTommarowtDayOfWeekFarsi = ref('');
+
+    const translateDay = (day) => {
+      switch (day) {
+        case 'Monday':
+          return 'دوشنبه';
+        case 'Tuesday':
+          return 'سه‌شنبه';
+        case 'Wednesday':
+          return 'چهارشنبه';
+        case 'Thursday':
+          return 'پنج‌شنبه';
+        case 'Friday':
+          return 'جمعه';
+        case 'Saturday':
+          return 'شنبه';
+        case 'Sunday':
+          return 'یک‌شنبه';
+        default:
+          return '';
+      }
+    };
+
+
+    const getCurrentDayOfWeek = () => {
+      const today = new Date();
+
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+
+      const dayAfterTomorrow = new Date(today);
+      dayAfterTomorrow.setDate(today.getDate() + 2);
+
+      const TodayOptions = { weekday: 'long' };
+      currentDayOfWeek.value = today.toLocaleDateString('en-US', TodayOptions);
+
+      const TommarowOptions = { weekday: 'long' };
+      tommarowDayOfWeek.value = tomorrow.toLocaleDateString('en-US', TommarowOptions);
+
+      const dayAfterTommarowOptions = { weekday: 'long' };
+      dayAfterTommarowtDayOfWeek.value = dayAfterTomorrow.toLocaleDateString('en-US', dayAfterTommarowOptions);
+
+      currentDayOfWeekFarsi.value = translateDay(currentDayOfWeek.value)
+      tommarowDayOfWeekFarsi.value = translateDay(tommarowDayOfWeek.value)
+      dayAfterTommarowtDayOfWeekFarsi.value = translateDay(dayAfterTommarowtDayOfWeek.value)
+
+      console.log(dayAfterTommarowtDayOfWeekFarsi.value)
+
+
+
+    };
+
+
+   
+    getCurrentDayOfWeek();
+
     return {
       scenes, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
       isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors, gotoSeat, name, isLoggedIn, showError, show, noAcc,
-      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify,separateWithCommas
+      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify, separateWithCommas,
+      separateDateTime, currentDayOfWeek, currentDayOfWeekFarsi, tommarowDayOfWeek, dayAfterTommarowtDayOfWeek,tommarowDayOfWeekFarsi,dayAfterTommarowtDayOfWeekFarsi
     }
   }
 }

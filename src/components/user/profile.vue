@@ -18,11 +18,11 @@
           <v-row v-else dir="rtl">
             <v-col cols="12" sm="6">
               نام
-              <v-text-field v-model="updatedUser.user_email"></v-text-field>
+              <v-text-field v-model="updatedUser.user_name"></v-text-field>
             </v-col>
             <v-col cols="12" sm="6">
               ایمیل
-              <v-text-field :model-value="userName.value" v-model="updatedUser.user_name" dir="rtl "></v-text-field>
+              <v-text-field v-model="updatedUser.user_email " dir="rtl "></v-text-field>
             </v-col>
 
           </v-row>
@@ -60,7 +60,9 @@ export default {
 
     const getUserData = async () => {
       try {
-        const response = await fetch('https://nramezon.shop/api/dashboard/profile');
+        const response = await fetch('https://nramezon.shop/api/dashboard/profile', {
+          credentials: 'include',
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch user data');
         }
@@ -95,7 +97,7 @@ export default {
 
     const router = useRouter();
     const storageType = cookieStorage;
-    const consentPropertyName = 'Set-Cookie';
+    const consentPropertyName = 'token';
     const deleteFromStorage = () => storageType.removeItem(consentPropertyName);
 
     const logOut = () => {
@@ -108,6 +110,7 @@ export default {
       try {
         const response = await fetch('https://nramezon.shop/api/dashboard/update/profile', {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },

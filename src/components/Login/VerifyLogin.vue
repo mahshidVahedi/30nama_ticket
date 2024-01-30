@@ -128,6 +128,7 @@ export default {
         fetch('https://nramezon.shop/api/verify_login/' + receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           }

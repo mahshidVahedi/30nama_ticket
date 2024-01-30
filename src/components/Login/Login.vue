@@ -85,7 +85,7 @@ export default {
     const buttonColor = ref('grey');
 
     const checkPhoneNumber = () => {
-      if (number.value.length === 11) {
+      if (number.value.length >= 11) {
         isButtonEnabled.value = true;
         buttonColor.value = 'red';
       } else {

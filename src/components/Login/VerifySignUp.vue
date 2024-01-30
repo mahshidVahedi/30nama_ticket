@@ -133,6 +133,7 @@ export default {
         fetch('https://nramezon.shop/api/verify_signup/' + receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           }
@@ -189,6 +190,7 @@ export default {
       fetch('https://nramezon.shop/api/resend_otp/' + receivedData.value, {
         method: 'POST',
         body: JSON.stringify(),
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         }
