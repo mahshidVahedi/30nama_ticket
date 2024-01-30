@@ -213,7 +213,7 @@ export default {
     const isLoggedIn = ref(false)
 
     const storageType = cookieStorage;
-    const consentPropertyName = 'token';
+    const consentPropertyName = 'Set-Cookie';
     const getCookie = () => storageType.getItem(consentPropertyName);
 
     onMounted(() => {

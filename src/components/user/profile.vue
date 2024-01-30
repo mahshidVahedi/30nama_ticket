@@ -9,10 +9,10 @@
               <div class="info">شماره تلفن: {{ userData.user_phone }}</div>
             </v-col>
             <v-col cols="12" sm="6">
-              <div class="info">نام: {{ userData.user_email }}</div>
+              <div class="info">نام: {{ userData.user_name }}</div>
             </v-col>
             <v-col cols="12" sm="6">
-              <div class="info">ایمیل : {{ userData.user_name }}</div>
+              <div class="info">ایمیل : {{ userData.user_email}}</div>
             </v-col>
           </v-row>
           <v-row v-else dir="rtl">
@@ -97,7 +97,7 @@ export default {
 
     const router = useRouter();
     const storageType = cookieStorage;
-    const consentPropertyName = 'token';
+    const consentPropertyName = 'Set-Cookie';
     const deleteFromStorage = () => storageType.removeItem(consentPropertyName);
 
     const logOut = () => {
