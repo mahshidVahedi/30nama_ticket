@@ -514,7 +514,7 @@ export default {
     const scenes = ref([]);
     const todayF = new Date();
     const currentDateF = todayF.toISOString().split('T')[0];
-    const firstApi = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=2024-01-02`;
+    const firstApi = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${currentDate}`;
 
     fetch(firstApi)
       .then(response => response.json())
@@ -542,7 +542,7 @@ export default {
 
         switch (tabValue) {
           case 1:
-            apiUrl = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=2024-01-02`;
+            apiUrl = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${currentDate}`;
             break;
           case 2:
             apiUrl = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${tomorrowDate}`;

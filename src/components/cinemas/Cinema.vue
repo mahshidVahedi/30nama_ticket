@@ -96,11 +96,17 @@
     <div class="mt10 ml-8 mr-8 mb-10 ml-0 pa-1" rounded="5" style="background-color: white;">
       <h2 class="mt-10 mb-5 mr-3 text-black font-weight-bold">برنامه اکران {{ cinema && cinema.name }}</h2>
       <v-card>
-        <v-tabs id="tabs" v-model="tab" color="deep-grey-accent-4 flex-xs-column" align-tabs="start" class="mt-5 mb-5">
-          <v-tab :value="1" @click="handleTab(1)">{{ jalaliDay }} {{ jalaliMonth }}</v-tab>
+        <v-tabs style="width: 100%;" id="tabs" v-model="tab" color="deep-grey-accent-4 " align-tabs="start"
+          class="no-line-tabs flex-xs-column mt-3" slider-color="white">
+          <v-tab :value="1" @click="handleTab(1)">{{ currentDayOfWeekFarsi }} </v-tab><br>
+          <v-tab :value="2" @click="handleTab(2)">{{ tommarowDayOfWeekFarsi }}</v-tab>
+          <v-tab :value="3" @click="handleTab(3)">{{ dayAfterTommarowtDayOfWeekFarsi }}</v-tab>
+        </v-tabs>
+        <v-tabs style="width: 100%;" id="tabs" v-model="tab" color="deep-grey-accent-4 " align-tabs="start"
+          class="mb-5 mt-0 flex-xs-column">
+          <v-tab :value="1" @click="handleTab(1)" class="mt-0">{{ jalaliDay }} {{ jalaliMonth }} </v-tab><br>
           <v-tab :value="2" @click="handleTab(2)">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
-          <v-tab :value="3" @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth
-          }}</v-tab>
+          <v-tab :value="3" @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth }}</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-window-item v-for="n in 3" :key="n" :value="n">
@@ -168,9 +174,9 @@
                           <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
                           سانس :
                         </p>
-                        <span class="mb-2" dir="ltr">{{ saloon.StartTime }}</span>
-                        <v-card-subtitle >
-                          {{separateWithCommas(60000)}} تومان
+                        <span class="mb-2" dir="ltr">{{ separateDateTime(saloon.StartTime) }}</span>
+                        <v-card-subtitle>
+                          {{ separateWithCommas(60000) }} تومان
                         </v-card-subtitle>
                       </v-card-item>
                     </div>
@@ -226,158 +232,156 @@
   </div>
 
   <v-dialog v-model="show" width="auto" class="pa-0" max-width="600px" style="margin-left: 7rem; margin-right: 7rem;">
-      <v-card>
-        <v-card v-if="!clickedToVerify && !clickedSignUp && !isLoggedIn" class="mt-5" rounded="lg">
-          <div dir="rtl" class="d-flex flex-row justify-space-between">
-            <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
-            <v-icon @click="close" class="d-3 mt-10 ml-5" color="red" icon="mdi-close"></v-icon>
-          </div>
-          <v-row dir="rtl" class="mt-10 mb-5 mr-4 ml-2">
+    <v-card>
+      <v-card v-if="!clickedToVerify && !clickedSignUp && !isLoggedIn" class="mt-5" rounded="lg">
+        <div dir="rtl" class="d-flex flex-row justify-space-between">
+          <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
+          <v-icon @click="close" class="d-3 mt-10 ml-5" color="red" icon="mdi-close"></v-icon>
+        </div>
+        <v-row dir="rtl" class="mt-10 mb-5 mr-4 ml-2">
 
-            <v-col cols="12" sm="8">
-              <p class="mt-5">اگر در سینماتیکت حساب کاربری ندارید ثبت نام کنید.</p>
-            </v-col>
-            <v-col min-width="100px" cols="12" sm="6" md="4"><v-btn @click="goToRegister" variant="elevated" color="red"
-                class="ml-0 mt-5" rounded="lg">ایجاد حساب
-                کاربری </v-btn></v-col>
-
-            <v-dialog v-model="showAlert" max-width="600px">
-              <v-alert closable icon="$warning" text="شماره تلفن خود را وارد کنید." type="warning" dir="rtl"></v-alert>
-
-            </v-dialog>
-            <v-dialog v-model="noAcc" max-width="600px" max-height="400px">
-              <v-alert prominent type="error" dir="rtl">
-                <v-row align="center">
-                  <v-col class="grow">
-                    گرفتی ما رو؟؟ برو حساب باز کن
-                  </v-col>
-                  <v-col class="shrink">
-                    <v-btn @click="goToRegister"> ایجاد حساب کاربری</v-btn>
-                  </v-col>
-                </v-row>
-              </v-alert>
-            </v-dialog>
-
-          </v-row>
-
-          <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
-            <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
-            <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
-              <v-text-field v-model="number" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
-                placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
-
-              <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit"
-                class="mt-2 ml-5" text="ورود"></v-btn>
-            </v-form>
-          </div>
-          <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
-        </v-card>
-
-        <v-card v-if="clickedToVerify && !clickedSignUp && !isLoggedIn" class="mx-auto mt-5" rounded="lg">
-          <div dir="rtl" class="d-flex flex-row justify-space-between">
-            <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
-            <v-icon @click="close" class="d-3 mt-10 ml-5" color="red" icon="mdi-close"></v-icon>
-          </div>
-          <v-col xs="12">
-            <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
-              <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
-                <p class="mr-4">کد وارد شده را وارد کنید</p>
-                <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
-                  <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
-
-                    <input v-model="otp" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="200px">
-                    <p class="box-p" v-if="seconds > 0">{{ seconds }}</p>
-                    <button class="box" v-if="seconds <= 0" @click="restartTimer">ارسال مجدد</button>
-                  </div>
-                  <v-btn @click="goToScenelogin" min-width="100px" variant="elevated" rounded="lg" color="red"
-                    type="submit" class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
-                </v-form>
-              </div>
-              <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
-            </v-card>
+          <v-col cols="12" sm="8">
+            <p class="mt-5">اگر در سینماتیکت حساب کاربری ندارید ثبت نام کنید.</p>
           </v-col>
-          <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
-          <v-dialog v-model="showAlert" max-width="600px">
-            <v-alert closable icon="$warning" text=" کد ارسال شده را وارد کنید." type="warning" dir="rtl"></v-alert>
-          </v-dialog>
-        </v-card>
+          <v-col min-width="100px" cols="12" sm="6" md="4"><v-btn @click="goToRegister" variant="elevated" color="red"
+              class="ml-0 mt-5" rounded="lg">ایجاد حساب
+              کاربری </v-btn></v-col>
 
-        <v-card v-if="clickedSignUp && !clickedToVerify && !isLoggedIn" class="mx-auto mt-5" rounded="lg">
-          <div dir="rtl" class="d-flex flex-row justify-space-between">
-            <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
-            <v-icon @click="close" class="d-3 mt-10 ml-5" color="red" icon="mdi-close"></v-icon>
-          </div> <v-col xs="12">
-            <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="300">
-              <h2 style="margin-top: 2rem;font-weight:bolder;" class="mb-5 mr-5 display-2">ایجاد حساب کاربری</h2>
-
-              <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
-                <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
-                <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
-                  <v-text-field v-model="numberSign" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
-                    placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
-
-                  <v-btn @click="goToVerify" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8"
-                    text="ادامه"></v-btn>
-                </v-form>
-              </div>
-
-            </v-card>
-          </v-col>
           <v-dialog v-model="showAlert" max-width="600px">
             <v-alert closable icon="$warning" text="شماره تلفن خود را وارد کنید." type="warning" dir="rtl"></v-alert>
 
           </v-dialog>
-          <v-dialog v-model="noAcc" max-width="600px" max-height="400px" min-width="300px">
+          <v-dialog v-model="noAcc" max-width="600px" max-height="400px">
             <v-alert prominent type="error" dir="rtl">
               <v-row align="center">
                 <v-col class="grow">
                   گرفتی ما رو؟؟ برو حساب باز کن
                 </v-col>
                 <v-col class="shrink">
-                  <v-btn @click="goToSign()"> ایجاد حساب کاربری</v-btn>
+                  <v-btn @click="goToRegister"> ایجاد حساب کاربری</v-btn>
                 </v-col>
               </v-row>
             </v-alert>
           </v-dialog>
-        </v-card>
 
-        <v-card v-if="clickedToVerify && clickedSignUp && !isLoggedIn" class="mx-auto mt-5" rounded="lg" min-height="300">
-          <div dir="rtl" class="d-flex flex-row justify-space-between">
-            <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
-            <v-icon @click="close" class="d-3 mt-10 ml-5" color="red" icon="mdi-close"></v-icon>
-          </div> <v-col xs="12">
-            <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
-              <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
-                <p class="mr-4">کد وارد شده را وارد کنید</p>
-                <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
-                  <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
+        </v-row>
 
-                    <input v-model="otpSign" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
-                    <p class="box-p" v-if="seconds > 0">{{ seconds }}</p>
-                    <button class="box" v-if="seconds <= 0" @click="restartTimer">ارسال مجدد</button>
-                  </div>
-                  <v-btn @click="goToScenelogin" min-width="100px" variant="elevated" rounded="lg" color="red"
-                    type="submit" class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
-                </v-form>
-              </div>
-              <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
-            </v-card>
-          </v-col>
-          <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
-          <v-dialog v-model="showAlertVerify" max-width="600px">
-            <v-alert closable icon="$warning" text=" کد ارسال شده را وارد کنید." type="warning" dir="rtl"></v-alert>
-          </v-dialog>
-        </v-card>
+        <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
+          <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
+          <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
+            <v-text-field v-model="number" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
+              placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+
+            <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit"
+              class="mt-2 ml-5" text="ورود"></v-btn>
+          </v-form>
+        </div>
+        <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
       </v-card>
 
+      <v-card v-if="clickedToVerify && !clickedSignUp && !isLoggedIn" class="mx-auto mt-5" rounded="lg">
+        <div dir="rtl" class="d-flex flex-row justify-space-between">
+          <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
+          <v-icon @click="close" class="d-3 mt-10 ml-5" color="red" icon="mdi-close"></v-icon>
+        </div>
+        <v-col xs="12">
+          <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
+            <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
+              <p class="mr-4">کد وارد شده را وارد کنید</p>
+              <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
+                <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
+
+                  <input v-model="otp" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="200px">
+                  <p class="box-p" v-if="seconds > 0">{{ seconds }}</p>
+                  <button class="box" v-if="seconds <= 0" @click="restartTimer">ارسال مجدد</button>
+                </div>
+                <v-btn @click="goToScenelogin" min-width="100px" variant="elevated" rounded="lg" color="red" type="submit"
+                  class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
+              </v-form>
+            </div>
+            <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
+          </v-card>
+        </v-col>
+        <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
+        <v-dialog v-model="showAlert" max-width="600px">
+          <v-alert closable icon="$warning" text=" کد ارسال شده را وارد کنید." type="warning" dir="rtl"></v-alert>
+        </v-dialog>
+      </v-card>
+
+      <v-card v-if="clickedSignUp && !clickedToVerify && !isLoggedIn" class="mx-auto mt-5" rounded="lg">
+        <div dir="rtl" class="d-flex flex-row justify-space-between">
+          <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
+          <v-icon @click="close" class="d-3 mt-10 ml-5" color="red" icon="mdi-close"></v-icon>
+        </div> <v-col xs="12">
+          <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="300">
+            <h2 style="margin-top: 2rem;font-weight:bolder;" class="mb-5 mr-5 display-2">ایجاد حساب کاربری</h2>
+
+            <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
+              <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
+              <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
+                <v-text-field v-model="numberSign" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
+                  placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+
+                <v-btn @click="goToVerify" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8"
+                  text="ادامه"></v-btn>
+              </v-form>
+            </div>
+
+          </v-card>
+        </v-col>
+        <v-dialog v-model="showAlert" max-width="600px">
+          <v-alert closable icon="$warning" text="شماره تلفن خود را وارد کنید." type="warning" dir="rtl"></v-alert>
+
+        </v-dialog>
+        <v-dialog v-model="noAcc" max-width="600px" max-height="400px" min-width="300px">
+          <v-alert prominent type="error" dir="rtl">
+            <v-row align="center">
+              <v-col class="grow">
+                گرفتی ما رو؟؟ برو حساب باز کن
+              </v-col>
+              <v-col class="shrink">
+                <v-btn @click="goToSign()"> ایجاد حساب کاربری</v-btn>
+              </v-col>
+            </v-row>
+          </v-alert>
+        </v-dialog>
+      </v-card>
+
+      <v-card v-if="clickedToVerify && clickedSignUp && !isLoggedIn" class="mx-auto mt-5" rounded="lg" min-height="300">
+        <div dir="rtl" class="d-flex flex-row justify-space-between">
+          <v-card-title dir="rtl" class="d-3 mt-10">برای خرید بلیت باید وارد شوید.</v-card-title>
+          <v-icon @click="close" class="d-3 mt-10 ml-5" color="red" icon="mdi-close"></v-icon>
+        </div> <v-col xs="12">
+          <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
+            <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
+              <p class="mr-4">کد وارد شده را وارد کنید</p>
+              <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
+                <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
+
+                  <input v-model="otpSign" id="text_box" class="ml-0 mb-3" placeholder="کد تایید" min-width="100px">
+                  <p class="box-p" v-if="seconds > 0">{{ seconds }}</p>
+                  <button class="box" v-if="seconds <= 0" @click="restartTimer">ارسال مجدد</button>
+                </div>
+                <v-btn @click="goToScenelogin" min-width="100px" variant="elevated" rounded="lg" color="red" type="submit"
+                  class="mt-3 ml-8 mr-3" text="ادامه"></v-btn>
+              </v-form>
+            </div>
+            <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
+          </v-card>
+        </v-col>
+        <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
+        <v-dialog v-model="showAlertVerify" max-width="600px">
+          <v-alert closable icon="$warning" text=" کد ارسال شده را وارد کنید." type="warning" dir="rtl"></v-alert>
+        </v-dialog>
+      </v-card>
+    </v-card>
 
 
 
 
 
-    </v-dialog>
 
-
+  </v-dialog>
 </template>
 
 <style>
@@ -727,7 +731,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log('otp:'+data.otp)
+            console.log('otp:' + data.otp)
             uidL.value = data.uuid; // Get the uid from the response
 
           })
@@ -754,7 +758,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(data => {
-            console.log('otp:'+data.otp)
+            console.log('otp:' + data.otp)
             uidS.value = data.uuid; // Get the uid from the response
           })
           .catch(error => {
@@ -917,12 +921,86 @@ export default {
       show.value = false
     }
 
+    const separateDateTime = (input) => {
+      const [date, time] = input.split(' ');
+      const [year, month, day] = date.split('-');
+      const [hour, minute, second] = time.split(':')
+      const formattedDate = `${month}-${day}`;
+      const formattedTime = `${hour}:${minute}`;
+
+      return `${formattedTime}`;
+    };
+
+    const currentDayOfWeek = ref('');
+    const currentDayOfWeekFarsi = ref('');
+
+    const tommarowDayOfWeek = ref('');
+    const tommarowDayOfWeekFarsi = ref('');
+
+    const dayAfterTommarowtDayOfWeek = ref('');
+    const dayAfterTommarowtDayOfWeekFarsi = ref('');
+
+    const translateDay = (day) => {
+      switch (day) {
+        case 'Monday':
+          return 'دوشنبه';
+        case 'Tuesday':
+          return 'سه‌شنبه';
+        case 'Wednesday':
+          return 'چهارشنبه';
+        case 'Thursday':
+          return 'پنج‌شنبه';
+        case 'Friday':
+          return 'جمعه';
+        case 'Saturday':
+          return 'شنبه';
+        case 'Sunday':
+          return 'یک‌شنبه';
+        default:
+          return '';
+      }
+    };
+
+
+    const getCurrentDayOfWeek = () => {
+      const today = new Date();
+
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+
+      const dayAfterTomorrow = new Date(today);
+      dayAfterTomorrow.setDate(today.getDate() + 2);
+
+      const TodayOptions = { weekday: 'long' };
+      currentDayOfWeek.value = today.toLocaleDateString('en-US', TodayOptions);
+
+      const TommarowOptions = { weekday: 'long' };
+      tommarowDayOfWeek.value = tomorrow.toLocaleDateString('en-US', TommarowOptions);
+
+      const dayAfterTommarowOptions = { weekday: 'long' };
+      dayAfterTommarowtDayOfWeek.value = dayAfterTomorrow.toLocaleDateString('en-US', dayAfterTommarowOptions);
+
+      currentDayOfWeekFarsi.value = translateDay(currentDayOfWeek.value)
+      tommarowDayOfWeekFarsi.value = translateDay(tommarowDayOfWeek.value)
+      dayAfterTommarowtDayOfWeekFarsi.value = translateDay(dayAfterTommarowtDayOfWeek.value)
+
+      console.log(dayAfterTommarowtDayOfWeekFarsi.value)
+
+
+
+    };
+
+
+
+    getCurrentDayOfWeek();
+
 
     return {
       cinema, comments, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
       isItemOpen, gotoSeat, getSrc, conditions, getSrcMovie, features, findFeatureicon, findFeatureValue, handleTab, submitRating, rate1, rate2, rate3, rate4, rate5, isLoggedIn, showError, show, noAcc,
-      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify,separateWithCommas
+      goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify, separateWithCommas, separateDateTime, currentDayOfWeek, currentDayOfWeekFarsi,
+      tommarowDayOfWeek, dayAfterTommarowtDayOfWeek, tommarowDayOfWeekFarsi, dayAfterTommarowtDayOfWeekFarsi
     }
   }
 }
