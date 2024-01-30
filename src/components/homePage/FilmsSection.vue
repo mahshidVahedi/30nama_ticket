@@ -1,11 +1,10 @@
 <template>
-  <div class="mt-10" dir="rtl">
+  <div class="mt-10 w-100" dir="rtl">
     <h3 style="margin-right: 10%; direction: rtl; margin-bottom: 10px;">
       فیلم های به روز
     </h3>
     <section class="ma-auto" style="width: 80%; height: 900px;">
-      <v-list>
-
+      <v-list style="text-align: center;">
         <v-list-item @click="goToFilmDetails(film)" v-for="film in films" :key="film.id" style="display: inline-block;"
           class="item">
           <v-list-item-avatar>
