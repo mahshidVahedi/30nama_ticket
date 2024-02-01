@@ -125,7 +125,7 @@ export default {
     const goToHome = (event) => {
       event.preventDefault();
       if (otp.value) {
-        fetch('https://nramezon.shop/api/verify_login/' + receivedData.value, {
+        fetch('https://spweird.fun/api/verify_login/' + receivedData.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
           credentials: 'include',
@@ -181,7 +181,7 @@ export default {
       startTimer(); // Start the timer immediately
 
 
-      fetch('https://nramezon.shop/api/resend_otp/' + receivedData.value, {
+      fetch('https://spweird.fun/api/resend_otp/' + receivedData.value, {
         method: 'POST',
         body: JSON.stringify(),
         headers: {

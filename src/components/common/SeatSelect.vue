@@ -151,7 +151,7 @@ export default {
     const cinema_id = ref('');
     const scene_route = route.params.id;
     let scene_id = parseInt(scene_route, 10);
-    fetch('https://nramezon.shop/api/seats/' + route.params.id)
+    fetch('https://spweird.fun/api/seats/' + route.params.id)
       .then(response => response.json())
       .then(data => {
         scene_details.value = data.scene_details;
@@ -208,7 +208,7 @@ export default {
           cinema_id: cinema_id.value,
           seats: seats,
         });
-        const response = await fetch('https://nramezon.shop/api/buy_tickets', {
+        const response = await fetch('https://spweird.fun/api/buy_tickets', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -269,7 +269,7 @@ export default {
         const formattedTime = `${hour}:${minute}`;
 
         return `${formattedDate} ساعت ${formattedTime}`;
-      } 
+      }
 
     };
 

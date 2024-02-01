@@ -114,7 +114,7 @@ export default {
     const count = ref();
     const route = useRoute();
     const reserveCode = ref()
-    fetch('https://nramezon.shop/api/ticket/token/rea/' + route.params.token)
+    fetch('https://spweird.fun/api/ticket/token/rea/' + route.params.token)
       .then(response => response.json())
       .then(data => {
         count.value = data.count

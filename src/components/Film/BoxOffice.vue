@@ -26,7 +26,7 @@ export default {
       { title: 'نام فیلم', value: 'name' },
       { title: 'فروش', value: 'salesAmount' },
     ];
-    fetch('https://nramezon.shop/api/salesTable')
+    fetch('https://spweird.fun/api/salesTable')
       .then(response => response.json())
       .then(data => {
         movies.value = data.movies

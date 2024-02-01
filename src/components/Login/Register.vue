@@ -72,7 +72,7 @@ export default {
     const goToVerify = (event) => {
       event.preventDefault();
       if (number.value) {
-        fetch('https://nramezon.shop/api/signup', {
+        fetch('https://spweird.fun/api/signup', {
           method: 'POST',
           body: JSON.stringify({ PhoneNumber: number.value }),
           headers: {

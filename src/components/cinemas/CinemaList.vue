@@ -32,7 +32,7 @@ export default {
   setup() {
 
     const cinemas = ref([])
-    fetch('https://nramezon.shop/api/cinemas')
+    fetch('https://spweird.fun/api/cinemas')
       .then(response => response.json())
       .then(data => cinemas.value = data.cinemas)
     const router = useRouter();

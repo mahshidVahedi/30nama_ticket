@@ -499,7 +499,7 @@ export default {
     const director = ref({})
     const comments = ref([])
     const actors = ref([])
-    fetch('https://nramezon.shop/api/movies/' + route.params.id)
+    fetch('https://spweird.fun/api/movies/' + route.params.id)
       .then(response => response.json())
       .then(data => {
         film.value = data.movie
@@ -507,14 +507,14 @@ export default {
         actors.value = data.actors
       })
 
-    fetch('https://nramezon.shop/api/movie/comments/' + route.params.id + '?offset=0&limit=100')
+    fetch('https://spweird.fun/api/movie/comments/' + route.params.id + '?offset=0&limit=100')
       .then(response => response.json())
       .then(data => { comments.value = data.comments })
 
     const scenes = ref([]);
     const todayF = new Date();
     const currentDateF = todayF.toISOString().split('T')[0];
-    const firstApi = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${currentDateF}`;
+    const firstApi = `https://spweird.fun/api/movie/cinemas/${route.params.id}?time=${currentDateF}`;
 
     fetch(firstApi)
       .then(response => response.json())
@@ -542,13 +542,13 @@ export default {
 
         switch (tabValue) {
           case 1:
-            apiUrl = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${currentDate}`;
+            apiUrl = `https://spweird.fun/api/movie/cinemas/${route.params.id}?time=${currentDate}`;
             break;
           case 2:
-            apiUrl = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${tomorrowDate}`;
+            apiUrl = `https://spweird.fun/api/movie/cinemas/${route.params.id}?time=${tomorrowDate}`;
             break;
           case 3:
-            apiUrl = `https://nramezon.shop/api/movie/cinemas/${route.params.id}?time=${dayAfterTomorrowDate}`;
+            apiUrl = `https://spweird.fun/api/movie/cinemas/${route.params.id}?time=${dayAfterTomorrowDate}`;
             break;
           default:
             apiUrl = '';
@@ -577,7 +577,7 @@ export default {
         name.value = 'ناشناس';
       }
       // Make the POST request to the backend
-      fetch('https://nramezon.shop/api/movie/comment/add/' + route.params.id, {
+      fetch('https://spweird.fun/api/movie/comment/add/' + route.params.id, {
         method: 'POST',
         body: JSON.stringify({ comment: comment.value, name: name.value, }),
         headers: {
@@ -603,7 +603,7 @@ export default {
 
     const submitRating = (rate) => {
       dialog.value = false
-      fetch('https://nramezon.shop/api/movie/rating/add/' + route.params.id, {
+      fetch('https://spweird.fun/api/movie/rating/add/' + route.params.id, {
         method: 'POST',
         body: JSON.stringify({ score: rate }),
         headers: {
@@ -709,7 +709,7 @@ export default {
       event.preventDefault();
       showAlert.value = false
       if (number.value) {
-        fetch('https://nramezon.shop/api/login', {
+        fetch('https://spweird.fun/api/login', {
           method: 'POST',
           body: JSON.stringify({ PhoneNumber: number.value }),
           headers: {
@@ -737,7 +737,7 @@ export default {
       } else if (numberSign.value) {
         // errorMessage.value = 'شماره تلفن خود را وارد کنید.';
         // window.alert(errorMessage.value);
-        fetch('https://nramezon.shop/api/signup', {
+        fetch('https://spweird.fun/api/signup', {
           method: 'POST',
           body: JSON.stringify({ PhoneNumber: numberSign.value }),
           headers: {
@@ -776,7 +776,7 @@ export default {
       event.preventDefault();
 
       if (otp.value) {
-        fetch('https://nramezon.shop/api/verify_login/' + uidL.value, {
+        fetch('https://spweird.fun/api/verify_login/' + uidL.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
           credentials: 'include',
@@ -805,7 +805,7 @@ export default {
           });
       } else if (otpSign.value) {
 
-        fetch('https://nramezon.shop/api/verify_signup/' + uidS.value, {
+        fetch('https://spweird.fun/api/verify_signup/' + uidS.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otpSign.value }),
           credentials: 'include',
@@ -863,8 +863,8 @@ export default {
     };
 
     //   const url = uidS.value === undefined
-    // ? 'https://nramezon.shop/api/resend_otp/' + uidL.value
-    const url = 'https://nramezon.shop/api/resend_otp/' + uidL.value;
+    // ? 'https://spweird.fun/api/resend_otp/' + uidL.value
+    const url = 'https://spweird.fun/api/resend_otp/' + uidL.value;
 
     const restartTimer = (event) => {
       event.preventDefault(); // Prevent default form submission behavior
@@ -875,7 +875,7 @@ export default {
       otpSign.value = ''
 
       if (uidL.value) {
-        fetch('https://nramezon.shop/api/resend_otp/' + uidL.value, {
+        fetch('https://spweird.fun/api/resend_otp/' + uidL.value, {
           method: 'POST',
           body: JSON.stringify(),
           headers: {
@@ -893,7 +893,7 @@ export default {
           })
 
       } else if (uidS.value) {
-        fetch('https://nramezon.shop/api/resend_otp/' + uidS.value, {
+        fetch('https://spweird.fun/api/resend_otp/' + uidS.value, {
           method: 'POST',
           body: JSON.stringify(),
           headers: {
@@ -1001,7 +1001,7 @@ export default {
     };
 
 
-   
+
     getCurrentDayOfWeek();
 
     return {

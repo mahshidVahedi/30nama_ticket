@@ -222,7 +222,7 @@ export default {
     })
     const fetchSearchResults = async () => {
       try {
-        const response = await fetch(`https://nramezon.shop/api/movie/search/${searchQuery.value}`);
+        const response = await fetch(`https://spweird.fun/api/movie/search/${searchQuery.value}`);
         const data = await response.json();
         allMovies = data.movies;
         allCinemas = data.cinemas;

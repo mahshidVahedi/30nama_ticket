@@ -60,7 +60,7 @@ export default {
 
     const getUserData = async () => {
       try {
-        const response = await fetch('https://nramezon.shop/api/dashboard/profile', {
+        const response = await fetch('https://spweird.fun/api/dashboard/profile', {
           credentials: 'include',
         });
         if (!response.ok) {
@@ -108,7 +108,7 @@ export default {
 
     const saveChanges = async () => {
       try {
-        const response = await fetch('https://nramezon.shop/api/dashboard/update/profile', {
+        const response = await fetch('https://spweird.fun/api/dashboard/update/profile', {
           method: 'POST',
           credentials: 'include',
           headers: {

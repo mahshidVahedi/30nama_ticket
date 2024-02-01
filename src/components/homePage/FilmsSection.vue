@@ -28,7 +28,7 @@ export default {
 
 
     const films = ref([])
-    fetch('https://nramezon.shop/api/movies')
+    fetch('https://spweird.fun/api/movies')
       .then(response => response.json())
       .then(data => films.value = data.movies)
     const router = useRouter();

