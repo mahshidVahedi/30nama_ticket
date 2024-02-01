@@ -786,6 +786,7 @@ export default {
         fetch('https://nramezon.shop/api/verify_login/' + uidL.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otp.value }),
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           }
@@ -810,6 +811,7 @@ export default {
         fetch('https://nramezon.shop/api/verify_signup/' + uidS.value, {
           method: 'POST',
           body: JSON.stringify({ OTP: otpSign.value }),
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           }
