@@ -19,7 +19,7 @@
           <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
           <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
             <v-text-field v-model="number" @input="checkPhoneNumber" min-width="100px" class="ml-0 mb-3" dir="ltr"
-              rounded="lg" placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+              rounded="lg" placeholder="۰۹xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
 
             <v-btn :disabled="!isButtonEnabled" :color="buttonColor" @click="goToVerify" variant="elevated" rounded="lg"
               color="red" type="submit" class="mt-3 ml-8" text="ادامه"></v-btn>

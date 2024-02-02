@@ -7,17 +7,17 @@
         <v-img :src="getSrc(film.id)" style="max-height: 200px;max-width: 400px;border-radius: 10%;" rounded="5"
           class="mt-5 mb-5 d-none d-sm-flex"></v-img>
         <div class="mr-0">
-          <v-card-title class="text-h6 font-weight-bold mb-5" dir="rtl">
+          <v-card-title class="text-h6 font-weight-bold mb-5 ms-0" dir="rtl">
             <span class="text-wrap">{{ film && film.name }}</span> | <span class="text-subtitle-1">{{ director.name
             }}</span>
           </v-card-title>
-          <v-card-text dir="rtl">
+          <v-card-text class="ms-2" dir="rtl">
             <div class="mt-3 mb-3">
               {{ film && film.genre }}
             </div>
             <div class="d-flex flex-column mt-3 ">
               <div color="red" class="d-flex flex-row border-white mt-3 me-6 text-h6">
-                <v-icon class="ms-5" color="red" icon="mdi-heart"></v-icon>
+                <v-icon class="" color="red" icon="mdi-heart"></v-icon>
                 <div class="text-red ms-1 font-weight-bold text-h6">
                   {{ film && film.score }}
                 </div>
@@ -25,7 +25,7 @@
                   امتیاز شما
                 </v-chip>
               </div>
-              <div class="d-flex flex-row mt-5">
+              <div class="d-flex flex-row mt-5 me-6">
                 <h4>
                   بازیگران {{ film && film.name }} :
                 </h4>
@@ -675,7 +675,7 @@ export default {
     const uidL = ref()
     const isLoggedIn = ref(false)
     const storageType = cookieStorage;
-    const consentPropertyName = 'set-cookie';
+    const consentPropertyName = 'Set-Cookie';
     const getCookie = () => storageType.getItem(consentPropertyName);
     const saveToStorage = () => storageType.setItem(consentPropertyName, tokenValue.value);
     const tokenValue = ref()
@@ -993,9 +993,6 @@ export default {
       currentDayOfWeekFarsi.value = translateDay(currentDayOfWeek.value)
       tommarowDayOfWeekFarsi.value = translateDay(tommarowDayOfWeek.value)
       dayAfterTommarowtDayOfWeekFarsi.value = translateDay(dayAfterTommarowtDayOfWeek.value)
-
-      console.log(dayAfterTommarowtDayOfWeekFarsi.value)
-
 
 
     };

@@ -544,7 +544,6 @@ export default {
           const response = await fetch(apiUrl);
           const data = await response.json();
           // Process the API response data here
-          console.log(data);
           if (data.status == 0 || data.status == "0") {
 
           }
@@ -985,9 +984,6 @@ export default {
       currentDayOfWeekFarsi.value = translateDay(currentDayOfWeek.value)
       tommarowDayOfWeekFarsi.value = translateDay(tommarowDayOfWeek.value)
       dayAfterTommarowtDayOfWeekFarsi.value = translateDay(dayAfterTommarowtDayOfWeek.value)
-
-      console.log(dayAfterTommarowtDayOfWeekFarsi.value)
-
 
 
     };

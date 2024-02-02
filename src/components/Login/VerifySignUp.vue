@@ -145,9 +145,7 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            console.log('Response:', text); // Log the response text
             tokenValue.value = text.token
-            console.log(tokenValue.value)
             saveToStorage(storageType);
             router.push({ name: 'Home' });
           })
@@ -203,7 +201,7 @@ export default {
         })
         .then(text => {
 
-          console.log('Response:', text); // Log the response text
+          // console.log('Response:', text); // Log the response text
         })
 
 

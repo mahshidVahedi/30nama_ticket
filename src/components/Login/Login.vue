@@ -37,8 +37,8 @@
         <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
           <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
           <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
-            <v-text-field v-model="number" @input="checkPhoneNumber" min-width="100px" class="ml-0 mb-3" dir="ltr"
-              rounded="lg" placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+            <v-text-field v-model="number" @input="checkPhoneNumber" min-width="200px" class="ml-0 mb-3" dir="ltr"
+              rounded="lg" placeholder="۰۹xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
 
             <v-btn :disabled="!isButtonEnabled" :color="buttonColor" @click="goToVerify" min-width="50px"
               variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
