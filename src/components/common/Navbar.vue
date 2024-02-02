@@ -218,7 +218,7 @@ export default {
 
     onMounted(() => {
       isLoggedIn.value = getCookie()
-      console.log(isLoggedIn.value)
+      //console.log(isLoggedIn.value)
     })
     const fetchSearchResults = async () => {
       try {

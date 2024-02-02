@@ -684,7 +684,7 @@ export default {
 
     onMounted(() => {
       isLoggedIn.value = getCookie()
-      console.log(isLoggedIn)
+      //console.log(isLoggedIn)
 
     })
 
