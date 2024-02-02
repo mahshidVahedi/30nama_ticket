@@ -110,11 +110,11 @@ export default {
       try {
         const response = await fetch('https://spweird.fun/api/dashboard/update/profile', {
           method: 'POST',
+          body: JSON.stringify(updatedUser.value),
           credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(updatedUser.value)
         });
         if (!response.ok) {
           throw new Error('Failed to update user information');
