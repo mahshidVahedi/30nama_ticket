@@ -114,16 +114,17 @@
       <h2 class="ma-4 text-black font-weight-bold">برنامه اکران {{ film && film.name }}</h2>
       <v-card>
         <v-tabs style="width: 100%;" id="tabs" v-model="tab" color="deep-grey-accent-4 " align-tabs="start"
-        class="no-line-tabs flex-xs-column mt-3" slider-color="white">
-          <v-tab :value="1" @click="handleTab(1)">{{currentDayOfWeekFarsi}} </v-tab><br>
-          <v-tab :value="2" @click="handleTab(2)">{{tommarowDayOfWeekFarsi}}</v-tab>
-          <v-tab :value="3" @click="handleTab(3)">{{dayAfterTommarowtDayOfWeekFarsi}}</v-tab>
+          class="no-line-tabs flex-xs-column mt-3" slider-color="white">
+          <v-tab :value="1" @click="handleTab(1)">{{ currentDayOfWeekFarsi }} </v-tab><br>
+          <v-tab :value="2" @click="handleTab(2)">{{ tommarowDayOfWeekFarsi }}</v-tab>
+          <v-tab :value="3" @click="handleTab(3)">{{ dayAfterTommarowtDayOfWeekFarsi }}</v-tab>
         </v-tabs>
         <v-tabs style="width: 100%;" id="tabs" v-model="tab" color="deep-grey-accent-4 " align-tabs="start"
           class="mb-5 mt-0 flex-xs-column">
           <v-tab :value="1" @click="handleTab(1)" class="mt-0">{{ jalaliDay }} {{ jalaliMonth }} </v-tab><br>
           <v-tab :value="2" @click="handleTab(2)">{{ jalaliTomorrowDay }} {{ jalaliTomorrowMonth }}</v-tab>
-          <v-tab :value="3" @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth}}</v-tab>
+          <v-tab :value="3" @click="handleTab(3)">{{ jalaliDayAfterTomorrowDay }} {{ jalaliDayAfterTomorrowMonth
+          }}</v-tab>
         </v-tabs>
         <v-window v-model="tab">
           <v-window-item v-for="n in 3" :key="n" :value="n">
@@ -242,11 +243,12 @@
           <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
             <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
             <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
-              <v-text-field v-model="number" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
-                placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+              <v-text-field v-model="number" @input="checkPhoneNumber" min-width="200px" class="ml-0 mb-3" dir="ltr"
+                rounded="lg" placeholder="۰۹xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
 
-              <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit"
-                class="mt-2 ml-5" text="ورود"></v-btn>
+
+              <v-btn :disabled="!isButtonEnabled" :color="buttonColor" @click="goToVerify" min-width="50px"
+                variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
             </v-form>
           </div>
           <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
@@ -292,8 +294,8 @@
               <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
                 <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
                 <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
-                  <v-text-field v-model="numberSign" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
-                    placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+                  <v-text-field v-model="number" @input="checkPhoneNumber" min-width="200px" class="ml-0 mb-3" dir="ltr"
+                    rounded="lg" placeholder="۰۹xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
 
                   <v-btn @click="goToVerify" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8"
                     text="ادامه"></v-btn>
@@ -682,6 +684,8 @@ export default {
 
     onMounted(() => {
       isLoggedIn.value = getCookie()
+      console.log(isLoggedIn)
+
     })
 
     const show = ref(false);
@@ -791,8 +795,8 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
-            tokenValue.value=text.token
-            saveToStorage(consentPropertyName,tokenValue.value)
+            tokenValue.value = text.token
+            saveToStorage(consentPropertyName, tokenValue.value)
             show.value = false
             otp.value = null
             otpSign.value = null
@@ -820,6 +824,8 @@ export default {
             return response.json(); // Parse the response as JSON
           })
           .then(text => {
+            tokenValue.value = text.token
+            saveToStorage(consentPropertyName, tokenValue.value)
             show.value = false
             otp.value = null
             otpSign.value = null
@@ -1001,12 +1007,26 @@ export default {
 
     getCurrentDayOfWeek();
 
+    const isButtonEnabled = ref(false);
+    const buttonColor = ref('grey');
+
+    const checkPhoneNumber = () => {
+      if (number.value.length >= 11) {
+        isButtonEnabled.value = true;
+        buttonColor.value = 'red';
+      } else {
+        isButtonEnabled.value = false;
+        buttonColor.value = 'grey';
+      }
+    };
+
     return {
       scenes, director, comments, film, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
       isItemOpen, getSrc, getSrcCinema, comment, submitComment, submitRating, rate1, rate2, rate3, rate4, rate5, handleTab, conditions, actors, gotoSeat, name, isLoggedIn, showError, show, noAcc,
       goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify, separateWithCommas,
-      separateDateTime, currentDayOfWeek, currentDayOfWeekFarsi, tommarowDayOfWeek, dayAfterTommarowtDayOfWeek,tommarowDayOfWeekFarsi,dayAfterTommarowtDayOfWeekFarsi
+      separateDateTime, currentDayOfWeek, currentDayOfWeekFarsi, tommarowDayOfWeek, dayAfterTommarowtDayOfWeek, tommarowDayOfWeekFarsi, dayAfterTommarowtDayOfWeekFarsi,
+      checkPhoneNumber, isButtonEnabled, buttonColor
     }
   }
 }

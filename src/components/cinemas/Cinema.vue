@@ -173,9 +173,8 @@
 
                         <p class="mt-3 mb-3 mr-0">
                           <v-icon style="min-width: none;" icon="mdi-clock"></v-icon>
-                          سانس :
+                          سانس {{ separateDateTime(saloon.StartTime) }}
                         </p>
-                        <span class="mb-2" dir="ltr">{{ separateDateTime(saloon.StartTime) }}</span>
                         <v-card-subtitle>
                           {{ separateWithCommas(60000) }} تومان
                         </v-card-subtitle>
@@ -269,11 +268,11 @@
         <div dir="rtl" class="d-flex flex-wrap-reverse flex-column mt-14 mr-4 ml-4">
           <p>اگر در سینماتیکت حساب کاربری دارید، وارد شوید.</p>
           <v-form dir="rtl" class="d-flex flex-row flex-wrap justify-space-between mt-5">
-            <v-text-field v-model="number" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
-              placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+            <v-text-field v-model="number" @input="checkPhoneNumber" min-width="200px" class="ml-0 mb-3" dir="ltr"
+              rounded="lg" placeholder="۰۹xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
 
-            <v-btn @click="goToVerify" min-width="50px" variant="elevated" rounded="lg" color="grey" type="submit"
-              class="mt-2 ml-5" text="ورود"></v-btn>
+            <v-btn :disabled="!isButtonEnabled" :color="buttonColor" @click="goToVerify" min-width="50px"
+              variant="elevated" rounded="lg" color="grey" type="submit" class="mt-2 ml-5" text="ورود"></v-btn>
           </v-form>
         </div>
         <!-- <p dir="rtl" class="text-red mr-3 mb-3" v-if="errorMessage">{{ errorMessage }}</p> -->
@@ -319,8 +318,8 @@
             <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
               <p class="mr-4">شماره موبایل خود را وارد کنید.</p>
               <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
-                <v-text-field v-model="numberSign" min-width="100px" class="ml-0 mb-3" dir="ltr" rounded="lg"
-                  placeholder="09xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
+                <v-text-field v-model="number" @input="checkPhoneNumber" min-width="200px" class="ml-0 mb-3" dir="ltr"
+                  rounded="lg" placeholder="۰۹xxxxxxxxx" append-inner-icon="mdi-cellphone"></v-text-field>
 
                 <v-btn @click="goToVerify" variant="elevated" rounded="lg" color="red" type="submit" class="mt-3 ml-8"
                   text="ادامه"></v-btn>
@@ -798,7 +797,7 @@ export default {
           })
           .then(text => {
             tokenValue.value = text.token
-            saveToStorage(storageType);
+            saveToStorage(consentPropertyName, tokenValue.value)
             show.value = false
             location.reload()
           })
@@ -823,7 +822,7 @@ export default {
           })
           .then(text => {
             tokenValue.value = text.token
-            saveToStorage(storageType);
+            saveToStorage(consentPropertyName, tokenValue.value)
             show.value = false
             location.reload()
           })
@@ -992,13 +991,27 @@ export default {
 
     getCurrentDayOfWeek();
 
+    const isButtonEnabled = ref(false);
+    const buttonColor = ref('grey');
+
+    const checkPhoneNumber = () => {
+      if (number.value.length >= 11) {
+        isButtonEnabled.value = true;
+        buttonColor.value = 'red';
+      } else {
+        isButtonEnabled.value = false;
+        buttonColor.value = 'grey';
+      }
+    };
+
+
 
     return {
       cinema, comments, scenes, handleClick, currentHour, currentMinute, updateHour, calculateMinute, calculateHour, jalaliDay, formatDigit,
       jalaliMonth, jalaliDayAfterTomorrowDay, jalaliDayAfterTomorrowMonth, jalaliTomorrowDay, jalaliTomorrowMonth, cinemaScenes, cinemaSaloons, dialog,
       isItemOpen, gotoSeat, getSrc, conditions, getSrcMovie, features, findFeatureicon, findFeatureValue, handleTab, submitRating, rate1, rate2, rate3, rate4, rate5, isLoggedIn, showError, show, noAcc,
       goToVerify, number, clickedToVerify, goToScenelogin, otp, seconds, restartTimer, goToRegister, clickedSignUp, numberSign, otpSign, showAlert, showAlertRegister, close, showAlertVerify, separateWithCommas, separateDateTime, currentDayOfWeek, currentDayOfWeekFarsi,
-      tommarowDayOfWeek, dayAfterTommarowtDayOfWeek, tommarowDayOfWeekFarsi, dayAfterTommarowtDayOfWeekFarsi
+      tommarowDayOfWeek, dayAfterTommarowtDayOfWeek, tommarowDayOfWeekFarsi, dayAfterTommarowtDayOfWeekFarsi, checkPhoneNumber, isButtonEnabled, buttonColor
     }
   }
 }
