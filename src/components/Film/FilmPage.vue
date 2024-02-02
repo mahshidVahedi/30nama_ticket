@@ -262,7 +262,7 @@
           <v-col xs="12">
             <v-card dir="rtl" class="mx-auto mt-5" rounded="lg" max-width="700" min-height="200">
               <div style="margin-top: 2rem;" dir="rtl" class="d-flex flex-column mr-5">
-                <p class="mr-4">کد وارد شده را وارد کنید</p>
+                <p class="mr-4">کد ارسال شده را وارد کنید</p>
                 <v-form dir="rtl" class="d-flex flex-row justify-space-between mt-5">
                   <div id="form_area" class="d-flex flex-row justify-content-start mb-3">
 
