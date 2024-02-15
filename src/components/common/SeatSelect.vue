@@ -78,7 +78,8 @@
 }
 
 .v-icon.mdi-seat-disabled {
-  display: none;
+  color: darkblue;
+  cursor: not-allowed;
 }
 
 .scene {
