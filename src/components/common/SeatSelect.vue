@@ -4,7 +4,7 @@
       <div class="scene">
         صحنه نمایش
       </div>
-      <v-responsive id="salon">
+      <v-responsive id="salon" class="d-none d-sm-flex">
         <v-row class="mr-3 nums">
           <v-col v-for="seat in   salon.aliasX  " :key="seat">
             <div class="num">
@@ -24,6 +24,14 @@
           </v-col>
         </v-row>
       </v-responsive>
+      <div class="d-flex d-sm-none flex-column ">
+        <canvas ref="canvasRef" @click="handleCanvasClick"></canvas>
+        <div class="d-flex flex-row justify-space-around mt-5">
+          <v-btn color="red" @click="zoomIn">+</v-btn>
+          <v-btn color="red" @click="zoomOut">-</v-btn>
+        </div>
+
+      </div>
     </v-responsive>
   </div>
   <div class="ticket">
@@ -274,6 +282,86 @@ export default {
 
     };
 
+
+
+    //ssmaller screen seat :
+    const canvasRef = ref(null);
+    let zoomLevel = ref(1);
+    const matrixSize = 5;
+    let squareSize = 50; 
+    const minSquareSize = 50;
+    const maxSquareSize = 100; 
+    let viewX = 0; 
+    let viewY = 0; 
+    const initialSquareSize = 50; 
+    const drawMatrix = () => {
+      const canvas = canvasRef.value;
+      const ctx = canvas.getContext('2d');
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < matrixSize; i++) {
+        for (let j = 0; j < matrixSize; j++) {
+          const squareNumber = i * matrixSize + j + 1;
+          ctx.fillStyle = 'grey';
+          const x = (i * (squareSize + 2)) - viewX;
+          const y = (j * (squareSize + 2)) - viewY;
+          ctx.fillRect(x, y, squareSize, squareSize);
+
+          ctx.fillStyle = 'white';
+          ctx.font = '12px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(squareNumber, x + squareSize / 2, y + squareSize / 2);
+        }
+      }
+    };
+
+    const handleCanvasClick = (event) => {
+      const canvas = canvasRef.value;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = event.clientX - rect.left;
+      const mouseY = event.clientY - rect.top;
+
+      const clickedSquareX = Math.floor((mouseX + viewX) / squareSize);
+      const clickedSquareY = Math.floor((mouseY + viewY) / squareSize);
+
+      if (squareSize < maxSquareSize) {
+        squareSize *= 1.2;
+        zoomLevel.value *= 1.2;
+
+        viewX = Math.max(0, clickedSquareX * squareSize - canvas.width / 2);
+        viewY = Math.max(0, clickedSquareY * squareSize - canvas.height / 2);
+
+        drawMatrix();
+      };
+    }
+
+    const zoomIn = () => {
+      if (squareSize < maxSquareSize) {
+        squareSize *= 1.2;
+        zoomLevel.value *= 1.2;
+        drawMatrix();
+      }
+    };
+
+    const zoomOut = () => {
+      squareSize = initialSquareSize;
+      zoomLevel.value = 1;
+      viewX = 0;
+      viewY = 0;
+
+      drawMatrix();
+    };
+
+    onMounted(() => {
+      const canvas = canvasRef.value;
+      canvas.width = matrixSize * squareSize;
+      canvas.height = matrixSize * squareSize;
+      drawMatrix();
+    });
+
+
     return {
       selectedSeats,
       toggleSeat,
@@ -287,7 +375,11 @@ export default {
       scene_details,
       saveSelectedSeats,
       disableSoldSeats,
-      separateDateTime
+      separateDateTime,
+      canvasRef,
+      handleCanvasClick,
+      zoomIn,
+      zoomOut,
     };
   },
   inheritAttrs: false
